@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h3>Kakao Map Demo(center, level)</h3>
+    <div class="kmap" ref="map"></div>
+  </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  mounted() {
+    let kakao = window.kakao;
+    console.log(this.$refs.map);
+    
+    var container = this.$refs.map
+    var options = {
+      center: new kakao.maps.LatLng(37.497212875468755, 126.92761685591375),
+      level: 3,
+    };
+
+    const mapInstance = new kakao.maps.Map(container, options);
+    console.log(mapInstance);
+    
+  },
 }
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.kmap {
+  width: 100%;
+  height: 600px;
 }
 </style>
