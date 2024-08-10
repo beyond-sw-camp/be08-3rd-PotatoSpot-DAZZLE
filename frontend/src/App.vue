@@ -2,8 +2,12 @@
     <div>
         <h3>Kakao Map Demo(center, level)</h3>
         <div class="controll">
-            <button><span class="material-icons"> zoom_in </span></button>
-            <button><span class="material-icons"> zoom_out </span></button>
+            <button @click="zoom(-1)">
+                <span class="material-icons"> zoom_in </span>
+            </button>
+            <button @click="zoom(1)">
+                <span class="material-icons"> zoom_out </span>
+            </button>
         </div>
         <KakaoMap class="kmap" :options="mapOption"/>
     </div>
@@ -26,18 +30,15 @@ export default {
         };
     },
     mounted() {
-        // let kakao = window.kakao;
-        // console.log(this.$refs.map);
-
-        // var container = this.$refs.map
-        // var options = {
-        //     center: new kakao.maps.LatLng(37.497212875468755, 126.92761685591375),
-        //     level: 3,
-        // };
-
-        // const mapInstance = new kakao.maps.Map(container, options);
-        // console.log(mapInstance);
-
+        
+    },
+    methods: {
+        zoom(delta) {
+            // console.log("[delta]", delta);
+            const level = Math.max(1, this.mapOption.level + delta);
+            this.mapOption.level = level;
+            // console.log(this.mapOption.level);
+        }
     },
 }
 </script>
