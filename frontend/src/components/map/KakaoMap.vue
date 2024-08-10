@@ -2,6 +2,7 @@
     <div ref="map"></div>
 </template>
 <script>
+let kakao = window.kakao;
 export default {
     props: ['options'],
     data() {
@@ -10,34 +11,32 @@ export default {
         }
     },
     mounted() {
-        let kakao = window.kakao;
+        kakao = kakao || window.kakao;
         console.log(this.$refs.map);
 
         var container = this.$refs.map
-        // var options = {
-        //     center: new kakao.maps.LatLng(37.497212875468755, 126.92761685591375),
-        //     level: 3,
-        // };
 
         const {center, level} = this.options;
         this.mapInstance = new kakao.maps.Map(container, {
             center: new kakao.maps.LatLng(center.lat, center.lng),
             level,
         });
-        // console.log(this.mapInstance);
     },
     watch: {
         "options.level"(cur, prev) {
-            console.log(`[LEVEL CHANGED] ${prev} => ${cur}`);
+            console.log(`[LEVEL CHANGED] ${prev} => ${cur}`); // for test
             this.mapInstance.setLevel(cur);
             
+        },
+        "options.center"(cur) {
+            console.log("[NEW CENTER]", cur.lat, cur.lng); // for test
+            this.mapInstance.setCenter(new kakao.maps.LatLng(cur.lat, cur.lng));
         },
     },
 };
 </script>
 <style>
 .kmap {
-    width: 100%;
     height: 600px;
 }
 </style>
