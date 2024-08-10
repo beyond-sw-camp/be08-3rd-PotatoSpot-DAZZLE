@@ -1,6 +1,10 @@
 <template>
     <div>
         <h3>Kakao Map Demo(center, level)</h3>
+        <div class="controll">
+            <button><span class="material-icons"> zoom_in </span></button>
+            <button><span class="material-icons"> zoom_out </span></button>
+        </div>
         <KakaoMap class="kmap" :options="mapOption"/>
     </div>
 </template>
@@ -38,5 +42,19 @@ export default {
 }
 </script>
 <style>
-
+button {
+    border: 1px solid transparent;
+    padding: 6px;
+    background-color: #efefefdd;
+    border-radius: 6px;
+    &:hover {
+        background-color: #ddd;
+        border-color: #ddd;
+        cursor: pointer;
+    }
+    &:active {
+        background-color: #aaa;
+        border-color: #aaa;
+    }
+}
 </style>
