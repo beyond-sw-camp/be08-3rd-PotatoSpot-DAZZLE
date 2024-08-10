@@ -9,11 +9,19 @@
                 <span class="material-icons"> zoom_out </span>
             </button>
         </div>
-        <KakaoMap class="kmap" :options="mapOption"/>
+        <div class="map-area">
+            <div class="harbors">
+                <div class="harbor" v-for="hbr in harbors" :key="hbr.seq" @click="showOnMap(hbr)">
+                    <h4>{{ hbr.place }}</h4>
+                </div>
+            </div>
+            <KakaoMap class="kmap" :options="mapOption"/>
+        </div>
     </div>
 </template>
 <script>
 import KakaoMap from './components/map/KakaoMap.vue';
+import api from './service/api';
 export default {
     components: {
         KakaoMap,
@@ -27,18 +35,26 @@ export default {
                 },
                 level: 3,
             },
+            harbors: [],
         };
     },
     mounted() {
-        
+        api.harbor.all(res => {
+            console.log('[포토 스팟]', res.harbors);
+            this.harbors = res.harbors;
+        });
     },
     methods: {
         zoom(delta) {
-            // console.log("[delta]", delta);
             const level = Math.max(1, this.mapOption.level + delta);
             this.mapOption.level = level;
-            // console.log(this.mapOption.level);
-        }
+        },
+        showOnMap(harbor) {
+            this.mapOption.center = {
+                lat: harbor.lat,
+                lng: harbor.lng,
+            };
+        },
     },
 }
 </script>
@@ -56,6 +72,31 @@ button {
     &:active {
         background-color: #aaa;
         border-color: #aaa;
+    }
+}
+
+.map-area {
+    display: flex;
+    .harbors {
+        .harbor {
+            padding: 10px;
+            border: 1px solid transparent;
+            &:hover {
+                background-color: aliceblue;
+                border-color: #6a9dff;
+                cursor: pointer;
+            }
+            &:active {
+                background-color: rgb(166, 197, 224);
+                border-color: #4471c5;
+            }
+            h4 {
+                margin: 0;
+            }
+        }
+    }
+    .kmap {
+        flex: 1 1 auto;
     }
 }
 </style>
