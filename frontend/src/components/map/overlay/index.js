@@ -20,7 +20,7 @@ class KakaoOverlay {
     }
     showAt(lat, lng) {
         // (lat, lng)에 보여줌
-        console.log("overlay show!!", lat, lng);
+        // console.log("overlay show!!", lat, lng);
         this.instance.setMap(this.vueMap.mapInstance);
         const pos = new kakao.maps.LatLng(lat, lng);
         this.instance.setPosition(pos);
