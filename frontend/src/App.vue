@@ -15,13 +15,14 @@
                     <h4>{{ hbr.place }}</h4>
                 </div>
             </div>
-            <KakaoMap class="kmap" :options="mapOption"/>
+            <KakaoMap ref="kmap" class="kmap" :options="mapOption"/>
         </div>
     </div>
 </template>
 <script>
 import KakaoMap from './components/map/KakaoMap.vue';
 import api from './service/api';
+import MarkerHandler from './components/map/marker-handler.js';
 export default {
     components: {
         KakaoMap,
@@ -36,12 +37,19 @@ export default {
                 level: 3,
             },
             harbors: [],
+            markers: null, // marker handler
         };
     },
     mounted() {
+        const vueKakaoMap = this.$refs.kmap;
+        this.markers = new MarkerHandler(vueKakaoMap);
         api.harbor.all(res => {
             console.log('[포토 스팟]', res.harbors);
             this.harbors = res.harbors;
+            // create markers
+            this.markers.add(this.harbors, (harbor) => {
+                return {lat: harbor.lat, lng: harbor.lng};
+            });
         });
     },
     methods: {
