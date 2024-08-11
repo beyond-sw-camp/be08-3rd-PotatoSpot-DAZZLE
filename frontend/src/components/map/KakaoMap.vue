@@ -12,7 +12,7 @@ export default {
     },
     mounted() {
         kakao = kakao || window.kakao;
-        console.log(this.$refs.map);
+        // console.log(this.$refs.map);
 
         var container = this.$refs.map
 
@@ -23,13 +23,13 @@ export default {
         });
     },
     watch: {
-        "options.level"(cur, prev) {
-            console.log(`[LEVEL CHANGED] ${prev} => ${cur}`); // for test
+        "options.level"(cur/* , prev */) {
+            // console.log(`[LEVEL CHANGED] ${prev} => ${cur}`); // for test
             this.mapInstance.setLevel(cur);
             
         },
         "options.center"(cur) {
-            console.log("[NEW CENTER]", cur.lat, cur.lng); // for test
+            // console.log("[NEW CENTER]", cur.lat, cur.lng); // for test
             this.mapInstance.setCenter(new kakao.maps.LatLng(cur.lat, cur.lng));
         },
     },

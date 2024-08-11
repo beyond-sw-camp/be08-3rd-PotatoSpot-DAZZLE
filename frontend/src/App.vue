@@ -11,7 +11,7 @@
         </div>
         <div class="map-area">
             <div class="harbors">
-                <div class="harbor" v-for="hbr in harbors" :key="hbr.seq" @click="showOnMap(hbr)">
+                <div class="harbor" v-for="hbr in harbors" :key="hbr.seq" @click="showOnMap(hbr)" :class="{active: hbr === activeHarbor}">
                     <h4>{{ hbr.place }}</h4>
                 </div>
             </div>
@@ -23,6 +23,7 @@
 import KakaoMap from './components/map/KakaoMap.vue';
 import api from './service/api';
 import MarkerHandler from './components/map/marker-handler.js';
+
 export default {
     components: {
         KakaoMap,
@@ -34,17 +35,26 @@ export default {
                     lat: 37.497212875468755,
                     lng: 126.92761685591375,
                 },
-                level: 3,
+                level: 4,
             },
             harbors: [],
             markers: null, // marker handler
+            activeHarbor: null, // selected harbor!
         };
     },
     mounted() {
         const vueKakaoMap = this.$refs.kmap;
-        this.markers = new MarkerHandler(vueKakaoMap);
+
+        this.markers = new MarkerHandler(vueKakaoMap, {
+            markerClicked: (harbor) => {
+                // console.log("[clicked ]", harbor);
+                // this.activeHarbor = harbor;
+                this.showOnMap(harbor);
+            },
+        });
+
         api.harbor.all(res => {
-            console.log('[포토 스팟]', res.harbors);
+            // console.log('[포토 스팟]', res.harbors);
             this.harbors = res.harbors;
             // create markers
             this.markers.add(this.harbors, (harbor) => {
@@ -58,6 +68,7 @@ export default {
             this.mapOption.level = level;
         },
         showOnMap(harbor) {
+            this.activeHarbor = harbor;
             this.mapOption.center = {
                 lat: harbor.lat,
                 lng: harbor.lng,
@@ -97,6 +108,10 @@ button {
             &:active {
                 background-color: rgb(166, 197, 224);
                 border-color: #4471c5;
+            }
+            &.active {
+                background-color: rgb(253, 229, 150);
+                border-color: rgb(211, 173, 3);
             }
             h4 {
                 margin: 0;

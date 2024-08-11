@@ -1,9 +1,10 @@
 const kakao = window.kakao;
 
-class MarkerHandelr {
-    constructor(vueKakaoMap) {
-        console.log("[vue component}", vueKakaoMap);
+class MarkerHandler {
+    constructor(vueKakaoMap, options) {
+        // console.log("[vue component}", vueKakaoMap);
         this.vueMap = vueKakaoMap;
+        this.options = options;
     }
     add(userData, fnConv) {
         userData.forEach(data => {
@@ -13,9 +14,16 @@ class MarkerHandelr {
                 map: this.vueMap.mapInstance,
                 position: new kakao.maps.LatLng(option.lat, option.lng),
             });
-            console.log(markerInstance);
-        })
+            markerInstance.$$ = {
+                data, // reference to user data
+            };
+            if(this.options.markerClicked) {
+                kakao.maps.event.addListener(markerInstance, 'click', () => {
+                    this.options.markerClicked(markerInstance.$$.data);
+                });
+            }
+        });
     }
 }
 
-export default MarkerHandelr;
+export default MarkerHandler;
