@@ -3,6 +3,12 @@ const api = {
         all(callback) {
             const harbors = [
                 {
+                    seq: 0,
+                    place: "한화시스템 동작지점",
+                    lat: 37.4972146715141,
+                    lng: 126.927607128836,
+                },
+                {
                     seq: 1,
                     place: "광안리 해수욕장",
                     lat: 35.15317903835004,
