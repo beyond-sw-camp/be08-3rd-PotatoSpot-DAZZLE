@@ -18,12 +18,13 @@
             <KakaoMap ref="kmap" class="kmap" :options="mapOption">
                 <template v-slot:overlay>
                     <div class="overlay-popup" ref="harborOverlay">
-                        <div v-if="overlayHarbor"></div>
-                        <h3>오버레이 화면</h3>
-                        <div class="addr">이곳에 포토 스팟 정보를 표시함</div>
-                        <a class="close" href="#" @click.prevent="closeOverlay()">
-                            <span class="material-icons"> close </span>
-                        </a>
+                        <div v-if="overlayHarbor">
+                            <h3>{{ overlayHarbor.place }}</h3>
+                            <div class="addr">{{ overlayHarbor.addr }}</div>
+                            <a class="close" href="#" @click.prevent="closeOverlay()">
+                                <span class="material-icons"> close </span>
+                            </a>
+                        </div>
                     </div>
                 </template>
             </KakaoMap>
@@ -154,6 +155,7 @@ button {
             h3 {
                 margin: 0;
                 padding: 8px;
+                padding-right: 24px;
                 background-color: #ed4215;
                 color: white;
                 font-weight: 400;
