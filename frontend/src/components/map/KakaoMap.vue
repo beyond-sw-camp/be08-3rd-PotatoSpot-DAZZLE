@@ -1,5 +1,7 @@
 <template>
-    <div ref="map"></div>
+    <div ref="map">
+        <slot name="overlay"></slot>
+    </div>
 </template>
 <script>
 let kakao = window.kakao;
@@ -30,7 +32,9 @@ export default {
         },
         "options.center"(cur) {
             // console.log("[NEW CENTER]", cur.lat, cur.lng); // for test
-            this.mapInstance.setCenter(new kakao.maps.LatLng(cur.lat, cur.lng));
+            // this.mapInstance.setCenter(new kakao.maps.LatLng(cur.lat, cur.lng));
+            this.mapInstance.panTo(new kakao.maps.LatLng(cur.lat, cur.lng));
+            // 부드럽게 이동
         },
     },
 };

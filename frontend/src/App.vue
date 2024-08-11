@@ -15,7 +15,19 @@
                     <h4>{{ hbr.place }}</h4>
                 </div>
             </div>
-            <KakaoMap ref="kmap" class="kmap" :options="mapOption"/>
+            <KakaoMap ref="kmap" class="kmap" :options="mapOption">
+                <template v-slot:overlay>
+                    <div class="overlay-popup" ref="harborOverlay">
+                        <div v-if="overlayHarbor">
+                            <h3>{{ overlayHarbor.place }}</h3>
+                            <div class="addr">{{ overlayHarbor.addr }}</div>
+                            <a class="close" href="#" @click.prevent="closeOverlay()">
+                                <span class="material-icons"> close </span>
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </KakaoMap>
         </div>
     </div>
 </template>
@@ -23,6 +35,7 @@
 import KakaoMap from './components/map/KakaoMap.vue';
 import api from './service/api';
 import MarkerHandler from './components/map/marker-handler.js';
+import KakoOverlay from './components/map/overlay';
 
 export default {
     components: {
@@ -40,6 +53,9 @@ export default {
             harbors: [],
             markers: null, // marker handler
             activeHarbor: null, // selected harbor!
+
+            overlay: null, // overlay 인스턴스
+            overlayHarbor: null, // overlay에 보여줄 포토 스팟
         };
     },
     mounted() {
@@ -50,8 +66,12 @@ export default {
                 // console.log("[clicked ]", harbor);
                 // this.activeHarbor = harbor;
                 this.showOnMap(harbor);
+                // 마커 클릭 시
+                this.overlayHarbor = harbor;
+                this.overlay.showAt(harbor.lat, harbor.lng);
             },
         });
+        this.overlay = new KakoOverlay(vueKakaoMap, this.$refs.harborOverlay);
 
         api.harbor.all(res => {
             // console.log('[포토 스팟]', res.harbors);
@@ -74,6 +94,9 @@ export default {
                 lng: harbor.lng,
             };
         },
+        closeOverlay() {
+            this.overlay.hide();
+        }
     },
 }
 </script>
@@ -120,6 +143,41 @@ button {
     }
     .kmap {
         flex: 1 1 auto;
+        .overlay-popup {
+            background-color: #ffffffcc;
+            box-shadow: 0 0 8px #0000004d, 0 0 1px 2px #00000022;
+            max-width: 200px;
+            min-width: 160px;
+            position: absolute;
+            bottom: 44px;
+            left: 50%;
+            transform: translateX(-50%);
+            h3 {
+                margin: 0;
+                padding: 8px;
+                padding-right: 24px;
+                background-color: #ed4215;
+                color: white;
+                font-weight: 400;
+                font-size: 16px;
+            }
+            .addr {
+                padding: 8px;
+                white-space: break-spaces;
+            }
+            .close {
+                color: black;
+                position: absolute;
+                top: 0;
+                left: 100%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                border-radius: 100%;
+                line-height: 0;
+                padding: 6px;
+                box-shadow: 0 0 6px #0000004d;
+            }
+        }
     }
 }
 </style>
