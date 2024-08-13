@@ -2,7 +2,7 @@
 ![logo-eng-horiz]()
 > [PLAYDATA] 한화시스템 BEYOND SW캠프 / DAZZLE
 
-> Team - PotatoSpot
+> Team - PotatoSpot
 <br>
 
 ## ✨ Medium
