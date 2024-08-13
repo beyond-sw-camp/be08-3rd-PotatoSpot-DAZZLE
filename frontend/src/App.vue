@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Kakao Map Demo(center, level)</h3>
+        <h3>Kakao Map(center, level)</h3>
         <div class="controll">
             <button @click="zoom(-1)">
                 <span class="material-icons"> zoom_in </span>
