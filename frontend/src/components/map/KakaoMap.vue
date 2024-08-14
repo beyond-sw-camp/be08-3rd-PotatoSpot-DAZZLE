@@ -41,6 +41,7 @@ export default {
 </script>
 <style>
 .kmap {
+    /* height: 100vh; */
     height: 600px;
 }
 </style>

@@ -10,9 +10,15 @@
             </button>
         </div>
         <div class="map-area">
-            <div class="harbors">
-                <div class="harbor" v-for="hbr in harbors" :key="hbr.seq" @click="showOnMap(hbr)" :class="{active: hbr === activeHarbor}">
-                    <h4>{{ hbr.place }}</h4>
+            <div class="searchbox">
+                <div>
+                    <input type="text" value="포토 스팟" @keyup.enter="searchPlace">
+                </div>
+                <div class="results">
+                    <div class="place" v-for="rs in search.results" :key="rs.id" @click="showPlace(rs)">
+                        <h4>{{ rs.place_name }}</h4>
+                        <div class="addr">{{ rs.address_name }}</div>
+                    </div>
                 </div>
             </div>
             <KakaoMap ref="kmap" class="kmap" :options="mapOption">
@@ -50,6 +56,11 @@ export default {
                 },
                 level: 4,
             },
+            search: {
+                keyword: null,
+                pgn: null,
+                results: [],
+            },
             harbors: [],
             markers: null, // marker handler
             activeHarbor: null, // selected harbor!
@@ -83,6 +94,19 @@ export default {
         });
     },
     methods: {
+        searchPlace(e) {
+            const keyword = e.target.value.trim();
+            if(keyword.length === 0) {
+                return;
+            }
+
+            const ps = new window.kakao.maps.services.Places();
+            ps.keywordSearch(keyword, (data, status, pgn) => {
+                this.search.keyword = keyword;
+                this.search.pgn = pgn;
+                this.search.results = data;
+            });
+        },
         zoom(delta) {
             const level = Math.max(1, this.mapOption.level + delta);
             this.mapOption.level = level;
@@ -92,6 +116,14 @@ export default {
             this.mapOption.center = {
                 lat: harbor.lat,
                 lng: harbor.lng,
+            };
+        },
+        showPlace(place) {
+            console.log(place);
+            
+            this.mapOption.center = {
+                lat: place.y,
+                lng: place.x 
             };
         },
         closeOverlay() {
@@ -119,6 +151,7 @@ button {
 
 .map-area {
     display: flex;
+    position: relative;
     .harbors {
         .harbor {
             padding: 10px;
@@ -138,6 +171,29 @@ button {
             }
             h4 {
                 margin: 0;
+            }
+        }
+    }
+    .searchbox {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 600px;
+        z-index: 10000;
+        background-color: white;
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        .results {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            .place {
+                padding: 8px;
+                cursor: pointer;
+
+                h4 {
+                    margin: 0;
+                }
             }
         }
     }
