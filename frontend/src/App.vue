@@ -10,17 +10,7 @@
             </button>
         </div>
         <div class="map-area">
-            <div class="searchbox">
-                <div>
-                    <input type="text" value="포토 스팟" @keyup.enter="searchPlace">
-                </div>
-                <div class="results">
-                    <div class="place" v-for="rs in search.results" :key="rs.id" @click="showPlace(rs)">
-                        <h4>{{ rs.place_name }}</h4>
-                        <div class="addr">{{ rs.address_name }}</div>
-                    </div>
-                </div>
-            </div>
+            <SlideMenu :map-option="mapOption" @update-map-center="updateMapCenter" v-if="menuVisible"/>
             <KakaoMap ref="kmap" class="kmap" :options="mapOption">
                 <template v-slot:overlay>
                     <div class="overlay-popup" ref="harborOverlay">
@@ -38,14 +28,22 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import KakaoMap from './components/map/KakaoMap.vue';
 import api from './service/api';
 import MarkerHandler from './components/map/marker-handler.js';
 import KakoOverlay from './components/map/overlay';
+import SlideMenu from './components/slideMenu/SlideMenu.vue';
 
 export default {
     components: {
         KakaoMap,
+        SlideMenu,
+    },
+    computed: {
+        ...mapState({
+            menuVisible: state => state.ui.leftMenu.visible
+        })
     },
     data() {
         return {
@@ -55,11 +53,6 @@ export default {
                     lng: 126.92761685591375,
                 },
                 level: 4,
-            },
-            search: {
-                keyword: null,
-                pgn: null,
-                results: [],
             },
             harbors: [],
             markers: null, // marker handler
@@ -92,21 +85,11 @@ export default {
                 return {lat: harbor.lat, lng: harbor.lng};
             });
         });
+
+        console.log("[STORE] ", this.$store);
+        
     },
     methods: {
-        searchPlace(e) {
-            const keyword = e.target.value.trim();
-            if(keyword.length === 0) {
-                return;
-            }
-
-            const ps = new window.kakao.maps.services.Places();
-            ps.keywordSearch(keyword, (data, status, pgn) => {
-                this.search.keyword = keyword;
-                this.search.pgn = pgn;
-                this.search.results = data;
-            });
-        },
         zoom(delta) {
             const level = Math.max(1, this.mapOption.level + delta);
             this.mapOption.level = level;
@@ -118,17 +101,13 @@ export default {
                 lng: harbor.lng,
             };
         },
-        showPlace(place) {
-            console.log(place);
-            
-            this.mapOption.center = {
-                lat: place.y,
-                lng: place.x 
-            };
-        },
         closeOverlay() {
             this.overlay.hide();
-        }
+        },
+        updateMapCenter(center) {
+            // mapOption의 center를 업데이트합니다
+            this.mapOption.center = center;
+        },
     },
 }
 </script>
@@ -171,29 +150,6 @@ button {
             }
             h4 {
                 margin: 0;
-            }
-        }
-    }
-    .searchbox {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 600px;
-        z-index: 10000;
-        background-color: white;
-        width: 300px;
-        display: flex;
-        flex-direction: column;
-        .results {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            .place {
-                padding: 8px;
-                cursor: pointer;
-
-                h4 {
-                    margin: 0;
-                }
             }
         }
     }
