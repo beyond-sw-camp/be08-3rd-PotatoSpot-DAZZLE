@@ -9,6 +9,8 @@
                 <div class="addr">{{ rs.address_name }}</div>
             </div>
         </div>
+        <button v-if="menuVisible" @click="showMenu(false)">Hide</button>
+        <button v-else @click="showMenu(true)">Show</button>
     </div>
 </template>
 
@@ -25,6 +27,11 @@ export default {
                 results: [],
             },
         };
+    },
+    computed: {
+        menuVisible() {
+            return this.$store.state.ui.leftMenu.visible
+        }
     },
     methods: {
         searchPlace(e) {
@@ -48,6 +55,9 @@ export default {
                 lat: place.y,
                 lng: place.x
             });
+        },
+        showMenu(visible) {
+            this.$store.state.ui.leftMenu.visible = visible;
         },
     },
 }
@@ -75,6 +85,18 @@ export default {
                 margin: 0;
             }
         }
+    }
+    button {
+        position: absolute;
+        overflow: hidden;
+        z-index: 10;
+        top: 50%;
+        left: 100%;
+        width: 23px;
+        height: 46px;
+        border-radius: 0px 9px 9px 0px;
+        background-clip: padding-box;
+        transform: translateY(-50%);
     }
 }
 </style>

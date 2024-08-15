@@ -10,7 +10,7 @@
             </button>
         </div>
         <div class="map-area">
-            <SlideMenu :map-option="mapOption" @update-map-center="updateMapCenter" />
+            <SlideMenu :map-option="mapOption" @update-map-center="updateMapCenter" v-if="menuVisible"/>
             <KakaoMap ref="kmap" class="kmap" :options="mapOption">
                 <template v-slot:overlay>
                     <div class="overlay-popup" ref="harborOverlay">
@@ -28,6 +28,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import KakaoMap from './components/map/KakaoMap.vue';
 import api from './service/api';
 import MarkerHandler from './components/map/marker-handler.js';
@@ -38,6 +39,11 @@ export default {
     components: {
         KakaoMap,
         SlideMenu,
+    },
+    computed: {
+        ...mapState({
+            menuVisible: state => state.ui.leftMenu.visible
+        })
     },
     data() {
         return {
@@ -79,6 +85,9 @@ export default {
                 return {lat: harbor.lat, lng: harbor.lng};
             });
         });
+
+        console.log("[STORE] ", this.$store);
+        
     },
     methods: {
         zoom(delta) {
@@ -144,29 +153,6 @@ button {
             }
         }
     }
-    /* .searchbox {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 600px;
-        z-index: 10000;
-        background-color: white;
-        width: 300px;
-        display: flex;
-        flex-direction: column;
-        .results {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            .place {
-                padding: 8px;
-                cursor: pointer;
-
-                h4 {
-                    margin: 0;
-                }
-            }
-        }
-    } */
     .kmap {
         flex: 1 1 auto;
         .overlay-popup {
