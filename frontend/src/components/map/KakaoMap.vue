@@ -14,7 +14,6 @@ export default {
     },
     mounted() {
         kakao = kakao || window.kakao;
-        // console.log(this.$refs.map);
 
         var container = this.$refs.map
 
@@ -25,14 +24,11 @@ export default {
         });
     },
     watch: {
-        "options.level"(cur/* , prev */) {
-            // console.log(`[LEVEL CHANGED] ${prev} => ${cur}`); // for test
+        "options.level"(cur) {
             this.mapInstance.setLevel(cur);
             
         },
         "options.center"(cur) {
-            // console.log("[NEW CENTER]", cur.lat, cur.lng); // for test
-            // this.mapInstance.setCenter(new kakao.maps.LatLng(cur.lat, cur.lng));
             this.mapInstance.panTo(new kakao.maps.LatLng(cur.lat, cur.lng));
             // 부드럽게 이동
         },
@@ -41,7 +37,7 @@ export default {
 </script>
 <style>
 .kmap {
-    /* height: 100vh; */
-    height: 600px;
+    height: 100vh;
+    /* height: 600px; */
 }
 </style>

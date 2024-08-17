@@ -68,7 +68,8 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    height: 600px;
+    // height: 600px;
+    height: 100vh;
     z-index: 10000;
     background-color: white;
     width: 300px;
