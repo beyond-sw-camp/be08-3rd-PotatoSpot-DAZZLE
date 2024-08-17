@@ -56,37 +56,46 @@ export default {
             harbors: [],
             markers: null, // marker handler
             activeHarbor: null, // selected harbor!
-
             overlay: null, // overlay 인스턴스
             overlayHarbor: null, // overlay에 보여줄 포토 스팟
+            clusterer: null, // marker clusterer instance
         };
     },
     mounted() {
         const vueKakaoMap = this.$refs.kmap;
 
-        this.markers = new MarkerHandler(vueKakaoMap, {
-            markerClicked: (harbor) => {
-                // console.log("[clicked ]", harbor);
-                // this.activeHarbor = harbor;
-                this.showOnMap(harbor);
-                // 마커 클릭 시
-                this.overlayHarbor = harbor;
-                this.overlay.showAt(harbor.lat, harbor.lng);
-            },
-        });
-        this.overlay = new KakoOverlay(vueKakaoMap, this.$refs.harborOverlay);
+        // Wait for the Kakao Maps SDK to be loaded
+        this.$nextTick(() => {
+            const { kakao } = window;
+            
+            // Initialize the marker clusterer
+            this.clusterer = new kakao.maps.MarkerClusterer({
+                map: vueKakaoMap.mapInstance,
+                averageCenter: true,
+                minLevel: 10
+            });
 
-        api.harbor.all(res => {
-            // console.log('[포토 스팟]', res.harbors);
-            this.harbors = res.harbors;
-            // create markers
-            this.markers.add(this.harbors, (harbor) => {
-                return {lat: harbor.lat, lng: harbor.lng};
+            this.markers = new MarkerHandler(vueKakaoMap, {
+                markerClicked: (harbor) => {
+                    this.showOnMap(harbor);
+                    this.overlayHarbor = harbor;
+                    this.overlay.showAt(harbor.lat, harbor.lng);
+                },
+            });
+            this.overlay = new KakoOverlay(vueKakaoMap, this.$refs.harborOverlay);
+
+            api.harbor.all(res => {
+                this.harbors = res.harbors;
+                // Create markers and add them to the clusterer
+                const markerObjects = this.harbors.map(harbor => {
+                    return new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(harbor.lat, harbor.lng)
+                    });
+                });
+
+                this.clusterer.addMarkers(markerObjects);
             });
         });
-
-        console.log("[STORE] ", this.$store);
-        
     },
     methods: {
         zoom(delta) {
@@ -104,7 +113,6 @@ export default {
             this.overlay.hide();
         },
         updateMapCenter(center) {
-            // mapOption의 center를 업데이트합니다
             this.mapOption.center = center;
         },
     },
