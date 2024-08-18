@@ -85,23 +85,7 @@
 
 <br>
 
-## 📂 Directory Structure
-<details>
-<summary>자세히 보기(Frontend)</summary>
-<div>
 
-```bash
-📦 vue
- ┣ 📂 dazzle.frontend
- ┃ ┣ 📂 business
- ┃ ┃ ┣ 📂 controller
- ┃ ┃ ┃ ┗ 📜 BusinessController.java
-
- ```
-
-</div>
-</details>
-<br>
 
 ## 📆 WBS
 
