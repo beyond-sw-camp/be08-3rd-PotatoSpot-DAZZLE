@@ -55,10 +55,10 @@ const bestPosts = computed(() => {
 <template>
   <section v-if="firebaseUser && bestPosts.length > 0" class="py-2">
     <div class="container">
-      <div class="row">
-        <h3 class="mb-5">인기 게시물</h3>
+      <div class="row" style="border-bottom: 1px solid lightgray;">
+        <h3 class="mb-3">인기 포토스팟</h3>
       </div>
-      <div class="row">
+      <div class="row mt-5">
         <div v-for="(post, index) in bestPosts" :key="post.id" class="col-lg-3 col-sm-6">
           <RotatingCard>
             <RotatingCardFront :image="post.imgUrl" />
