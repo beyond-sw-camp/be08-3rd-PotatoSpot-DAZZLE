@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="controll">
+    <!-- <div class="controll">
       <button @click="zoom(-1)">
         <span class="material-icons"> zoom_in </span>
       </button>
       <button @click="zoom(1)">
         <span class="material-icons"> zoom_out </span>
       </button>
-    </div>
+    </div> -->
     <div class="map-area">
       <SlideMenu
         :map-option="mapOption"
@@ -27,6 +27,31 @@
           </div>
         </template>
       </KakaoMap>
+      <!-- 사용자 정의 지도 타입 및 확대/축소 컨트롤 -->
+      <div class="custom_typecontrol radius_border">
+        <span
+          id="btnRoadmap"
+          :class="{ 'selected_btn': mapType === 'roadmap', 'btn': mapType !== 'roadmap' }"
+          @click="setMapType('roadmap')"
+        >
+          지도
+        </span>
+        <span
+          id="btnSkyview"
+          :class="{ 'selected_btn': mapType === 'skyview', 'btn': mapType !== 'skyview' }"
+          @click="setMapType('skyview')"
+        >
+          스카이뷰
+        </span>
+      </div>
+      <div class="custom_zoomcontrol radius_border">
+        <span @click="zoomIn">
+          <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대" />
+        </span>
+        <span @click="zoomOut">
+          <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소" />
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -61,6 +86,7 @@ export default {
         },
         level: 4,
       },
+      mapType: 'roadmap',
       harbors: [],
       markers: null,
       activeHarbor: null,
@@ -103,9 +129,15 @@ export default {
     });
   },
   methods: {
-    zoom(delta) {
-      const level = Math.max(1, this.mapOption.level + delta);
-      this.mapOption.level = level;
+    // zoom(delta) {
+    //   const level = Math.max(1, this.mapOption.level + delta);
+    //   this.mapOption.level = level;
+    // },
+    zoomIn() {
+      this.mapOption.level = Math.max(1, this.mapOption.level - 1);
+    },
+    zoomOut() {
+      this.mapOption.level = Math.min(14, this.mapOption.level + 1);
     },
     showOnMap(harbor) {
       this.activeHarbor = harbor;
@@ -120,9 +152,26 @@ export default {
     updateMapCenter(center) {
       this.mapOption.center = center;
     },
+    setMapType(type) {
+      const { kakao } = window;
+      const map = this.$refs.kmap.mapInstance;
+      const roadmapControl = document.getElementById('btnRoadmap');
+      const skyviewControl = document.getElementById('btnSkyview'); 
+      if (type === 'roadmap') {
+        map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+        roadmapControl.className = 'selected_btn';
+        skyviewControl.className = 'btn';
+      } else if (type === 'skyview') {
+        map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+        skyviewControl.className = 'selected_btn';
+        roadmapControl.className = 'btn';
+      }
+      this.mapType = type;
+    },
   },
 };
 </script>
+
 <style>
 button {
   border: 1px solid transparent;
@@ -143,6 +192,8 @@ button {
 .map-area {
   display: flex;
   position: relative;
+  overflow: hidden;
+  width: 100%;
   .harbors {
     .harbor {
       padding: 10px;
@@ -203,5 +254,17 @@ button {
       }
     }
   }
+  .radius_border{border:1px solid #919191;border-radius:5px;}     
+  .custom_typecontrol {position:absolute;top:10px;right:10px;overflow:hidden;width:130px;height:30px;margin:0;padding:0;z-index:1;font-size:12px;font-family:'Malgun Gothic', '맑은 고딕', sans-serif;}
+  .custom_typecontrol span {display:block;width:65px;height:30px;float:left;text-align:center;line-height:30px;cursor:pointer;}
+  .custom_typecontrol .btn {background:#fff;background:linear-gradient(#fff,  #e6e6e6);}       
+  .custom_typecontrol .btn:hover {background:#f5f5f5;background:linear-gradient(#f5f5f5,#e3e3e3);}
+  .custom_typecontrol .btn:active {background:#e6e6e6;background:linear-gradient(#e6e6e6, #fff);}    
+  .custom_typecontrol .selected_btn {color:#fff;background:#425470;background:linear-gradient(#425470, #5b6d8a);}
+  .custom_typecontrol .selected_btn:hover {color:#fff;}   
+  .custom_zoomcontrol {position:absolute;top:50px;right:10px;width:36px;height:80px;overflow:hidden;z-index:1;background-color:#f5f5f5;} 
+  .custom_zoomcontrol span {display:block;width:36px;height:40px;text-align:center;cursor:pointer;}     
+  .custom_zoomcontrol span img {width:15px;height:15px;padding:12px 0;border:none;}             
+  .custom_zoomcontrol span:first-child{border-bottom:1px solid #bfbfbf;} 
 }
 </style>
