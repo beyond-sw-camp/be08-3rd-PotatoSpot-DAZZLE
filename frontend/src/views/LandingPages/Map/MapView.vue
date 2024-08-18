@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="controll">
-      <button @click="zoom(-1)">
-        <span class="material-icons"> zoom_in </span>
-      </button>
-      <button @click="zoom(1)">
-        <span class="material-icons"> zoom_out </span>
-      </button>
+    <div class="container position-sticky z-index-sticky top-0">
+      <div class="row">
+        <div class="col-12">
+          <NavbarDefault :sticky="true" />
+        </div>
+      </div>
     </div>
     <div class="map-area">
       <KakaoMap ref="kmap" class="kmap" :options="mapOption" />
@@ -29,10 +28,12 @@
 
 <script>
 import KakaoMap from "@/components/map/KakaoMap.vue";
+import NavbarDefault from "../../../examples/navbars/NavbarDefault.vue";
 
 export default {
   components: {
     KakaoMap,
+    NavbarDefault,
   },
   data() {
     return {
@@ -56,10 +57,20 @@ export default {
       const { kakao } = window;
 
       this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      
       this.clusterer = new kakao.maps.MarkerClusterer({
         map: vueKakaoMap.mapInstance,
         averageCenter: true,
         minLevel: 10,
+        disableClickZoom: true,
+        styles: [{
+          width: '30px', height: '30px',
+          background: 'rgba(255, 100, 100, .8)',
+          borderRadius: '15px',
+          color: '#fff',
+          textAlign: 'center',
+          lineHeight: '31px'
+        }]
       });
 
       this.map = vueKakaoMap.mapInstance;
@@ -136,6 +147,8 @@ export default {
       menuEl.scrollTop = 0;
 
       this.map.setBounds(bounds);
+
+      this.clusterer.addMarkers(this.markers);
     },
     getListItem(index, place, position) {
       const el = document.createElement('li');
@@ -318,7 +331,7 @@ button {
       }
     }
   }
-  #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:350px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+  #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:350px;margin:10px 0 30px 10px;margin-top:115px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
   .bg_white {background:#fff;}
   #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
   #menu_wrap .option{text-align: center;}
