@@ -56,10 +56,21 @@ export default {
       const { kakao } = window;
 
       this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      
+      // MarkerClusterer 초기화
       this.clusterer = new kakao.maps.MarkerClusterer({
         map: vueKakaoMap.mapInstance,
         averageCenter: true,
         minLevel: 10,
+        disableClickZoom: true, // 클러스터 클릭 시 줌 비활성화
+        styles: [{
+          width: '30px', height: '30px',
+          background: 'rgba(255, 100, 100, .8)',
+          borderRadius: '15px',
+          color: '#fff',
+          textAlign: 'center',
+          lineHeight: '31px'
+        }]
       });
 
       this.map = vueKakaoMap.mapInstance;
@@ -136,6 +147,8 @@ export default {
       menuEl.scrollTop = 0;
 
       this.map.setBounds(bounds);
+
+      this.clusterer.addMarkers(this.markers);
     },
     getListItem(index, place, position) {
       const el = document.createElement('li');
