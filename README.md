@@ -89,7 +89,7 @@
 
 ## 📆 WBS
 
-[WBS 바로가기]()
+[WBS 바로가기](https://docs.google.com/spreadsheets/d/1GuCw2WvOrrxhWfypxqb4s6x8dEi3A9ffmgd-4dKuXtw/edit?gid=0#gid=0)
 <p align="center">
 </p>
 <br>
