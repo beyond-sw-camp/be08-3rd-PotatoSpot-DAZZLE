@@ -105,6 +105,14 @@ export default {
 
       this.map = vueKakaoMap.mapInstance;
 
+      // 줌 컨트롤 추가
+      const zoomControl = new kakao.maps.ZoomControl();
+      this.map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+
+      // 지도 타입 컨트롤 추가
+      const mapTypeControl = new kakao.maps.MapTypeControl();
+      this.map.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+
       document.getElementById('keyword').addEventListener('keyup', (event) => {
         if (event.key === 'Enter') {
           this.searchPlaces();
