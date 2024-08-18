@@ -46,7 +46,7 @@ defineProps({
 <template>
   <div class="text-center mt-2">
     <h5 class="mt-3">{{ title }}</h5>
-    <h1 :class="`text-gradient text-${color ?? 'success'}`" style="font-size: 20px;">
+    <h1 :class="`text-gradient text-${color ?? 'success'}`" style="font-size: 30px;">
       <CountTo :start-val="0" :end-val="count" :duration="duration" />{{
         suffix
       }}
