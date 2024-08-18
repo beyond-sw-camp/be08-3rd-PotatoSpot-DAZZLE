@@ -57,7 +57,7 @@
 
 ## 📑 Requirements Specification
 
-[요구사항 명세서 바로가기]()
+[요구사항 명세서 바로가기](https://docs.google.com/spreadsheets/d/1BwDPidkpetFnJJlZS7qsGjAW7jzDRFPLOQTfYpE8VCw/edit?gid=0#gid=0)
 <p align="center">
 </p>
 <br>
