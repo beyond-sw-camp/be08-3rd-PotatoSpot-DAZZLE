@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { ref, watch } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
 import { useUserStore } from "../../stores/userStore";
@@ -12,10 +12,10 @@ import PostModal from "../../components/PostModal.vue"
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
-import downArrow from "@/assets/img/down-arrow.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const showModalLogin = ref(false);
 const showModalSignUp = ref(false);
@@ -30,11 +30,11 @@ const closeModalPost = () => showModalPost.value = false;
 const handleLogout = async () => {
   try {
     await auth.signOut();
+    router.push('/');
   } catch (error) {
     console.error("로그아웃 중 오류 발생:", error);
   }
 };
-
 
 const props = defineProps({
   action: {
@@ -156,12 +156,18 @@ watch(
       <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <li class="nav-item mx-2">
-            <RouterLink :to="{ name: 'mypage' }" role="button"
+            <RouterLink v-if="userStore.firebaseUser != null" :to="{ name: 'mypage' }" role="button"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()"
               aria-expanded="false">
               <i class="material-icons opacity-6 me-2 text-md" :class="getTextColor()">account_circle</i>
               My Page
             </RouterLink>
+            <a v-else @click="openModalLogin" role="button"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()"
+              aria-expanded="false">
+              <i class="material-icons opacity-6 me-2 text-md" :class="getTextColor()">account_circle</i>
+              My Page
+            </a>
             <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
               aria-labelledby="dropdownMenuPages">
               <div class="row d-none d-lg-block">
