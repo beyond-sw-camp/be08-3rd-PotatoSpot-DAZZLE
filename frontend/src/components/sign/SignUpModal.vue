@@ -29,6 +29,7 @@ const handleSubmit = async () => {
   if (name.value != '' && email.value != '' && password.value != '' && confirmPassword.value != '') {
     await registerUser(email.value, password.value, name.value);
     alert(name.value + '님 환영합니다!');
+    closeModal();
   } else {
     alert('정보를 모두 입력해주세요.');
   }

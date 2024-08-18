@@ -1,40 +1,5 @@
-<script setup>
-import { onMounted } from "vue";
-
-// tooltip
-import setTooltip from "@/assets/js/tooltip";
-
-// store
-import { useAppStore } from "@/stores";
-import { RouterLink } from "vue-router";
-const store = useAppStore();
-
-defineProps({
-  route: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    default: "",
-  },
-  subtitle: {
-    type: String,
-    default: "",
-  },
-});
-
-onMounted(() => {
-  setTooltip(store.bootstrap);
-});
-</script>
-
 <template>
-  <a href="/" class="card-link">
+  <div @click="handleClick" class="card-link" style="cursor: pointer;">
     <div class="card" :style="{
       backgroundImage: `url(${image})`,
       backgroundSize: 'cover',
@@ -51,8 +16,33 @@ onMounted(() => {
         <h6 class="text-white mb-9 text-center">{{ title }}</h6>
       </div>
     </div>
-  </a>
+  </div>
 </template>
+
+<script setup>
+import { defineEmits } from 'vue';
+
+const props = defineProps({
+  image: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  postId: {
+    type: String,
+    required: true
+  }
+});
+
+const emit = defineEmits(['card-clicked']); // 클릭 이벤트 정의
+
+const handleClick = () => {
+  emit('card-clicked', props.postId); // 클릭 시 postId를 부모 컴포넌트로 전달
+};
+</script>
 
 <style scoped>
 .card {

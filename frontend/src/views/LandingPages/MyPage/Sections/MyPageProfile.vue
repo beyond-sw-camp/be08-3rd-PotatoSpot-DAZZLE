@@ -27,7 +27,7 @@ onMounted(() => {
           <div class="row py-5">
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="mb-3">{{ userStore.userName }}</h3>
+                <h1 class="mb-3">{{ userStore.userName }}</h1>
                 <div class="col-auto">
                   <UserDataCounter title="게시글" color="dark" :count="userStore.postCount" :duration="4000" />
                 </div>
