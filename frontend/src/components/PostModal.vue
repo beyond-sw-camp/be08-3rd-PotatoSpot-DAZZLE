@@ -1,18 +1,26 @@
 <script setup>
 import { ref } from "vue";
-import { defineEmits } from "vue";
-import { useRouter } from 'vue-router';  // Vue Router의 useRouter 훅 추가
+import { defineEmits, defineProps } from "vue";  // defineProps 추가
+import { useRouter } from 'vue-router';
 import MaterialInput from '@/components/MaterialInput.vue';
 import MaterialButton from "@/components/MaterialButton.vue";
 import { uploadImage } from "../utils/utilsStorage";
 import { postPhotoSpot } from "../utils/utilsDb";
 import { useUserStore } from "../stores/userStore";
-import { usePhotoSpotStore } from '../stores/photoSpotStore'; // photoSpotStore 추가
+import { usePhotoSpotStore } from '../stores/photoSpotStore';
+
+// props 정의
+const props = defineProps({
+  location: String, // 장소
+  address: String,  // 주소
+  x: String, // x좌표
+  y: String  // y좌표
+});
 
 const emit = defineEmits(["close"]);
 const userStore = useUserStore();
-const photoSpotStore = usePhotoSpotStore();  // photoSpotStore 사용
-const router = useRouter();  // useRouter 훅 사용
+const photoSpotStore = usePhotoSpotStore();
+const router = useRouter();
 
 const title = ref("");
 const content = ref("");
@@ -54,7 +62,20 @@ const handleSubmit = async () => {
       try {
         imgUrl.value = await uploadImage(image.value);
         const currentTime = getKoreanFormattedDate();
-        const newSpot = await postPhotoSpot(userStore.userEmail, title.value, content.value, imgUrl.value, '장소', '주소', '위치1', '위치2', 0, currentTime);
+
+        // props로 받은 데이터 사용
+        const newSpot = await postPhotoSpot(
+          userStore.userEmail,
+          title.value,
+          content.value,
+          imgUrl.value,
+          props.location,   // 장소
+          props.address,    // 주소
+          props.x, // x좌표
+          props.y, // y좌표
+          0,
+          currentTime
+        );
 
         // 새로운 포토스팟을 photoSpotStore에 추가
         photoSpotStore.photoSpots.push(newSpot);
@@ -74,6 +95,7 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
 
 
 <template>
