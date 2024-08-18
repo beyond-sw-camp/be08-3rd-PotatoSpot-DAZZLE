@@ -18,7 +18,6 @@
 </template>
 
 <script>
-// import { useUiStore } from "@/stores/ui";
 
 export default {
   props: {
@@ -33,15 +32,6 @@ export default {
       },
     };
   },
-  // setup() {
-  //   const uiStore = useUiStore();
-
-  //   return {
-  //     menuVisible: uiStore.leftMenu.visible,
-  //     toggleMenu: uiStore.toggleMenu,
-  //     setMenuVisible: uiStore.setMenuVisible,
-  //   };
-  // },
   methods: {
     searchPlace(e) {
       const keyword = e.target.value.trim();
@@ -64,9 +54,6 @@ export default {
         lng: place.x,
       });
     },
-    // showMenu(visible) {
-    //   this.$store.state.ui.leftMenu.visible = visible;
-    // },
   },
 };
 </script>
