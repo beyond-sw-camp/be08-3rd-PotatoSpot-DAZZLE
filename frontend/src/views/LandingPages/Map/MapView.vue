@@ -211,6 +211,7 @@ export default {
 
       el.addEventListener('click', () => {
         this.centerMap(position);
+        this.map.setLevel(4);
       });
 
       return el;
