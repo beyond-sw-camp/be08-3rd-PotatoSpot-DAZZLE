@@ -24,14 +24,11 @@
       </div>
     </div>
   </div>
-  <PostModal
-    v-if="showModalPost"
-    :location="selectPlaceName"
-    :address="selectPlaceAddr"
-    :x="selectX"
-    :y="selectY"
-    @close="closeModalPost"
-  />
+  <DetailsMarkerModal v-if="showModalMarker" :location="selectPlaceName" :address="selectPlaceAddr" :x="selectX"
+    :y="selectY" @close="closeModalMarker" @postPhotoSpot="openModalPost" />
+  <PostModal v-if="showModalPost" :location="selectPlaceName" :address="selectPlaceAddr" :x="selectX" :y="selectY"
+    @close="closeModalPost" />
+  <DetailsSpotModal v-if="showModalDetailSpot" :post-id="selectedPostId" @close="closePostModal" />
 </template>
 
 <script>
@@ -39,41 +36,58 @@ import { ref } from "vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import NavbarDefault from "../../../examples/navbars/NavbarDefault.vue";
 import PostModal from "../../../components/PostModal.vue";
+import DetailsMarkerModal from "../../../components/DetailsMarkerModal.vue";
+import DetailsSpotModal from "../../../components/DetailsSpotModal.vue";
 import { usePhotoSpotStore } from "@/stores/photoSpotStore";
+import { useRouter } from "vue-router";
+
+
 
 export default {
   components: {
     KakaoMap,
     NavbarDefault,
     PostModal,
+    DetailsMarkerModal,
+    DetailsSpotModal,
   },
   setup() {
     const showModalPost = ref(false);
+    const showModalMarker = ref(false);
+    const showModalDetailSpot = ref(false);
     const selectX = ref("");
     const selectY = ref("");
     const selectPlaceName = ref("");
     const selectPlaceAddr = ref("");
     const marker = ref(null); // 클릭한 위치에 표시할 마커
     const keyword = ref(""); // 검색 키워드
+    const router = useRouter();
 
-    const openModalPost = () => {
-      showModalPost.value = true;
-    };
+    const openModalPost = () => showModalPost.value = true;
+    const closeModalPost = () => showModalPost.value = false;
+    const openModalMarker = () => showModalMarker.value = true;
+    const closeModalMarker = () => showModalMarker.value = false;
+    const openModalDetailSpot = () => showModalDetailSpot.value = true;
+    const closeModalDetailSpot = () => showModalDetailSpot.value = false;
 
-    const closeModalPost = () => {
-      showModalPost.value = false;
-    };
 
     return {
       showModalPost,
+      showModalMarker,
+      showModalDetailSpot,
       selectX,
       selectY,
       selectPlaceName,
       selectPlaceAddr,
       openModalPost,
       closeModalPost,
+      openModalMarker,
+      closeModalMarker,
+      openModalDetailSpot,
+      closeModalDetailSpot,
       marker,
       keyword,
+      router,
     };
   },
   data() {
@@ -144,7 +158,7 @@ export default {
           this.selectY = spot.y; // Y 좌표
           this.selectPlaceName = spot.place; // 장소 명
           this.selectPlaceAddr = spot.addr; // 주소
-          this.openModalPost(); // 모달 열기
+          this.openModalMarker(); // 모달 열기
         });
 
         this.markers.push(marker);
@@ -191,7 +205,7 @@ export default {
               this.selectY = latlng.Ma; // Y 좌표
               this.selectPlaceName = "몰라"; // 장소 명
               this.selectPlaceAddr = detailAddr; // 주소
-              this.openModalPost(); // 모달 열기
+              this.openModalMarker(); // 모달 열기
             });
           }
         });
@@ -217,7 +231,7 @@ export default {
       const keyword = this.keyword;
 
       if (!keyword.trim()) {
-        alert("키워드를 입력해주세요!");
+        this.router.go(0);
         return;
       }
 
@@ -269,7 +283,7 @@ export default {
           this.selectY = place.y; // Y 좌표
           this.selectPlaceName = place.place_name; // 장소 명
           this.selectPlaceAddr = place.address_name; // 주소
-          this.openModalPost(); // 모달 열기
+          this.openModalMarker(); // 모달 열기
         });
 
         fragment.appendChild(itemEl);
@@ -563,8 +577,7 @@ button {
 
   #placesList .info .jibun {
     padding-left: 26px;
-    background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
-      no-repeat;
+    background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;
   }
 
   #placesList .info .tel {
@@ -577,8 +590,7 @@ button {
     width: 36px;
     height: 37px;
     margin: 10px 0 0 10px;
-    background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
-      no-repeat;
+    background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
   }
 
   #placesList .item .marker_1 {

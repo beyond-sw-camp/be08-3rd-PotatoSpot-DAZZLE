@@ -10,10 +10,10 @@ import { useUserStore } from "../stores/userStore";
 import { usePhotoSpotStore } from '../stores/photoSpotStore';
 
 const props = defineProps({
+  x: String,
+  y: String,
   location: String,
   address: String,
-  x: String,
-  y: String
 });
 
 const emit = defineEmits(["close"]);
