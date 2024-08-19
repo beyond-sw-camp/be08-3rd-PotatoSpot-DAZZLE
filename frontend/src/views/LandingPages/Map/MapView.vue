@@ -39,6 +39,7 @@ import { ref } from "vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import NavbarDefault from "../../../examples/navbars/NavbarDefault.vue";
 import PostModal from "../../../components/PostModal.vue";
+import { usePhotoSpotStore } from "@/stores/photoSpotStore";
 
 export default {
   components: {
@@ -84,7 +85,7 @@ export default {
         },
         level: 4,
       },
-      markers: [],
+      markers: [], // 마커 배열
       clusterer: null,
       infowindow: null,
       geocoder: null, // 주소-좌표 변환 객체
@@ -92,8 +93,9 @@ export default {
   },
   mounted() {
     const vueKakaoMap = this.$refs.kmap;
+    const photoSpotStore = usePhotoSpotStore();
 
-    this.$nextTick(() => {
+    this.$nextTick(async () => {
       const { kakao } = window;
 
       this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -119,6 +121,35 @@ export default {
 
       this.map = vueKakaoMap.mapInstance;
 
+      // 포토 스팟 데이터를 가져옵니다.
+      await photoSpotStore.fetchPhotoSpots();
+      const photoSpots = photoSpotStore.photoSpots;
+
+      // 포토 스팟 데이터를 기반으로 마커를 추가합니다.
+      photoSpots.forEach((spot, index) => {
+        const position = new kakao.maps.LatLng(spot.y, spot.x);
+        const marker = this.addMarker(position, index);
+
+        // 마커에 이벤트 리스너 추가
+        kakao.maps.event.addListener(marker, "mouseover", () => {
+          this.displayInfowindow(marker, spot.place);
+        });
+
+        kakao.maps.event.addListener(marker, "mouseout", () => {
+          this.infowindow.close();
+        });
+
+        kakao.maps.event.addListener(marker, "click", () => {
+          this.selectX = spot.x; // X 좌표
+          this.selectY = spot.y; // Y 좌표
+          this.selectPlaceName = spot.place; // 장소 명
+          this.selectPlaceAddr = spot.addr; // 주소
+          this.openModalPost(); // 모달 열기
+        });
+
+        this.markers.push(marker);
+      });
+
       // 줌 컨트롤 추가
       const zoomControl = new kakao.maps.ZoomControl();
       this.map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
@@ -134,12 +165,12 @@ export default {
       kakao.maps.event.addListener(this.map, "click", (mouseEvent) => {
         const latlng = mouseEvent.latLng;
 
-        // 기존에 표시된 마커가 있다면 제거합니다.
+        // 이전에 생성된 마커를 제거합니다.
         if (this.marker) {
           this.marker.setMap(null);
         }
 
-        // 마커를 클릭한 위치에 표시합니다 
+        // 새 마커를 클릭한 위치에 생성합니다
         this.marker = new kakao.maps.Marker({
           position: latlng,
           map: this.map,
@@ -149,14 +180,19 @@ export default {
         this.searchDetailAddrFromCoords(latlng, (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
             const detailAddr = result[0].address.address_name;
+
             const content = `${detailAddr}`; // 주소
 
             this.infowindow.setContent(content);
             this.infowindow.open(this.map, this.marker);
 
-            // 검색 키워드로 주소를 사용하여 장소 검색
-            this.keyword = detailAddr;
-            this.searchPlaces();
+            kakao.maps.event.addListener(this.marker, "click", () => {
+              this.selectX = latlng.La; // X 좌표
+              this.selectY = latlng.Ma; // Y 좌표
+              this.selectPlaceName = "몰라"; // 장소 명
+              this.selectPlaceAddr = detailAddr; // 주소
+              this.openModalPost(); // 모달 열기
+            });
           }
         });
       });
