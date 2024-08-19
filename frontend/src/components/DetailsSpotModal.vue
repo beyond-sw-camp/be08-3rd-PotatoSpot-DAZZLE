@@ -1,12 +1,5 @@
 <template>
-  <div
-    class="modal fade show"
-    tabindex="-1"
-    style="display: block"
-    aria-modal="true"
-    role="dialog"
-    @click="closeModal"
-  >
+  <div class="modal fade show" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
     <div class="modal-dialog modal-dialog-centered modal-xl" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
@@ -22,9 +15,7 @@
             <img :src="post.imgUrl" alt="Post Image" class="img-fluid" />
           </div>
           <!-- 오른쪽: 댓글 섹션 -->
-          <div
-            class="comments-section ml-3 d-flex flex-column justify-content-between"
-          >
+          <div class="comments-section ml-3 d-flex flex-column justify-content-between">
             <div class="comments-list">
               <h6>댓글</h6>
               <ul>
@@ -33,24 +24,11 @@
                 </li>
               </ul>
             </div>
-            <form
-              @submit.prevent="handleCommentSubmit"
-              class="comment-form mt-auto"
-            >
-              <MaterialInput
-                v-model="newComment"
-                class="form-control commentInput bg-gray-100"
-                placeholder="댓글을 입력하세요"
-                rows="3"
-              >
+            <form @submit.prevent="handleCommentSubmit" class="comment-form mt-auto">
+              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요"
+                rows="3">
               </MaterialInput>
-              <MaterialButton
-                class="my-3 mb-2"
-                variant="gradient"
-                color="dark"
-                fullWidth
-                type="submit"
-              >
+              <MaterialButton class="my-3 mb-2" variant="gradient" color="dark" fullWidth type="submit">
                 댓글 작성
               </MaterialButton>
             </form>
@@ -116,16 +94,22 @@ const likePost = () => {
 
 <style scoped>
 .modal {
-  background-color: rgba(0, 0, 0, 0.5); /* 배경을 더 어둡게 설정 */
-  display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-  position: fixed; /* 화면 고정 */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 배경을 더 어둡게 설정 */
+  display: flex;
+  /* 중앙 정렬을 위해 flexbox 사용 */
+  align-items: center;
+  /* 수직 중앙 정렬 */
+  justify-content: center;
+  /* 수평 중앙 정렬 */
+  position: fixed;
+  /* 화면 고정 */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1050; /* 다른 요소들보다 앞에 오도록 설정 */
+  z-index: 1050;
+  /* 다른 요소들보다 앞에 오도록 설정 */
 }
 
 .modal-header {

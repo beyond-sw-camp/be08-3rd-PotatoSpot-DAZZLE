@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
-import PostCard from '../components/PostCard.vue';
 import RotatingCard from '../components/RotatingCard.vue';
 import RotatingCardFront from "../components/RotatingCardFront.vue";
 import RotatingCardBack from '../components/RotatingCardBack.vue';
