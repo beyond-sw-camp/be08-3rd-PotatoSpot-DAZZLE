@@ -40,10 +40,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import MaterialInput from "@/components/MaterialInput.vue";
-import { usePhotoSpotStore } from "@/stores/photoSpotStore"; // 사진 관련 데이터 가져오기
+import { usePhotoSpotStore } from "@/stores/photoSpotStore";
+import { useReviewStore } from "../stores/reviewStore";
+import { postComment } from "../utils/utilsDb";
+import { useUserStore } from "../stores/userStore";
+
 
 const props = defineProps({
   postId: {
@@ -55,6 +59,8 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const photoSpotStore = usePhotoSpotStore();
+const reviewStore = useReviewStore();
+const userStore = useUserStore();
 
 const post = computed(() =>
   photoSpotStore.photoSpots.find((spot) => spot.id === props.postId)
@@ -63,29 +69,28 @@ const post = computed(() =>
 const newComment = ref("");
 const likeCount = ref(0);
 
-const comments = ref([
-  { id: "c1", content: "첫 번째 댓글" },
-  { id: "c2", content: "두 번째 댓글" },
-  { id: "c3", content: "세 번째 댓글" },
-  { id: "c4", content: "네 번째 댓글" },
-  { id: "c5", content: "다섯 번째 댓글" },
-]);
+const comments = computed(() => reviewStore.comments);
 
 const closeModal = () => {
   emit("close");
 };
 
-const handleCommentSubmit = () => {
+const handleCommentSubmit = async () => {
   if (newComment.value.trim()) {
-    comments.value.push({
-      id: Date.now().toString(),
-      content: newComment.value.trim(),
-    });
+    // 댓글을 Firestore에 추가
+    await postComment(props.postId, userStore.userEmail, newComment.value.trim()); // 사용자 이메일은 실제 사용자의 이메일로 교체
     newComment.value = "";
+    // 댓글 목록을 다시 불러오기
+    reviewStore.fetchComments(props.postId);
   } else {
     alert("댓글 내용을 입력해주세요!");
   }
 };
+
+// 포토스팟의 댓글을 가져옵니다.
+onMounted(() => {
+  reviewStore.fetchComments(props.postId);
+});
 
 const likePost = () => {
   likeCount.value++;
@@ -94,7 +99,7 @@ const likePost = () => {
 
 <style scoped>
 .modal {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   /* 배경을 더 어둡게 설정 */
   display: flex;
   /* 중앙 정렬을 위해 flexbox 사용 */

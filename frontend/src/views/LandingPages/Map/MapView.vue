@@ -9,7 +9,7 @@
     </div>
     <div class="map-area">
       <KakaoMap ref="kmap" class="kmap" :options="mapOption" />
-      <div id="menu_wrap" class="bg_white">
+      <div id="menu_wrap" class="search-bar mx-4 bg_white">
         <div class="option">
           <div>
             <form @submit.prevent="searchPlaces">
@@ -25,10 +25,10 @@
     </div>
   </div>
   <DetailsMarkerModal v-if="showModalMarker" :location="selectPlaceName" :address="selectPlaceAddr" :x="selectX"
-    :y="selectY" @close="closeModalMarker" @postPhotoSpot="openModalPost" />
+    :y="selectY" @close="closeModalMarker" @postPhotoSpot="openModalPost" @showDetailSpot="openModalDetailSpot" />
   <PostModal v-if="showModalPost" :location="selectPlaceName" :address="selectPlaceAddr" :x="selectX" :y="selectY"
     @close="closeModalPost" />
-  <DetailsSpotModal v-if="showModalDetailSpot" :post-id="selectedPostId" @close="closePostModal" />
+  <DetailsSpotModal v-if="showModalDetailSpot" :post-id="selectSpotId" @close="closeModalDetailSpot" />
 </template>
 
 <script>
@@ -55,6 +55,7 @@ export default {
     const showModalPost = ref(false);
     const showModalMarker = ref(false);
     const showModalDetailSpot = ref(false);
+    const selectSpotId = ref('');
     const selectX = ref("");
     const selectY = ref("");
     const selectPlaceName = ref("");
@@ -67,7 +68,11 @@ export default {
     const closeModalPost = () => showModalPost.value = false;
     const openModalMarker = () => showModalMarker.value = true;
     const closeModalMarker = () => showModalMarker.value = false;
-    const openModalDetailSpot = () => showModalDetailSpot.value = true;
+    const openModalDetailSpot = (spotId) => {
+      console.log(spotId);
+      selectSpotId.value = spotId;
+      showModalDetailSpot.value = true;
+    };
     const closeModalDetailSpot = () => showModalDetailSpot.value = false;
 
 
@@ -75,6 +80,7 @@ export default {
       showModalPost,
       showModalMarker,
       showModalDetailSpot,
+      selectSpotId,
       selectX,
       selectY,
       selectPlaceName,
@@ -420,6 +426,7 @@ button {
 .map-area {
   margin: 0;
   padding: 0;
+  height: 90vh;
   font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
   font-size: 12px;
 
@@ -517,7 +524,9 @@ button {
     z-index: 1;
     font-size: 12px;
     border-radius: 10px;
+    border: 2px solid lightgray;
   }
+
 
   .bg_white {
     background: #fff;

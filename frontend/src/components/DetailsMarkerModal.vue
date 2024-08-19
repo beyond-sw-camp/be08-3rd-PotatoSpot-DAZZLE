@@ -11,7 +11,7 @@
           <div class="left-section">
             <h6>Photo Spots</h6>
             <ul v-if="filteredPhotoSpots.length">
-              <li v-for="spot in filteredPhotoSpots" :key="spot.id" @click="viewDetail(spot)">
+              <li v-for="spot in filteredPhotoSpots" :key="spot.id" @click="viewDetail(spot.id)">
                 <div class="spot-card">
                   <img :src="spot.imgUrl" alt="포토스팟 이미지" class="spot-image" />
                   <div class="spot-info">
@@ -87,8 +87,8 @@ const registerPhotoSpot = () => {
   emit("postPhotoSpot");
 };
 
-const viewDetail = (spot) => {
-  emit("view", spot);
+const viewDetail = (spotId) => {
+  emit("showDetailSpot", spotId);
 };
 </script>
 
