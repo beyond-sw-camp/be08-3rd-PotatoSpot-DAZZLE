@@ -1,20 +1,20 @@
-// stores/review.js
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
 export const useReviewStore = defineStore('review', () => {
-  const reviews = ref([]);
+  const comments = ref([]);
 
-  const fetchReviews = async () => {
+  const fetchComments = async (spotId) => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'reviews'));
-      reviews.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const q = query(collection(db, 'comments'), where('spotId', '==', spotId));
+      const querySnapshot = await getDocs(q);
+      comments.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
-      console.error('Error fetching reviews:', error);
+      console.error('Error fetching comments:', error);
     }
   };
 
-  return { reviews, fetchReviews };
+  return { comments, fetchComments };
 });
