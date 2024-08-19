@@ -2,18 +2,20 @@
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-export const postReview = async (postId, userEmail, content) => {
+export const postComment = async (spotId, userEmail, content) => {
   try {
-    const docRef = await addDoc(collection(db, "reviews"), {
-      postId: postId,
+    const docRef = await addDoc(collection(db, "comments"), {
+      spotId: spotId,
       userEmail: userEmail,
-      content: content
+      content: content,
+      timestamp: new Date()  // 댓글 작성 시간
     });
     console.log("문서 ID: ", docRef.id);
   } catch (e) {
     console.error("에러 메시지: ", e);
   }
 };
+
 
 export const postPhotoSpot = async (userEmail, title, content, imgUrl, place, addr, x, y, likes, regTime) => {
   try {
