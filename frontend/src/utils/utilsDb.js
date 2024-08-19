@@ -34,3 +34,16 @@ export const postPhotoSpot = async (userEmail, title, content, imgUrl, place, ad
     console.error("에러 메시지: ", e);
   }
 }
+
+// 포토스팟의 likes 필드를 증가시키는 함수
+export const incrementLikes = async (photoSpotId) => {
+  try {
+    const photoSpotRef = doc(db, "photoSpots", photoSpotId);
+    await updateDoc(photoSpotRef, {
+      likes: increment(1) // likes 필드의 값을 1 증가
+    });
+    console.log('Likes 증가 성공');
+  } catch (e) {
+    console.error("에러 메시지: ", e);
+  }
+};
