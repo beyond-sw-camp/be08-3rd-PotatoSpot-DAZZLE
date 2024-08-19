@@ -6,20 +6,12 @@
       </div>
       <div class="container mt-sm-3 mt-3 row">
         <div class="col-md-3 mt-md-4" v-for="photospot in filteredPhotoSpots" :key="photospot.id">
-          <PostCard 
-            :image="photospot.imgUrl" 
-            :title="photospot.title" 
-            :postId="photospot.id"
-            @card-clicked="handleCardClick(photospot.id)" 
-          />
+          <PostCard :image="photospot.imgUrl" :title="photospot.title" :postId="photospot.id"
+            @card-clicked="handleCardClick(photospot.id)" />
         </div>
       </div>
       <!-- 모달 컴포넌트 렌더링 -->
-      <DetailsPostModal 
-        v-if="showModal" 
-        :post-id="selectedPostId" 
-        @close="closePostModal" 
-      />
+      <DetailsSpotModal v-if="showModalDetailsSpot" :post-id="selectedPostId" @close="closeDetailsSpotModal" />
     </div>
   </section>
 </template>
@@ -27,14 +19,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import PostCard from '../components/PostCard.vue';
-import DetailsPostModal from '../../../../components/DetailsPostModal.vue'; // 모달 컴포넌트 임포트
+import DetailsSpotModal from '../../../../components/DetailsSpotModal.vue'; // 모달 컴포넌트 임포트
 import { usePhotoSpotStore } from '../../../../stores/photoSpotStore';
 import { useUserStore } from '../../../../stores/userStore';
 
 const photoSpotStore = usePhotoSpotStore();
 const userStore = useUserStore();
 
-const showModal = ref(false); // 모달 표시 여부
+const showModalDetailsSpot = ref(false); // 모달 표시 여부
 const selectedPostId = ref(null); // 선택된 게시글 ID
 
 onMounted(async () => {
@@ -44,16 +36,16 @@ onMounted(async () => {
 
 // 포스트 카드 클릭 시 모달을 여는 함수
 const handleCardClick = (postId) => {
-  openPostModal(postId); // 모달 열기
+  openDetailsSpotModal(postId); // 모달 열기
 };
 
-const openPostModal = (postId) => {
+const openDetailsSpotModal = (postId) => {
   selectedPostId.value = postId; // 선택된 포스트 ID 설정
-  showModal.value = true; // 모달 표시
+  showModalDetailsSpot.value = true; // 모달 표시
 };
 
-const closePostModal = () => {
-  showModal.value = false; // 모달 닫기
+const closeDetailsSpotModal = () => {
+  showModalDetailsSpot.value = false; // 모달 닫기
   selectedPostId.value = null; // 선택된 포스트 ID 초기화
 };
 

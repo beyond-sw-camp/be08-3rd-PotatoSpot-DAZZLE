@@ -29,6 +29,7 @@ defineProps({
     overflow: 'hidden',
     height: '100%',
     width: '100%',
+    opacity: 0.8,
   }">
     <div class="card-body pt-4 text-center bg-warning opacity-8">
       <h3 class="text-white" v-html="title"></h3>
