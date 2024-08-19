@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { defineEmits, defineProps } from "vue";  // defineProps 추가
+import { defineEmits, defineProps } from "vue";
 import { useRouter } from 'vue-router';
 import MaterialInput from '@/components/MaterialInput.vue';
 import MaterialButton from "@/components/MaterialButton.vue";
@@ -9,12 +9,11 @@ import { postPhotoSpot } from "../utils/utilsDb";
 import { useUserStore } from "../stores/userStore";
 import { usePhotoSpotStore } from '../stores/photoSpotStore';
 
-// props 정의
 const props = defineProps({
-  location: String, // 장소
-  address: String,  // 주소
-  x: String, // x좌표
-  y: String  // y좌표
+  location: String,
+  address: String,
+  x: String,
+  y: String
 });
 
 const emit = defineEmits(["close"]);
@@ -27,20 +26,8 @@ const content = ref("");
 const image = ref("");
 const imgUrl = ref("");
 
-// 한국 시간 포맷팅 함수
 const getKoreanFormattedDate = () => {
-  const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-    timeZone: 'Asia/Seoul'
-  };
-  const formatter = new Intl.DateTimeFormat('ko-KR', options);
-  return formatter.format(new Date());
+  return new Date().toISOString(); // ISO 8601 형식의 문자열 반환
 };
 
 const closeModal = () => {
@@ -63,21 +50,19 @@ const handleSubmit = async () => {
         imgUrl.value = await uploadImage(image.value);
         const currentTime = getKoreanFormattedDate();
 
-        // props로 받은 데이터 사용
         const newSpot = await postPhotoSpot(
           userStore.userEmail,
           title.value,
           content.value,
           imgUrl.value,
-          props.location,   // 장소
-          props.address,    // 주소
-          props.x, // x좌표
-          props.y, // y좌표
+          props.location,
+          props.address,
+          props.x,
+          props.y,
           0,
           currentTime
         );
 
-        // 새로운 포토스팟을 photoSpotStore에 추가
         photoSpotStore.photoSpots.push(newSpot);
 
         alert('포토스팟이 등록되었습니다.');
@@ -95,8 +80,6 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
-
 
 <template>
   <div class="modal fade show" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">

@@ -1,5 +1,12 @@
 <template>
-  <div class="modal fade show" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
+  <div
+    class="modal fade show"
+    tabindex="-1"
+    style="display: block"
+    aria-modal="true"
+    role="dialog"
+    @click="closeModal"
+  >
     <div class="modal-dialog modal-dialog-centered modal-xl" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
@@ -15,18 +22,35 @@
             <img :src="post.imgUrl" alt="Post Image" class="img-fluid" />
           </div>
           <!-- 오른쪽: 댓글 섹션 -->
-          <div class="comments-section ml-3 d-flex flex-column justify-content-between">
+          <div
+            class="comments-section ml-3 d-flex flex-column justify-content-between"
+          >
             <div class="comments-list">
               <h6>댓글</h6>
               <ul>
-                <li v-for="comment in comments" :key="comment.id">{{ comment.content }}</li>
+                <li v-for="comment in comments" :key="comment.id">
+                  {{ comment.content }}
+                </li>
               </ul>
             </div>
-            <form @submit.prevent="handleCommentSubmit" class="comment-form mt-auto">
-              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요"
-                rows="3">
+            <form
+              @submit.prevent="handleCommentSubmit"
+              class="comment-form mt-auto"
+            >
+              <MaterialInput
+                v-model="newComment"
+                class="form-control commentInput bg-gray-100"
+                placeholder="댓글을 입력하세요"
+                rows="3"
+              >
               </MaterialInput>
-              <MaterialButton class="my-3 mb-2" variant="gradient" color="dark" fullWidth type="submit">
+              <MaterialButton
+                class="my-3 mb-2"
+                variant="gradient"
+                color="dark"
+                fullWidth
+                type="submit"
+              >
                 댓글 작성
               </MaterialButton>
             </form>
@@ -38,45 +62,50 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import MaterialInput from "@/components/MaterialInput.vue";
-import { usePhotoSpotStore } from '@/stores/photoSpotStore'; // 사진 관련 데이터 가져오기
+import { usePhotoSpotStore } from "@/stores/photoSpotStore"; // 사진 관련 데이터 가져오기
 
 const props = defineProps({
   postId: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(["close"]);
 
 const photoSpotStore = usePhotoSpotStore();
 
-const post = computed(() => photoSpotStore.photoSpots.find(spot => spot.id === props.postId));
+const post = computed(() =>
+  photoSpotStore.photoSpots.find((spot) => spot.id === props.postId)
+);
 
-const newComment = ref('');
+const newComment = ref("");
 const likeCount = ref(0);
 
 const comments = ref([
-  { id: 'c1', content: '첫 번째 댓글' },
-  { id: 'c2', content: '두 번째 댓글' },
-  { id: 'c3', content: '세 번째 댓글' },
-  { id: 'c4', content: '네 번째 댓글' },
-  { id: 'c5', content: '다섯 번째 댓글' }
+  { id: "c1", content: "첫 번째 댓글" },
+  { id: "c2", content: "두 번째 댓글" },
+  { id: "c3", content: "세 번째 댓글" },
+  { id: "c4", content: "네 번째 댓글" },
+  { id: "c5", content: "다섯 번째 댓글" },
 ]);
 
 const closeModal = () => {
-  emit('close');
+  emit("close");
 };
 
 const handleCommentSubmit = () => {
   if (newComment.value.trim()) {
-    comments.value.push({ id: Date.now().toString(), content: newComment.value.trim() });
-    newComment.value = '';
+    comments.value.push({
+      id: Date.now().toString(),
+      content: newComment.value.trim(),
+    });
+    newComment.value = "";
   } else {
-    alert('댓글 내용을 입력해주세요!');
+    alert("댓글 내용을 입력해주세요!");
   }
 };
 
@@ -86,6 +115,19 @@ const likePost = () => {
 </script>
 
 <style scoped>
+.modal {
+  background-color: rgba(0, 0, 0, 0.5); /* 배경을 더 어둡게 설정 */
+  display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
+  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  position: fixed; /* 화면 고정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050; /* 다른 요소들보다 앞에 오도록 설정 */
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
