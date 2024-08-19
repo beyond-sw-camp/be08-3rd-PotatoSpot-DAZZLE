@@ -1,6 +1,7 @@
 <script setup>
 import ExampleCard from "../Components/ExampleCard.vue";
 import MaterialBadge from "../../../components/MaterialBadge.vue";
+import Rankinglist from "../../../components/Rankinglist.vue";
 
 defineProps({
   data: {
@@ -52,15 +53,7 @@ export default {
       <div class="row">
         <div class="row justify-content-center text-center my-sm-5">
           <div class="col-lg-6">
-            <MaterialBadge color="success" class="mb-3"
-              >Infinite combinations</MaterialBadge
-            >
-
-            <h2 class="text-dark mb-0">Huge collection of sections</h2>
-            <p class="lead">
-              We have created multiple options for you to put together and
-              customise into pixel perfect pages.
-            </p>
+              <Rankinglist />
           </div>
         </div>
       </div>
