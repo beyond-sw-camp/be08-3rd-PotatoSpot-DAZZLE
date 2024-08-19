@@ -6,11 +6,20 @@
       </div>
       <div class="container mt-sm-3 mt-3 row">
         <div class="col-md-3 mt-md-4" v-for="photospot in filteredPhotoSpots" :key="photospot.id">
-          <PostCard :image="photospot.imgUrl" :title="photospot.title" :postId="photospot.id"
-            @card-clicked="openPostModal" />
+          <PostCard 
+            :image="photospot.imgUrl" 
+            :title="photospot.title" 
+            :postId="photospot.id"
+            @card-clicked="handleCardClick(photospot.id)" 
+          />
         </div>
       </div>
-      <DetailsPostModal v-if="showModal" :post-id="selectedPostId" @close="closePostModal" />
+      <!-- 모달 컴포넌트 렌더링 -->
+      <DetailsPostModal 
+        v-if="showModal" 
+        :post-id="selectedPostId" 
+        @close="closePostModal" 
+      />
     </div>
   </section>
 </template>
@@ -32,6 +41,11 @@ onMounted(async () => {
   await photoSpotStore.fetchPhotoSpots(); // 데이터 로드
   console.log(photoSpotStore.photoSpots); // 콘솔에 출력하여 데이터 확인
 });
+
+// 포스트 카드 클릭 시 모달을 여는 함수
+const handleCardClick = (postId) => {
+  openPostModal(postId); // 모달 열기
+};
 
 const openPostModal = (postId) => {
   selectedPostId.value = postId; // 선택된 포스트 ID 설정
