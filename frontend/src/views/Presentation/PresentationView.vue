@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, onUnmounted } from "vue";
 
+import Thumbnails from "@/components/Thumbnails.vue";
+
 //example components
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
 import DefaultFooter from "../../examples/footers/FooterDefault.vue";
@@ -67,6 +69,7 @@ onUnmounted(() => {
   </Header>
 
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+    <Thumbnails/>
     <PresentationCounter />
     <PresentationInformation />
     <PresentationExample :data="data" />
