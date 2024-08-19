@@ -25,6 +25,7 @@ const title = ref("");
 const content = ref("");
 const image = ref("");
 const imgUrl = ref("");
+const inputLocation = ref(''); // 새로 추가한 ref
 
 const getKoreanFormattedDate = () => {
   return new Date().toISOString(); // ISO 8601 형식의 문자열 반환
@@ -50,12 +51,14 @@ const handleSubmit = async () => {
         imgUrl.value = await uploadImage(image.value);
         const currentTime = getKoreanFormattedDate();
 
+        const locationValue = props.location === '장소 없음' ? inputLocation.value : props.location;
+
         const newSpot = await postPhotoSpot(
           userStore.userEmail,
           title.value,
           content.value,
           imgUrl.value,
-          props.location,
+          locationValue,
           props.address,
           props.x,
           props.y,
@@ -81,15 +84,19 @@ const handleSubmit = async () => {
 };
 </script>
 
+
 <template>
   <div class="modal fade show" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
     <div class="modal-dialog modal-dialog-centered" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">글 작성</h5>
+          <h5 class="modal-title">포토스팟 등록</h5>
         </div>
         <div class="modal-body">
           <form role="form" class="text-start" @submit.prevent="handleSubmit">
+            <div v-if="location === '장소 없음'">
+              <MaterialInput v-model="inputLocation" class="input-group-dynamic mb-2" placeholder="장소 명" type="text" />
+            </div>
             <MaterialInput v-model="title" class="input-group-dynamic mb-2" placeholder="제목" type="text" />
             <div class="mb-3">
               <textarea v-model="content" class="form-control" placeholder="내용을 입력하세요" rows="5"></textarea>
@@ -110,6 +117,7 @@ const handleSubmit = async () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .modal {

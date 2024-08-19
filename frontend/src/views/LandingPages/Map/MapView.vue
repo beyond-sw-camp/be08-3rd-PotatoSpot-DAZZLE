@@ -209,7 +209,7 @@ export default {
             kakao.maps.event.addListener(this.marker, "click", () => {
               this.selectX = latlng.La; // X 좌표
               this.selectY = latlng.Ma; // Y 좌표
-              this.selectPlaceName = "몰라"; // 장소 명
+              this.selectPlaceName = "장소 없음"; // 장소 명
               this.selectPlaceAddr = detailAddr; // 주소
               this.openModalMarker(); // 모달 열기
             });
