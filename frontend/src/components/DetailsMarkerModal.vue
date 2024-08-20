@@ -60,9 +60,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close", "view"]);
-
 const photoSpotStore = usePhotoSpotStore();
-
 const filteredPhotoSpots = computed(() => {
   return photoSpotStore.photoSpots
     .filter((spot) => spot.addr === props.address)
