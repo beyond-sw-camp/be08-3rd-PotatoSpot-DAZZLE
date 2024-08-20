@@ -1,81 +1,69 @@
 <template>
     <div class="ranking-list">
-        <h2>DAZZLE Ranking</h2>
+        <h2 class="ranking-header">DAZZLE Ranking</h2>
         <ul>
-            <li v-for="(item, index) in rankings" :key="item.seq" class="ranking-item">
-                <!-- 순위 및 위치 정보 섹션 -->
+            <li v-for="(item, index) in paginatedRankings" :key="item.id" class="ranking-item">
                 <div class="place-location">
-                    <span class="place">{{ index + 1 }}. {{ item.place }}</span>
+                    <span class="place">{{ index + 1 }}. {{ item.title }}</span>
                     <span class="location">{{ item.addr }}</span>
                 </div>
-
-                <!-- 지금은 하트나 별을 눌러도 NaN이 나오는데 그 이유는 초기값을 설정 안해서 그런거! -->
-                <!-- 좋아요 섹션 -->
                 <div class="icons">
                     <div class="icon-with-count">
                         <span 
-                            v-if="item.isLiked" 
-                            @click="toggleLike(item.seq)" 
-                            class="material-symbols-rounded">
+                            @click="toggleLike(item.id)" 
+                            :class="item.isLiked ? 'material-symbols-rounded filled-heart' : 'material-symbols-outlined'">
                             favorite
-                        </span>
-                        <span 
-                            v-else 
-                            @click="toggleLike(item.seq)" 
-                            class="material-symbols-outlined">
-                            favorite_border
                         </span>
                         <span class="likes">{{ item.likes }}</span>
                     </div>
-                
-                <!-- 찜하기 섹션 -->
-                    <div class="icon-with-count">
-                        <span 
-                            v-if="item.isStar"
-                            @click="toggleStar(item.seq)"
-                            class="material-symbols-rounded">
-                            star
-                        </span>
-                        <span 
-                            v-else
-                            @click="toggleStar(item.seq)"
-                            class="material-symbols-outlined">
-                            star_border
-                        </span>
-                        <span class="star">{{ item.starCount }}</span>
-                    </div>
                 </div>
             </li>
-            <!-- 더보기 누르면 리스트 더 나오도록 만들고 싶었지만 능력 부족으로 인해서...그냥... -->
-            <div class="more">
-                <span>더보기</span>
-            </div>
         </ul>
+        <div class="more" v-if="!isLastPage">
+            <span @click="loadMore">더보기</span>
+        </div>
     </div>
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+import { usePhotoSpotStore } from '@/stores/photoSpotStore';
+
 export default {
     name: 'RankingList',
-    props: {
-        rankings: {
-            type: Array,
-            required: true,
+    data() {
+        return {
+            itemsToShow: 5, 
+        };
+    },
+    computed: {
+        photoSpotStore() {
+            return usePhotoSpotStore();
         },
+        sortedRankings() {
+            return this.photoSpotStore.photoSpots.slice().sort((a, b) => b.likes - a.likes);
+        },
+        paginatedRankings() {
+            return this.sortedRankings.slice(0, this.itemsToShow);
+        },
+        isLastPage() {
+            return this.itemsToShow >= this.sortedRankings.length;
+        }
+    },
+    async created() {
+        await this.photoSpotStore.fetchPhotoSpots(); 
     },
     methods: {
-        toggleLike(seq) {
-            const item = this.rankings.find(item => item.seq === seq);
+        toggleLike(id) {
+            const item = this.photoSpotStore.photoSpots.find(item => item.id === id);
             if (item) {
                 item.isLiked = !item.isLiked;
                 item.likes += item.isLiked ? 1 : -1;
             }
         },
-        toggleStar(seq) {
-            const item = this.rankings.find(item => item.seq === seq);
-            if (item) {
-                item.isStar = !item.isStar;
-                item.starCount += item.isStar ? 1 : -1;
+        loadMore() {
+            if (!this.isLastPage) {
+                this.itemsToShow += 5; 
             }
         }
     }
@@ -83,56 +71,80 @@ export default {
 </script>
 
 <style scoped>
-.ranking-list h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.ranking-header {
+  text-align: center; 
+  margin-bottom: 20px; 
+}
+
+.ranking-list {
+  max-width: 1200px; 
+  width: 100%;
+  margin: 0 auto; 
+  padding: 20px; 
+  box-sizing: border-box; 
+  position: relative; 
+  transform: translateX(-20px); 
 }
 
 .ranking-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 80%;
-    margin: 10px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    background-color: #f9f9f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0; 
+  padding: 15px; 
+  border: 1px solid #ddd;
+  border-radius: 10px; 
+  background-color: #f9f9f9;
+  width: 100%; 
+  box-sizing: border-box; 
 }
-
 .place-location {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .place {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .location {
-    margin-top: 5px; /* 순위와 주소 간의 간격 조정 */
-    font-size: 0.8em;
-    color: gray;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: gray;
 }
 
 .icons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 5px;
-    width: 60px;
-    text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 10px; 
 }
 
 .icon-with-count {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.material-symbols-outlined {
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s;
+  color: rgb(249, 207, 207); 
+}
+
+.filled-heart {
+  color: red; 
+}
+
+.likes {
+  margin-top: 5px; 
 }
 
 .more {
-    text-align: center;
-    display: block;
-    margin-top: 20px;
-    cursor: pointer;
+  text-align: center;
+  display: block;
+  margin-top: 20px;
+  cursor: pointer;
 }
+
 </style>
