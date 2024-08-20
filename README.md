@@ -59,6 +59,7 @@
 
 [요구사항 명세서 바로가기](https://docs.google.com/spreadsheets/d/1BwDPidkpetFnJJlZS7qsGjAW7jzDRFPLOQTfYpE8VCw/edit?gid=0#gid=0)
 <p align="center">
+  <img alt="요구사항 명세서" src="https://github.com/user-attachments/assets/6af157a0-b362-4c5f-99bf-80e86771cabc" />
 </p>
 <br>
 
