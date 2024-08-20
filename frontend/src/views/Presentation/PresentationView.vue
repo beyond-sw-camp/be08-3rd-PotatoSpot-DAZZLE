@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted } from "vue";
 
 import Thumbnails from "@/components/Thumbnails.vue";
+import RankingList from "@/components/RankingList.vue";
 
 //example components
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
@@ -69,8 +70,9 @@ onUnmounted(() => {
   </Header>
 
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
-    <Thumbnails/>
     <PresentationCounter />
+    <Thumbnails/>
+    <RankingList/>
     <PresentationInformation />
     <PresentationExample :data="data" />
     <PresentationPages />
