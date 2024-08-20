@@ -66,6 +66,18 @@
 ## 🛠️ Project Design
 
 ### 1. System Architecture
+<p align="center">
+  <img alt="System Architecture" src="https://github.com/user-attachments/assets/32ec1f2f-449e-4e4d-bab0-ce27d9511ab7" />
+</p>
+<br>
+
+### 2. WireFrame
+
+<br>
+
+### 3. StoryBoard
+
+<br>
 
 <p align="center">
 </p>
