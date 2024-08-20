@@ -71,7 +71,6 @@ const handleSubmit = async () => {
           0,
           currentTime
         );
-
         photoSpotStore.photoSpots.push(newSpot);
 
         alert('포토스팟이 등록되었습니다.');
@@ -91,11 +90,12 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog"
+    @click="closeModal">
     <div class="modal-dialog modal-dialog-centered" @click.stop>
       <div class="modal-content rounded-lg shadow-lg">
         <div class="modal-header border-bottom-0">
-          <h5 class="modal-title">포토스팟 등록</h5>
+          <h5 class="modal-title">Add a photo spot</h5>
           <button type="button" class="btn-close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
@@ -105,24 +105,29 @@ const handleSubmit = async () => {
             </div>
             <MaterialInput v-model="title" class="input-group-dynamic mb-3" placeholder="제목" type="text" />
             <div class="mb-3">
-              <textarea v-model="content" class="form-control textarea-custom" placeholder="내용을 입력하세요" rows="4"></textarea>
+              <textarea v-model="content" class="form-control textarea-custom" placeholder="내용을 입력하세요"
+                rows="4"></textarea>
             </div>
 
             <!-- 사진 업로드 및 미리보기 -->
             <div class="mb-3 text-center">
-              <input type="file" @change="handleImageUpload" accept="image/*" class="form-control d-none" ref="fileInput" />
+              <input type="file" @change="handleImageUpload" accept="image/*" class="form-control d-none"
+                ref="fileInput" />
               <div v-if="imagePreview" class="position-relative">
-                <img :src="imagePreview" alt="Image Preview" class="img-thumbnail mb-2" style="max-width: 100%; height: auto;" />
-                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" @click="handleImageRemove">X</button>
+                <img :src="imagePreview" alt="Image Preview" class="img-thumbnail mb-2"
+                  style="max-width: 100%; height: auto;" />
+                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                  @click="handleImageRemove">X</button>
               </div>
               <div v-else>
-                <button type="button" class="btn btn-outline-primary" @click="$refs.fileInput.click()">사진 선택</button>
+                <button type="button" class="btn btn-outline-primary" @click="$refs.fileInput.click()">Select a
+                  picture</button>
               </div>
             </div>
 
             <div class="text-center">
-              <MaterialButton class="my-4 mb-2" variant="gradient" color="success" fullWidth type="submit">
-                등록
+              <MaterialButton class="my-4 mb-2" variant="gradient" color="dark" fullWidth type="submit">
+                ADD
               </MaterialButton>
             </div>
           </form>

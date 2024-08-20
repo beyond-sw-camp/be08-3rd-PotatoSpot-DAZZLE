@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import { defineEmits } from 'vue';
 import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import { registerUser } from '../../utils/utilsAuth';
@@ -64,40 +63,53 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block;" aria-modal="true" role="dialog" @click="closeModal">
-    <div class="modal-dialog modal-dialog-centered" @click.stop>
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block;" aria-modal="true" role="dialog"
+    @click="closeModal">
+    <div class="modal-dialog modal-dialog-centered modal-custom" @click.stop>
       <div class="modal-content rounded-lg p-4">
         <div class="modal-header border-0">
-          <h5 class="modal-title">회원가입</h5>
+          <h5 class="modal-title">Sign Up</h5>
           <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
           <form role="form" class="text-start" @submit.prevent="handleSubmit">
-            <MaterialInput v-model="name" class="input-group-dynamic mb-2" placeholder="이름" type="text" />
-            <MaterialInput v-model="email" class="input-group-dynamic mb-2" placeholder="이메일" type="email" />
-            <MaterialInput v-model="password" class="input-group-dynamic mb-2" placeholder="비밀번호" type="password" />
-            <MaterialInput v-model="confirmPassword" class="input-group-dynamic mb-2" placeholder="비밀번호 확인" type="password" />
+            <MaterialInput v-model="name" class="input-group-dynamic mb-3" placeholder="Name" type="text" />
+            <MaterialInput v-model="email" class="input-group-dynamic mb-3" placeholder="Email" type="email" />
+            <MaterialInput v-model="password" class="input-group-dynamic mb-3" placeholder="Password" type="password" />
+            <MaterialInput v-model="confirmPassword" class="input-group-dynamic mb-3" placeholder="Confirm Password"
+              type="password" />
 
             <!-- 프로필 이미지 업로드 및 미리보기 -->
             <div class="mb-3 text-center">
-              <input type="file" @change="handleImageUpload" accept="image/*" class="form-control d-none" ref="fileInput" />
-              <div v-if="imagePreview" class="position-relative">
-                <img :src="imagePreview" alt="Profile Preview" class="img-thumbnail mb-2" style="max-width: 150px; max-height: 150px;" />
-                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" @click="handleImageRemove">X</button>
-              </div>
-              <div v-else>
-                <button type="button" class="btn btn-outline-secondary" @click="$refs.fileInput.click()">프로필 사진 선택</button>
+              <div class="d-flex flex-column align-items-center">
+                <div v-if="imagePreview" class="position-relative">
+                  <img :src="imagePreview" alt="Profile Preview"
+                    class="img-fluid rounded-circle profile-pic-preview mb-2" />
+                </div>
+                <div v-else>
+                  <div class="img-fluid rounded-circle profile-pic-placeholder mb-2"></div>
+                </div>
+
+                <!-- 이미지 선택 버튼 -->
+                <button type="button" class="btn btn-outline-secondary mb-2" @click="$refs.fileInput.click()">Choose
+                  Photo</button>
+                <input type="file" @change="handleImageUpload" accept="image/*" class="form-control d-none"
+                  ref="fileInput" />
+
+                <!-- 이미지 취소 버튼 -->
+                <button v-if="imagePreview" type="button" class="btn btn-outline-danger"
+                  @click="handleImageRemove">Cancel</button>
               </div>
             </div>
 
             <div class="text-center">
               <MaterialButton class="my-4 mb-2" variant="gradient" color="success" fullWidth type="submit">
-                회원가입
+                Sign Up
               </MaterialButton>
             </div>
             <p class="mt-4 text-sm text-center">
-              이미 회원이신가요?
-              <a href="#" class="text-info text-gradient font-weight-bold" @click.prevent="openLoginModal">로그인</a>
+              Already have an account?
+              <a href="#" class="text-info text-gradient font-weight-bold" @click.prevent="openLoginModal">Login</a>
             </p>
           </form>
         </div>
@@ -107,11 +119,30 @@ const handleSubmit = async () => {
 </template>
 
 <style scoped>
+.modal {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-custom {
+  max-width: 500px;
+  width: 100%;
+}
+
 .modal-content {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   background-color: #f7f9fc;
 }
 
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: none;
+  padding: 1rem 1.5rem;
+}
+
 .modal-title {
+  font-size: 1.25rem;
   font-weight: bold;
   color: #333;
 }
@@ -122,9 +153,18 @@ const handleSubmit = async () => {
   font-size: 1.5rem;
 }
 
-.img-thumbnail {
-  border-radius: 50%;
+.profile-pic-preview,
+.profile-pic-placeholder {
+  width: 150px;
+  height: 150px;
   object-fit: cover;
+  border: 3px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-pic-placeholder {
+  background-color: white;
+  border-radius: 50%;
 }
 
 .btn-outline-secondary {
@@ -138,9 +178,15 @@ const handleSubmit = async () => {
   border-color: #bbb;
 }
 
-.btn-danger {
-  padding: 0.2rem 0.4rem;
-  font-size: 0.8rem;
+.btn-outline-danger {
+  padding: 0.4rem 1rem;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
 }
 
 .text-gradient {
@@ -149,11 +195,6 @@ const handleSubmit = async () => {
   -webkit-text-fill-color: transparent;
 }
 
-.modal {
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-/* 애니메이션 효과 추가 */
 .modal-fade-in {
   opacity: 0;
   animation: fadeIn 0.3s forwards;

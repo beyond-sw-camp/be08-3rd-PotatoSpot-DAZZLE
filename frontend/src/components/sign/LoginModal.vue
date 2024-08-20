@@ -32,7 +32,7 @@ const openSignupModal = () => {
 const handleSubmit = async () => {
   console.log(email.value);
   console.log(password.value);
-  if (email.value != '' && password.value != '') {
+  if (email.value !== '' && password.value !== '') {
     await loginUser(email.value, password.value);
     if (auth.currentUser.isAnonymous) {
       alert('로그인 실패');
@@ -43,24 +43,24 @@ const handleSubmit = async () => {
   } else {
     alert('정보를 모두 입력해주세요.');
   }
-
 };
 </script>
 
 <template>
   <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block;" aria-modal="true" role="dialog"
     @click="closeModal">
-    <div class="modal-dialog modal-dialog-centered" @click.stop>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">로그인</h5>
+    <div class="modal-dialog modal-dialog-centered modal-custom" @click.stop>
+      <div class="modal-content rounded-lg p-4">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Login</h5>
+          <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
         </div>
         <div class="modal-body">
           <form role="form" class="text-start" @submit.prevent="handleSubmit">
-            <MaterialInput v-model="email" class="input-group-dynamic mb-2" placeholder="Email" type="email" />
-            <MaterialInput v-model="password" class="input-group-dynamic mb-2" placeholder="Password" type="password" />
+            <MaterialInput v-model="email" class="input-group-dynamic mb-3" placeholder="Email" type="email" />
+            <MaterialInput v-model="password" class="input-group-dynamic mb-3" placeholder="Password" type="password" />
             <MaterialSwitch class="d-flex align-items-center mb-3" id="rememberMe" labelClass="mb-0 ms-3">
-              로그인 정보 기억
+              Remember Me
             </MaterialSwitch>
 
             <div class="text-center">
@@ -69,8 +69,8 @@ const handleSubmit = async () => {
               </MaterialButton>
             </div>
             <p class="mt-4 text-sm text-center">
-              회원 정보가 없으신가요?
-              <a href="#" class="text-info text-gradient font-weight-bold" @click.prevent="openSignupModal">회원 가입</a>
+              Don't have an account?
+              <a href="#" class="text-info text-gradient font-weight-bold" @click.prevent="openSignupModal">Sign Up</a>
             </p>
           </form>
         </div>
@@ -81,7 +81,43 @@ const handleSubmit = async () => {
 
 <style scoped>
 .modal {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-custom {
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal-content {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: #f7f9fc;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: none;
+  padding: 1rem 1.5rem;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.text-gradient {
+  background: -webkit-linear-gradient(#007bff, #6610f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* 애니메이션 효과 추가 */

@@ -3,14 +3,18 @@ import { doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
 import { auth, db, storage } from '../firebase'; // storage 추가
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'; // storage 관련 메서드 추가
 
-// 사용자 로그인
-export const loginUser = async (email, password) => {
+export const loginUser = async (email, password, rememberMe) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    console.log('User logged in:', user);
+    await signInWithEmailAndPassword(auth, email, password);
+
+    // Remember Me 체크박스가 체크되었는지 확인
+    if (rememberMe) {
+      localStorage.setItem('userEmail', email);
+    } else {
+      localStorage.removeItem('userEmail');
+    }
   } catch (error) {
-    console.error('Error logging in:', error);
+    throw error;
   }
 };
 
@@ -87,7 +91,7 @@ export const updateUserProfile = async (user, newName, newImageFile) => {
     const updatedData = {
       name: newName,
     };
-    
+
     if (imageUrl) {
       updatedData.profileImageUrl = imageUrl;
     }

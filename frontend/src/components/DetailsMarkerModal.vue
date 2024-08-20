@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="modal fade show modal-fade-in"
-    tabindex="-1"
-    style="display: block"
-    aria-modal="true"
-    role="dialog"
-  >
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -17,23 +11,12 @@
           <div class="left-section">
             <h6>Photo Spots</h6>
             <ul v-if="filteredPhotoSpots.length">
-              <li
-                v-for="spot in filteredPhotoSpots"
-                :key="spot.id"
-                @click="viewDetail(spot.id)"
-              >
+              <li v-for="spot in filteredPhotoSpots" :key="spot.id" @click="viewDetail(spot.id)">
                 <div class="spot-card">
-                  <img
-                    :src="spot.imgUrl"
-                    alt="포토스팟 이미지"
-                    class="spot-image"
-                  />
+                  <img :src="spot.imgUrl" alt="포토스팟 이미지" class="spot-image" />
                   <div class="spot-info">
                     <p class="spot-title">{{ spot.title }}</p>
-                    <button
-                      @click.stop="incrementLike(spot.id)"
-                      class="like-button"
-                    >
+                    <button @click.stop="incrementLike(spot.id)" class="like-button">
                       <span class="like-count">{{ spot.likes }}</span>
                       <span class="heart-icon">&#10084;</span>
                     </button>
@@ -52,14 +35,9 @@
             <p><strong>경도:</strong> {{ selectX }}</p>
             <p><strong>주소:</strong> {{ selectPlaceAddr }}</p>
             <p><strong>장소명:</strong> {{ selectPlaceName }}</p>
-            <MaterialButton
-              class="register-button mt-auto"
-              variant="gradient"
-              color="dark"
-              fullWidth
-              @click="registerPhotoSpot"
-            >
-              PHOTOSPOT 등록
+            <MaterialButton class="register-button mt-auto" variant="gradient" color="dark" fullWidth
+              @click="registerPhotoSpot">
+              Add a photo spot
             </MaterialButton>
           </div>
         </div>
@@ -103,6 +81,7 @@ const incrementLike = async (spotId) => {
     try {
       await incrementLikes(spotId);
       photoSpotStore.fetchPhotoSpots();
+
     } catch (error) {
       console.error("Error incrementing like:", error);
     }
@@ -183,9 +162,9 @@ const viewDetail = (spotId) => {
 .close-button {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  color: #888;
+  color: #000000;
   transition: color 0.3s;
 }
 
@@ -245,9 +224,12 @@ const viewDetail = (spotId) => {
 }
 
 .spot-image {
-  width: 100%;
-  height: 350px;
+  width: 95%;
+  height: 300px;
+  margin: 20px;
+  border-radius: 10px;
   object-fit: cover;
+  align-self: center;
 }
 
 .spot-info {

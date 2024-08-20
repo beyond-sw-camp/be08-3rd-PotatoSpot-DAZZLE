@@ -12,14 +12,11 @@
       <div id="menu_wrap" class="search-bar mx-4 bg_white">
         <div class="option">
           <div class="container">
-            <form @submit.prevent="searchPlaces" style="display: flex; align-items: flex-start; justify-content: flex-end;">
-              <MaterialInput
-                class="input-group-outline mb-4"
-                :label="{ class: 'form-label' }"
-                type="text"
+            <form @submit.prevent="searchPlaces"
+              style="display: flex; align-items: flex-start; justify-content: flex-end;">
+              <MaterialInput class="input-group-outline mb-4" :label="{ class: 'form-label' }" type="text"
                 v-model="keyword"
-                style="margin-left: 10px; height: 100%; background-color: rgba(255, 255, 255, 0.8);"
-              />
+                style="margin-left: 10px; height: 100%; background-color: rgba(255, 255, 255, 0.8);" />
               <button type="submit" style="margin-left: 10px; height: 100%;">Search</button>
             </form>
           </div>
@@ -77,7 +74,6 @@ export default {
     const openModalMarker = () => showModalMarker.value = true;
     const closeModalMarker = () => showModalMarker.value = false;
     const openModalDetailSpot = (spotId) => {
-      console.log(spotId);
       selectSpotId.value = spotId;
       showModalDetailSpot.value = true;
     };

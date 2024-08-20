@@ -12,25 +12,33 @@ export const useUserStore = defineStore('user', () => {
   const postCount = ref(0);  // 게시글 수 상태
   const totalLikes = ref(0); // 총 좋아요 수 상태
 
+  const fetchUserData = async (user) => {
+    if (!user || !user.uid) {
+      console.error('User object is undefined or does not have uid');
+      return;
+    }
+
+    // Firestore에서 사용자 정보 가져오기
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      userName.value = userData.name;
+      profilePic.value = userData.profileImageUrl; // 프로필 이미지 URL 저장
+    }
+
+    // 사용자의 게시글 수 및 총 좋아요 수 계산
+    const postsQuery = query(collection(db, 'photoSpots'), where('userEmail', '==', user.email));
+    const postDocs = await getDocs(postsQuery);
+    postCount.value = postDocs.size;
+    totalLikes.value = postDocs.docs.reduce((sum, doc) => sum + (doc.data().likes || 0), 0);
+  };
+
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       firebaseUser.value = user;
       userEmail.value = user.email;
-
-      // Firestore에서 사용자 정보 가져오기
-      const userDocRef = doc(db, 'users', user.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        userName.value = userData.name;
-        profilePic.value = userData.profileImageUrl; // 프로필 이미지 URL 저장
-      }
-
-      // 사용자의 게시글 수 및 총 좋아요 수 계산
-      const postsQuery = query(collection(db, 'photoSpots'), where('userEmail', '==', user.email));
-      const postDocs = await getDocs(postsQuery);
-      postCount.value = postDocs.size;
-      totalLikes.value = postDocs.docs.reduce((sum, doc) => sum + (doc.data().likes || 0), 0);
+      await fetchUserData(user); // Firebase에서 데이터를 가져오는 함수 호출
     } else {
       firebaseUser.value = null;
       userEmail.value = '';
@@ -41,5 +49,5 @@ export const useUserStore = defineStore('user', () => {
     }
   });
 
-  return { firebaseUser, userEmail, userName, profilePic, postCount, totalLikes };
+  return { firebaseUser, userEmail, userName, profilePic, postCount, totalLikes, fetchUserData };
 });
