@@ -5,17 +5,19 @@
         <h3 class="mb-3 text-center">인기 포토스팟</h3>
       </div>
       <div class="row">
-        <div v-for="(post, index) in bestPosts" :key="post.id" class="col-lg-3 col-sm-6 d-flex justify-content-center mb-6 position-relative">
+        <div v-for="(post, index) in bestPosts" :key="post.id"
+          class="col-lg-3 col-sm-6 d-flex justify-content-center mb-6 position-relative">
           <div class="card-container">
-            <LikeCounter class="like-counter position-absolute" color="danger" :count="post.likes" suffix="♥️" :duration="3000" />
+            <LikeCounter class="like-counter position-absolute" color="danger" :count="post.likes" suffix="♥️"
+              :duration="3000" />
             <RotatingCard class="rotating-card">
               <RotatingCardFront :image="post.imgUrl" />
               <RotatingCardBack :image="post.imgUrl" :title="post.title" :description="post.content" :action="[
                 {
-                  route: `/map/${post.x}/${post.y}`,
-                  label: '지도에서 확인하기',
+                  spotId: post.id,
+                  label: 'Detail Spot',
                 },
-              ]" />
+              ]" @card-clicked="handleCardClick(post.id)" />
             </RotatingCard>
           </div>
         </div>
@@ -26,7 +28,7 @@
 
 
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, onMounted, computed, defineEmits } from 'vue';
 import RotatingCard from '../components/RotatingCard.vue';
 import RotatingCardFront from "../components/RotatingCardFront.vue";
 import RotatingCardBack from '../components/RotatingCardBack.vue';
@@ -37,6 +39,12 @@ import { useUserStore } from '../../../../stores/userStore';
 const photoSpotStore = usePhotoSpotStore();
 const userStore = useUserStore();
 const firebaseUser = ref(userStore.firebaseUser); // 로컬 상태로 저장
+const emit = defineEmits(['open-details-spot-modal2']);
+
+const handleCardClick = (postId) => {
+  console.log(postId);
+  emit('open-details-spot-modal2', postId);
+};
 
 // 게시물 데이터 가져오기
 const fetchPosts = async () => {

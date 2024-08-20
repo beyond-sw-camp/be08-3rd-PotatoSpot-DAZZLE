@@ -15,7 +15,7 @@
   <div class="bg-gray-200">
     <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
       <Profile @open-modal-edit="openModalEdit" />
-      <BestPosts />
+      <BestPosts @open-details-spot-modal2="openDetailsSpotModal" />
       <Posts :data="data" @open-details-spot-modal="openDetailsSpotModal" />
     </div>
   </div>
@@ -35,10 +35,12 @@ import DefaultFooter from '../../../examples/footers/FooterDefault.vue';
 import EditModal from "../../../components/EditModal.vue";
 import DetailsSpotModal from '../../../components/DetailsSpotModal.vue';
 import { ref } from "vue";
+import { useUserStore } from '../../../stores/userStore';
 
 const showModalEdit = ref(false);
 const openModalEdit = () => showModalEdit.value = true;
 const closeModalEdit = () => showModalEdit.value = false;
+const userStore = useUserStore();
 
 const selectedPostId = ref(null); // 선택된 게시글 ID
 const showModalDetailsSpot = ref(false); // 모달 표시 여부
@@ -48,9 +50,9 @@ const openDetailsSpotModal = (postId) => {
   showModalDetailsSpot.value = true; // 모달 표시
 };
 
-const closeDetailsSpotModal = () => {
+const closeDetailsSpotModal = async () => {
   showModalDetailsSpot.value = false; // 모달 닫기
   selectedPostId.value = null; // 선택된 포스트 ID 초기화
-  
+  await userStore.fetchUserData(userStore.firebaseUser);
 };
 </script>
