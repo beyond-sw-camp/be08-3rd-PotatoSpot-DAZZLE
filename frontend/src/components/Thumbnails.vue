@@ -1,5 +1,6 @@
 <template>
   <div class="gallery-container">
+    <h2>Recently added Photos</h2><br>
     <div class="image-gallery">
       <div v-for="(imageUrl, index) in visibleImages" :key="index" class="image-wrapper">
         <img 
@@ -133,7 +134,6 @@ export default {
   overflow: hidden;
   position: relative;
   padding: 30px;
-  background-color: #ffffff;
 }
 
 .image-gallery {
@@ -141,7 +141,8 @@ export default {
   grid-template-columns: repeat(3, 1fr); /* 3x3 grid */
   gap: 30px; 
   width: 100%;
-  max-width: 1200px; 
+  max-width: 1200px;
+  
 }
 
 .image-wrapper {
@@ -150,6 +151,8 @@ export default {
   overflow: hidden;
   position: relative;
   transition: transform 0.3s ease-in-out;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
 }
 
 .image-wrapper:hover {
@@ -163,5 +166,6 @@ export default {
   height: 100%;
   object-fit: cover; 
   display: block;
+  border-radius: 15px;
 }
 </style>
