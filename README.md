@@ -99,6 +99,7 @@
 [김도하](https://github.com/esueng)|[김종원](https://github.com/jongwon-kr)|[이은서](https://github.com/tkckdnjs)|[임지훈](https://github.com/limjihoon99)|[정수진](https://github.com/Sujina2024)|
 ------|------|------|--------------------------------------|------|
 <img alt="김도하" src="" width="400"/> | <img alt="김종원" src="" width="400"/> | <img alt="이은서" src="" width="400"/> | <img alt="임지훈" src="" width="400"/> | <img alt="정수진" src="" width="400"/> | 
+Developer|Developer|Developers|Leader, Developer|Developer|
 
 <br>
 
