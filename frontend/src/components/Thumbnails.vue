@@ -2,111 +2,91 @@
   <div class="gallery-container">
     <h2>Recently added Photos</h2><br>
     <div class="image-gallery">
-      <div v-for="(imageUrl, index) in visibleImages" :key="index" class="image-wrapper"  data-aos="zoom-in">
+      <div v-for="(spot, index) in visibleSpots" :key="spot.id" class="image-wrapper" data-aos="zoom-in">
         <img 
-          :src="imageUrl" 
+          :src="spot.imgUrl" 
           :alt="`Thumbnail ${index + 1}`" 
           class="gallery-image" 
-          @click="redirectToKakaoMap"
+          @click="openDetailsModal(spot.id)"
           style="cursor: pointer;"
         />
       </div>
     </div>
 
-    <!-- Pagination Component -->
-    <section class="py-7">
-      <div class="container">
-        <div class="row justify-space-between py-2">
-          <div class="col-lg-4 mx-auto">
-            <MaterialPagination>
-              <MaterialPaginationItem
-                prev
-                class="ms-auto"
-                :disabled="currentPage === 0"
-                @click="prev"
-              />
-              <MaterialPaginationItem
-                v-for="page in totalPages"
-                :key="page"
-                :label="page"
-                :active="currentPage === page - 1"
-                @click="goToPage(page - 1)"
-              />
-              <MaterialPaginationItem
-                next
-                :disabled="isLastPage"
-                @click="next"
-              />
-            </MaterialPagination>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <Modal
-      :isVisible="isModalVisible"
-      :images="modalImages"
-      :kakaoMapUrl="kakaoMapUrl"
-      @close="closeModal"
+    <DetailsSpotModal 
+      v-if="selectedPostId !== null" 
+      :post-id="selectedPostId" 
+      @close="closeDetailsModal"
     />
     
+    <div class="pagination-container">
+      <span class="material-symbols-outlined pagination-arrow" @click="prev" :class="{ disabled: currentPage === 0 }">
+        keyboard_double_arrow_left
+      </span>
+
+      <MaterialPagination>
+        <MaterialPaginationItem
+          v-for="page in totalPages"
+          :key="page"
+          :label="String(page)"
+          :active="currentPage === page - 1"
+          @click="goToPage(page - 1)"
+        />
+      </MaterialPagination>
+
+      <span class="material-symbols-outlined pagination-arrow" @click="next" :class="{ disabled: isLastPage }">
+        keyboard_double_arrow_right
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref as storageRef, listAll, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase"; 
-
+import { ref } from 'vue';
+import { usePhotoSpotStore } from '@/stores/photoSpotStore';
 import MaterialPagination from '@/components/MaterialPagination.vue';
 import MaterialPaginationItem from '@/components/MaterialPaginationItem.vue';
+import DetailsSpotModal from "./DetailsSpotModal.vue";
 
 export default {
   name: 'ImageThumbnails',
   components: {
     MaterialPagination,
-    MaterialPaginationItem
+    MaterialPaginationItem,
+    DetailsSpotModal
   },
   data() {
     return {
       imagesPerPage: 9, 
       currentPage: 0,    
-      imageUrls: [],     
-      totalImages: 0,    
+      selectedPostId: null   
     };
   },
   computed: {
-    visibleImages() {
+    photoSpotStore() {
+      return usePhotoSpotStore();
+    },
+    visibleSpots() {
       const start = this.currentPage * this.imagesPerPage;
       const end = start + this.imagesPerPage;
-      return this.imageUrls.slice(start, end);
+      return this.photoSpotStore.photoSpots.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.totalImages / this.imagesPerPage);
+      return Math.ceil(this.photoSpotStore.photoSpots.length / this.imagesPerPage);
     },
     isLastPage() {
       return this.currentPage + 1 >= this.totalPages;
     }
   },
   async created() {
-    await this.fetchImages(); // Fetch images 
+    await this.photoSpotStore.fetchPhotoSpots(); // Fetch photo spots from Firestore
   },
   methods: {
-    async fetchImages() {
-      try {
-        const listRef = storageRef(storage, "images/"); 
-        const res = await listAll(listRef);
-
-        
-        const urls = await Promise.all(res.items.map(item => getDownloadURL(item)));
-        this.imageUrls = urls;
-        this.totalImages = urls.length;
-      } catch (error) {
-        console.error("Error fetching images from Firebase:", error);
-      }
+    openDetailsModal(postId) {
+      this.selectedPostId = postId;
     },
-    redirectToKakaoMap() {
-      const kakaoMapUrl = "https://m.map.kakao.com/actions/searchView?q=%EA%B0%95%EC%9B%90%EB%8F%84%20%EA%B0%95%EB%A6%89&wxEnc=LVSOTP&wyEnc=QNLTTMN&lvl=4#!/YNMNMP,QNVPOPV/map/place";
-      window.location.href = kakaoMapUrl;
+    closeDetailsModal() {
+      this.selectedPostId = null;
     },
     next() {
       if (!this.isLastPage) {
@@ -139,7 +119,7 @@ export default {
 .image-gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3x3 grid */
-  gap: 30px; 
+  gap: 40px; 
   width: 100%;
   max-width: 1200px;
   
@@ -150,15 +130,14 @@ export default {
   height: 200px; 
   overflow: hidden;
   position: relative;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Slightly longer transition for better effect */
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
 }
 
 .image-wrapper:hover {
-  transform: translateY(-10px); 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* 섀도우 */
-  z-index: 1; 
+  transform: translateY(-8px); /* Adjusted for a subtler effect */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 .gallery-image {
@@ -168,4 +147,44 @@ export default {
   display: block;
   border-radius: 15px;
 }
+.pagination-container {
+  display: flex;
+  margin-top: 40px;
+}
+
+.pagination-arrow {
+  cursor: pointer;
+  font-size: 30px; 
+  margin: 0 10px; 
+}
+
+.pagination-arrow.disabled {
+  cursor: not-allowed;
+  color: #ccc; 
+}
+
+.modal-overlay {
+  position: absolute; /* Change from fixed to absolute */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* Ensure it is above other content */
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 80%; /* Adjust as needed */
+  max-height: 80vh; /* Ensure it fits within viewport */
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+}
 </style>
+
