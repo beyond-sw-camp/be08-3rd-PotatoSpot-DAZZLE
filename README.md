@@ -1,5 +1,5 @@
 # 📷 DAZZLE
-![logo-eng-horiz]()
+![logo-eng-horiz](https://github.com/user-attachments/assets/07b7f6eb-5dec-4ba8-ad6c-1c60550bae69)
 > [PLAYDATA] 한화시스템 BEYOND SW캠프 / DAZZLE
 
 > Team - PotatoSpot
