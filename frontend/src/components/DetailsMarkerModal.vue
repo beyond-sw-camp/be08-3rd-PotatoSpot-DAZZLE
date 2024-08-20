@@ -16,7 +16,7 @@
                   <img :src="spot.imgUrl" alt="포토스팟 이미지" class="spot-image" />
                   <div class="spot-info">
                     <p class="spot-title">{{ spot.title }}</p>
-                    <button @click.stop="likePost(spot.id)" class="like-button">
+                    <button @click.stop="incrementLike(spot.id)" class="like-button">
                       <span class="like-count">{{ spot.likes }}</span>
                       <span class="heart-icon">&#10084;</span>
                     </button>
@@ -50,6 +50,7 @@
 import { ref, computed } from "vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import { usePhotoSpotStore } from "@/stores/photoSpotStore";
+import { incrementLikes } from '@/utils/utilsDb';
 
 const props = defineProps({
   x: String,
@@ -62,20 +63,25 @@ const emit = defineEmits(["close", "view"]);
 
 const photoSpotStore = usePhotoSpotStore();
 
-const filteredPhotoSpots = computed(() =>
-  photoSpotStore.photoSpots.filter((spot) => spot.addr === props.address)
-);
+const filteredPhotoSpots = computed(() => {
+  return photoSpotStore.photoSpots
+    .filter((spot) => spot.addr === props.address)
+    .sort((a, b) => b.likes - a.likes);
+});
+
 
 const selectX = ref(props.x);
 const selectY = ref(props.y);
 const selectPlaceName = ref(props.location);
 const selectPlaceAddr = ref(props.address);
+const likes = computed(() => photoSpotStore.likes)
 
-const likePost = (spotId) => {
-  const spot = photoSpotStore.photoSpots.find(s => s.id === spotId);
-  if (spot) {
-    spot.likes = (parseInt(spot.likes, 10) || 0) + 1; // 문자열을 숫자로 변환 후 증가
-    // 여기에 likes 값을 서버에 업데이트하는 로직을 추가해야 합니다.
+const incrementLike = async (spotId) => {
+  try {
+    await incrementLikes(spotId);
+    photoSpotStore.fetchPhotoSpots();
+  } catch (error) {
+    console.error("Error incrementing like:", error);
   }
 };
 

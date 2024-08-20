@@ -1,7 +1,6 @@
 <script setup>
 import ExampleCard from "../Components/ExampleCard.vue";
 import MaterialBadge from "../../../components/MaterialBadge.vue";
-import Rankinglist from "../../../components/Rankinglist.vue";
 
 defineProps({
   data: {
