@@ -11,10 +11,16 @@
       <KakaoMap ref="kmap" class="kmap" :options="mapOption" />
       <div id="menu_wrap" class="search-bar mx-4 bg_white">
         <div class="option">
-          <div>
-            <form @submit.prevent="searchPlaces">
-              키워드 : <input type="text" v-model="keyword" size="15" />
-              <button type="submit">검색하기</button>
+          <div class="container">
+            <form @submit.prevent="searchPlaces" style="display: flex; align-items: flex-start; justify-content: flex-end;">
+              <MaterialInput
+                class="input-group-outline mb-4"
+                :label="{ class: 'form-label' }"
+                type="text"
+                v-model="keyword"
+                style="margin-left: 10px; height: 100%; background-color: rgba(255, 255, 255, 0.8);"
+              />
+              <button type="submit" style="margin-left: 10px; height: 100%;">Search</button>
             </form>
           </div>
         </div>
@@ -40,6 +46,7 @@ import DetailsMarkerModal from "../../../components/DetailsMarkerModal.vue";
 import DetailsSpotModal from "../../../components/DetailsSpotModal.vue";
 import { usePhotoSpotStore } from "@/stores/photoSpotStore";
 import { useRouter } from "vue-router";
+import MaterialInput from "@/components/MaterialInput.vue";
 
 
 
@@ -50,6 +57,7 @@ export default {
     PostModal,
     DetailsMarkerModal,
     DetailsSpotModal,
+    MaterialInput,
   },
   setup() {
     const showModalPost = ref(false);

@@ -2317,6 +2317,15 @@ progress {
   color: #7b809a;
 }
 
+/* 위로 이동 */
+
+.input-group-outline input:focus + .form-label,
+.input-group-outline input:not(:placeholder-shown) + .form-label {
+  transform: translateY(-20px); /* 라벨이 위로 이동 */
+  font-size: 0.75rem; /* 글자 크기를 작게 조정 */
+  color: #333; /* 포커스 시 색상을 더 진하게 */
+}
+
 .col-form-label {
   padding-top: calc(0.5rem + 1px);
   padding-bottom: calc(0.5rem + 1px);

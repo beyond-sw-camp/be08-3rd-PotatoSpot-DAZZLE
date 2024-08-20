@@ -1,7 +1,7 @@
 <template>
   <div class="gallery-container">
     <div class="image-gallery">
-      <div v-for="(imageUrl, index) in visibleImages" :key="index" class="image-wrapper">
+      <div v-for="(imageUrl, index) in visibleImages" :key="index" class="image-wrapper"  data-aos="zoom-in">
         <img 
           :src="imageUrl" 
           :alt="`Thumbnail ${index + 1}`" 
