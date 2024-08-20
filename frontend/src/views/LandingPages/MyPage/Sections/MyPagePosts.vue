@@ -1,16 +1,15 @@
 <template>
-  <section class="py-3">
+  <section class="photospot-section py-3">
     <div class="container">
-      <div class="row" style="border-bottom: 1px solid lightgray;">
-        <h3 class="mb-3">내 포토스팟</h3>
+      <div class="row section-header">
+        <h3 class="mb-3 text-center">내 포토스팟</h3>
       </div>
-      <div class="container mt-sm-3 mt-3 row">
-        <div class="col-md-3 mt-md-4" v-for="photospot in filteredPhotoSpots" :key="photospot.id">
-          <PostCard :image="photospot.imgUrl" :title="photospot.title" :postId="photospot.id"
+      <div class="row mt-4">
+        <div class="col-md-4 col-sm-6 mb-4 d-flex justify-content-center" v-for="photospot in filteredPhotoSpots" :key="photospot.id">
+          <PostCard class="photospot-card" :image="photospot.imgUrl" :title="photospot.title" :postId="photospot.id"
             @card-clicked="handleCardClick(photospot.id)" />
         </div>
       </div>
-      <!-- 모달 컴포넌트 렌더링 -->
       <DetailsSpotModal v-if="showModalDetailsSpot" :post-id="selectedPostId" @close="closeDetailsSpotModal" />
     </div>
   </section>
@@ -56,3 +55,47 @@ const filteredPhotoSpots = computed(() => {
   );
 });
 </script>
+
+<style scoped>
+.photospot-section {
+  color: white;
+  padding-bottom: 50px;
+  border-radius: 10px;
+}
+
+.section-header {
+  border-bottom: 2px solid lightgray;
+  padding-bottom: 10px;
+}
+
+.section-header h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #333;
+}
+
+.photospot-card {
+  width: 100%;
+  max-width: 350px; /* 카드의 최대 너비 설정 */
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photospot-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.photospot-card img {
+  border-radius: 10px;
+}
+
+.photospot-card .PostCard-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+}
+</style>
