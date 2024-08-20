@@ -1,6 +1,6 @@
-
 import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, increment, doc } from "firebase/firestore";
+
 
 export const postComment = async (spotId, userEmail, content) => {
   try {
@@ -8,7 +8,7 @@ export const postComment = async (spotId, userEmail, content) => {
       spotId: spotId,
       userEmail: userEmail,
       content: content,
-      timestamp: new Date()  // 댓글 작성 시간
+      timestamp: new Date(), // 댓글 작성 시간
     });
     console.log("문서 ID: ", docRef.id);
   } catch (e) {
@@ -16,36 +16,47 @@ export const postComment = async (spotId, userEmail, content) => {
   }
 };
 
-
-export const postPhotoSpot = async (userEmail, title, content, imgUrl, place, addr, x, y, likes, regTime) => {
+export const postPhotoSpot = async (
+  userEmail,
+  title,
+  content,
+  imgUrl,
+  place,
+  addr,
+  x,
+  y,
+  likes,
+  regTime
+) => {
   try {
     const docRef = await addDoc(collection(db, "photoSpots"), {
-      userEmail: userEmail,   // 사용자 email
-      title: title,   // 제목
-      content: content,   // 내용
+      userEmail: userEmail, // 사용자 email
+      title: title, // 제목
+      content: content, // 내용
       imgUrl: imgUrl, // 이미지 주소
-      place: place,   // 장소
-      addr: addr,     // 주소
-      x: x,       // x 좌표
-      y: y,       // y 좌표
-      likes: likes,   // 좋아요
-      regTime: regTime    // 등록 시간
+      place: place, // 장소
+      addr: addr, // 주소
+      x: x, // x 좌표
+      y: y, // y 좌표
+      likes: likes, // 좋아요
+      regTime: regTime, // 등록 시간
     });
-    console.log('문서 ID: ', docRef.id);
+    console.log("문서 ID: ", docRef.id);
   } catch (e) {
     console.error("에러 메시지: ", e);
   }
-}
+};
 
-// 포토스팟의 likes 필드를 증가시키는 함수
-export const incrementLikes = async (photoSpotId) => {
+export const incrementLikes = async (spotId) => {
   try {
-    const photoSpotRef = doc(db, "photoSpots", photoSpotId);
-    await updateDoc(photoSpotRef, {
-      likes: increment(1) // likes 필드의 값을 1 증가
+    // Firestore에서 해당 문서를 참조합니다.
+    const spotRef = doc(db, "photoSpots", spotId);
+    
+    // likes 값을 1 증가시킵니다.
+    await updateDoc(spotRef, {
+      likes: increment(1),
     });
-    console.log('Likes 증가 성공');
-  } catch (e) {
-    console.error("에러 메시지: ", e);
+  } catch (error) {
+    console.error("Error incrementing likes:", error);
   }
 };
