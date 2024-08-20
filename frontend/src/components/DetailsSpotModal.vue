@@ -1,5 +1,6 @@
 <template>
-  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog"
+    @click="closeModal">
     <div class="modal-dialog modal-dialog-centered modal-xl" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
@@ -22,7 +23,7 @@
           <!-- 오른쪽: 댓글 섹션 -->
           <div class="comments-section" style="flex: 1;">
             <div class="comments-header">
-              <h6>댓글</h6>
+              <h6>Comments</h6>
             </div>
             <ul class="comments-list">
               <li v-for="comment in comments" :key="comment.id">
@@ -30,10 +31,11 @@
               </li>
             </ul>
             <form @submit.prevent="handleCommentSubmit" class="comment-form mt-3">
-              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요" rows="3">
+              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요"
+                rows="3">
               </MaterialInput>
               <MaterialButton class="my-3 mb-2" variant="gradient" color="dark" fullWidth type="submit">
-                댓글 작성
+                Send comments
               </MaterialButton>
             </form>
           </div>
@@ -183,8 +185,10 @@ const incrementLike = async (spotId) => {
 .comments-section {
   border-left: 1px solid #ccc;
   padding-left: 20px;
-  max-height: 500px; /* 댓글 섹션의 최대 높이 설정 */
-  overflow-y: auto; /* 댓글 섹션에 스크롤바 추가 */
+  max-height: 500px;
+  /* 댓글 섹션의 최대 높이 설정 */
+  overflow-y: auto;
+  /* 댓글 섹션에 스크롤바 추가 */
   flex: 1;
   display: flex;
   flex-direction: column;
