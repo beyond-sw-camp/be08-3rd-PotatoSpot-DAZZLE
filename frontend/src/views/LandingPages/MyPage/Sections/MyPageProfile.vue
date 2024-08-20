@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { computed, watch, onMounted } from "vue";
 import { useUserStore } from '../../../../stores/userStore';
 import MaterialAvatar from "@/components/MaterialAvatar.vue";
 import UserDataCounter from "../components/UserDataCounter.vue";
@@ -9,14 +9,17 @@ import { faUserEdit, faThumbsUp, faFileAlt } from '@fortawesome/free-solid-svg-i
 
 const userStore = useUserStore();
 
-const profilePic = ref(userStore.profilePic);
-const userName = ref(userStore.userName);
-const postCount = ref(userStore.postCount);
-const totalLikes = ref(userStore.totalLikes);
+// computed를 사용하여 userStore의 상태를 동적으로 반영
+const profilePic = computed(() => userStore.profilePic);
+const userName = computed(() => userStore.userName);
+const postCount = computed(() => userStore.postCount);
+const totalLikes = computed(() => userStore.totalLikes);
 
-onMounted(() => {
+onMounted(async () => {
   setMaterialInput();
+  await userStore.fetchUserData(); // 페이지가 로드될 때 사용자 데이터를 가져옴
 });
+
 </script>
 
 <template>
@@ -26,7 +29,8 @@ onMounted(() => {
         <div class="col-12 mx-auto">
           <div class="avatar-container mt-n8 mt-md-n9 text-center">
             <div class="blur-shadow-avatar">
-              <MaterialAvatar size="xxl" class="shadow-xl position-relative z-index-2 border border-light" :image="profilePic" alt="Avatar" />
+              <MaterialAvatar size="xxl" class="shadow-xl position-relative z-index-2 border border-light"
+                :image="profilePic" alt="Avatar" />
             </div>
           </div>
           <div class="row py-5">

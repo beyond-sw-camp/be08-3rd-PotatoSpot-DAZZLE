@@ -5,7 +5,8 @@
         <h3 class="mb-3 text-center">내 포토스팟</h3>
       </div>
       <div class="row mt-4">
-        <div class="col-md-4 col-sm-6 mb-4 d-flex justify-content-center" v-for="photospot in filteredPhotoSpots" :key="photospot.id">
+        <div class="col-md-4 col-sm-6 mb-4 d-flex justify-content-center" v-for="photospot in filteredPhotoSpots"
+          :key="photospot.id">
           <PostCard class="photospot-card" :image="photospot.imgUrl" :title="photospot.title" :postId="photospot.id"
             @card-clicked="handleCardClick(photospot.id)" />
         </div>
@@ -63,14 +64,14 @@ const filteredPhotoSpots = computed(() => {
 
 .photospot-card {
   width: 100%;
-  max-width: 350px; /* 카드의 최대 너비 설정 */
+  max-width: 350px;
+  /* 카드의 최대 너비 설정 */
   border: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .photospot-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .photospot-card img {
