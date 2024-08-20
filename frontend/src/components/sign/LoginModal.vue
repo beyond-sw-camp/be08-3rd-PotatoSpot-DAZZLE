@@ -7,12 +7,14 @@ import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase';
+import { useUserStore } from '../../stores/userStore';
 
 const emit = defineEmits(['close', 'signupModal']);
 
 const email = ref('');
 const password = ref('');
 const firebaseUser = ref(null);
+const userStore = useUserStore();
 
 onAuthStateChanged(auth, user => {
   firebaseUser.value = user;
@@ -35,7 +37,7 @@ const handleSubmit = async () => {
     if (auth.currentUser.isAnonymous) {
       alert('로그인 실패');
     } else {
-      alert('어서오세요!');
+      alert('로그인 Email : ' + email.value);
       emit('close');
     }
   } else {
@@ -46,7 +48,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog"
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block;" aria-modal="true" role="dialog"
     @click="closeModal">
     <div class="modal-dialog modal-dialog-centered" @click.stop>
       <div class="modal-content">
@@ -80,5 +82,17 @@ const handleSubmit = async () => {
 <style scoped>
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 애니메이션 효과 추가 */
+.modal-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 </style>

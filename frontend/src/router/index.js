@@ -51,7 +51,7 @@ const router = createRouter({
       path: "/map",
       name: "map",
       component: MapView,
-    },
+    },  
     {
       path: "/pages/landing-pages/basic",
       name: "signin-basic",

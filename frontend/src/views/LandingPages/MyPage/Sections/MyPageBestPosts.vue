@@ -12,7 +12,7 @@
               <RotatingCardFront :image="post.imgUrl" />
               <RotatingCardBack :image="post.imgUrl" :title="post.title" :description="post.content" :action="[
                 {
-                  route: '/',
+                  route: `/map/${post.x}/${post.y}`,
                   label: '지도에서 확인하기',
                 },
               ]" />
@@ -23,6 +23,7 @@
     </div>
   </section>
 </template>
+
 
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';

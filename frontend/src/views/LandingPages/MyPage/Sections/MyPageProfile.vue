@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useUserStore } from '../../../../stores/userStore';
 import MaterialAvatar from "@/components/MaterialAvatar.vue";
 import UserDataCounter from "../components/UserDataCounter.vue";
@@ -8,6 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faUserEdit, faThumbsUp, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
 const userStore = useUserStore();
+
+const profilePic = ref(userStore.profilePic);
+const userName = ref(userStore.userName);
+const postCount = ref(userStore.postCount);
+const totalLikes = ref(userStore.totalLikes);
 
 onMounted(() => {
   setMaterialInput();
@@ -21,23 +26,23 @@ onMounted(() => {
         <div class="col-12 mx-auto">
           <div class="avatar-container mt-n8 mt-md-n9 text-center">
             <div class="blur-shadow-avatar">
-              <MaterialAvatar size="xxl" class="shadow-xl position-relative z-index-2 border border-light" :image="userStore.profilePic" alt="Avatar" />
+              <MaterialAvatar size="xxl" class="shadow-xl position-relative z-index-2 border border-light" :image="profilePic" alt="Avatar" />
             </div>
           </div>
           <div class="row py-5">
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto text-center">
-              <h1 class="profile-name mb-3">{{ userStore.userName }}</h1>
+              <h1 class="profile-name mb-3">{{ userName }}</h1>
               <button class="btn btn-gradient btn-lg mb-4" @click="$emit('open-modal-edit')">
                 <FontAwesomeIcon :icon="faUserEdit" /> Edit Profile
               </button>
               <div class="d-flex justify-content-around align-items-center mb-4">
                 <div class="col-auto text-center">
-                  <UserDataCounter title="Posts" color="dark" :count="userStore.postCount" :duration="4000">
+                  <UserDataCounter title="Posts" color="dark" :count="postCount" :duration="4000">
                     <FontAwesomeIcon :icon="faFileAlt" class="me-2" />
                   </UserDataCounter>
                 </div>
                 <div class="col-auto text-center">
-                  <UserDataCounter title="Likes" color="dark" :count="userStore.totalLikes" :duration="4000">
+                  <UserDataCounter title="Likes" color="dark" :count="totalLikes" :duration="4000">
                     <FontAwesomeIcon :icon="faThumbsUp" class="me-2" />
                   </UserDataCounter>
                 </div>
@@ -51,6 +56,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 기존 스타일 그대로 유지 */
 .profile-section {
   color: white;
   padding-bottom: 50px;

@@ -34,7 +34,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog" @click.self="closeModal">
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block;" aria-modal="true" role="dialog" @click.self="closeModal">
     <div class="modal-dialog modal-dialog-centered" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
@@ -64,5 +64,17 @@ const handleSubmit = async () => {
 <style scoped>
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 애니메이션 효과 추가 */
+.modal-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 </style>

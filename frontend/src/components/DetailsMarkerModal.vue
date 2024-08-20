@@ -1,5 +1,11 @@
 <template>
-  <div class="modal fade show" tabindex="-1" style="display: block" aria-modal="true" role="dialog">
+  <div
+    class="modal fade show modal-fade-in"
+    tabindex="-1"
+    style="display: block"
+    aria-modal="true"
+    role="dialog"
+  >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <div class="modal-header">
@@ -11,12 +17,23 @@
           <div class="left-section">
             <h6>Photo Spots</h6>
             <ul v-if="filteredPhotoSpots.length">
-              <li v-for="spot in filteredPhotoSpots" :key="spot.id" @click="viewDetail(spot.id)">
+              <li
+                v-for="spot in filteredPhotoSpots"
+                :key="spot.id"
+                @click="viewDetail(spot.id)"
+              >
                 <div class="spot-card">
-                  <img :src="spot.imgUrl" alt="포토스팟 이미지" class="spot-image" />
+                  <img
+                    :src="spot.imgUrl"
+                    alt="포토스팟 이미지"
+                    class="spot-image"
+                  />
                   <div class="spot-info">
                     <p class="spot-title">{{ spot.title }}</p>
-                    <button @click.stop="incrementLike(spot.id)" class="like-button">
+                    <button
+                      @click.stop="incrementLike(spot.id)"
+                      class="like-button"
+                    >
                       <span class="like-count">{{ spot.likes }}</span>
                       <span class="heart-icon">&#10084;</span>
                     </button>
@@ -24,7 +41,9 @@
                 </div>
               </li>
             </ul>
-            <p v-else class="no-photo-spots-message">첫 포토스팟을 등록해보세요!!</p>
+            <p v-else class="no-photo-spots-message">
+              첫 포토스팟을 등록해보세요!!
+            </p>
           </div>
           <!-- 오른쪽: 마커 정보 -->
           <div class="right-section">
@@ -33,8 +52,13 @@
             <p><strong>경도:</strong> {{ selectX }}</p>
             <p><strong>주소:</strong> {{ selectPlaceAddr }}</p>
             <p><strong>장소명:</strong> {{ selectPlaceName }}</p>
-            <MaterialButton class="register-button mt-auto" variant="gradient" color="dark" fullWidth
-              @click="registerPhotoSpot">
+            <MaterialButton
+              class="register-button mt-auto"
+              variant="gradient"
+              color="dark"
+              fullWidth
+              @click="registerPhotoSpot"
+            >
               PHOTOSPOT 등록
             </MaterialButton>
           </div>
@@ -44,13 +68,12 @@
   </div>
 </template>
 
-
-
 <script setup>
 import { ref, computed } from "vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import { usePhotoSpotStore } from "@/stores/photoSpotStore";
-import { incrementLikes } from '@/utils/utilsDb';
+import { incrementLikes } from "@/utils/utilsDb";
+import { useUserStore } from "../stores/userStore";
 
 const props = defineProps({
   x: String,
@@ -61,25 +84,28 @@ const props = defineProps({
 
 const emit = defineEmits(["close", "view"]);
 const photoSpotStore = usePhotoSpotStore();
+const userStore = useUserStore();
 const filteredPhotoSpots = computed(() => {
   return photoSpotStore.photoSpots
     .filter((spot) => spot.addr === props.address)
     .sort((a, b) => b.likes - a.likes);
 });
 
-
 const selectX = ref(props.x);
 const selectY = ref(props.y);
 const selectPlaceName = ref(props.location);
 const selectPlaceAddr = ref(props.address);
-const likes = computed(() => photoSpotStore.likes)
 
 const incrementLike = async (spotId) => {
-  try {
-    await incrementLikes(spotId);
-    photoSpotStore.fetchPhotoSpots();
-  } catch (error) {
-    console.error("Error incrementing like:", error);
+  if (userStore.firebaseUser === null) {
+    alert("로그인 후 이용해주세요!");
+  } else {
+    try {
+      await incrementLikes(spotId);
+      photoSpotStore.fetchPhotoSpots();
+    } catch (error) {
+      console.error("Error incrementing like:", error);
+    }
   }
 };
 
@@ -96,7 +122,6 @@ const viewDetail = (spotId) => {
 };
 </script>
 
-
 <style scoped>
 .modal {
   background-color: rgba(0, 0, 0, 0.7);
@@ -109,6 +134,18 @@ const viewDetail = (spotId) => {
   width: 100%;
   height: 100%;
   z-index: 1050;
+}
+
+/* 애니메이션 효과 추가 */
+.modal-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-dialog {
@@ -162,7 +199,6 @@ const viewDetail = (spotId) => {
   flex: 1;
   padding: 1rem;
   overflow: hidden;
-  /* 모달의 바디 영역에서 스크롤을 처리 */
 }
 
 .left-section {
@@ -173,7 +209,6 @@ const viewDetail = (spotId) => {
   padding: 1rem;
   box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  /* 스크롤 가능하도록 설정 */
 }
 
 .left-section h6 {
