@@ -4,29 +4,33 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ post.title }}</h5>
-          <button @click="likePost" class="like-button">
-            <span class="like-count">{{ post.likes + likeCount }}</span>
+          <button @click="incrementLike(postId)" class="like-button">
+            <span class="like-count">{{ post.likes }}</span>
             <span class="heart-icon">&#10084;</span>
           </button>
         </div>
         <div class="modal-body d-flex">
-          <!-- 왼쪽: 게시글 이미지 -->
-          <div class="post-image">
-            <img :src="post.imgUrl" alt="Post Image" class="img-fluid" />
+          <!-- 왼쪽: 게시글 이미지 및 내용 -->
+          <div class="post-details d-flex flex-column" style="flex: 2; padding-right: 20px;">
+            <div class="post-image mb-3">
+              <img :src="post.imgUrl" alt="Post Image" class="img-fluid" />
+            </div>
+            <div class="post-content">
+              <p class="content-text">{{ post.content }}</p>
+            </div>
           </div>
           <!-- 오른쪽: 댓글 섹션 -->
-          <div class="comments-section ml-3 d-flex flex-column justify-content-between">
-            <div class="comments-list">
+          <div class="comments-section" style="flex: 1;">
+            <div class="comments-header">
               <h6>댓글</h6>
-              <ul>
-                <li v-for="comment in comments" :key="comment.id">
-                  {{ comment.content }}
-                </li>
-              </ul>
             </div>
-            <form @submit.prevent="handleCommentSubmit" class="comment-form mt-auto">
-              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요"
-                rows="3">
+            <ul class="comments-list">
+              <li v-for="comment in comments" :key="comment.id">
+                {{ comment.content }}
+              </li>
+            </ul>
+            <form @submit.prevent="handleCommentSubmit" class="comment-form mt-3">
+              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요" rows="3">
               </MaterialInput>
               <MaterialButton class="my-3 mb-2" variant="gradient" color="dark" fullWidth type="submit">
                 댓글 작성
@@ -45,9 +49,8 @@ import MaterialButton from "@/components/MaterialButton.vue";
 import MaterialInput from "@/components/MaterialInput.vue";
 import { usePhotoSpotStore } from "@/stores/photoSpotStore";
 import { useReviewStore } from "../stores/reviewStore";
-import { postComment } from "../utils/utilsDb";
+import { postComment, incrementLikes } from "../utils/utilsDb";
 import { useUserStore } from "../stores/userStore";
-
 
 const props = defineProps({
   postId: {
@@ -67,8 +70,8 @@ const post = computed(() =>
 );
 
 const newComment = ref("");
-const likeCount = ref(0);
 
+const likes = computed(() => photoSpotStore.likes);
 const comments = computed(() => reviewStore.comments);
 
 const closeModal = () => {
@@ -77,44 +80,40 @@ const closeModal = () => {
 
 const handleCommentSubmit = async () => {
   if (newComment.value.trim()) {
-    // 댓글을 Firestore에 추가
-    await postComment(props.postId, userStore.userEmail, newComment.value.trim()); // 사용자 이메일은 실제 사용자의 이메일로 교체
+    await postComment(props.postId, userStore.userEmail, newComment.value.trim());
     newComment.value = "";
-    // 댓글 목록을 다시 불러오기
     reviewStore.fetchComments(props.postId);
   } else {
     alert("댓글 내용을 입력해주세요!");
   }
 };
 
-// 포토스팟의 댓글을 가져옵니다.
 onMounted(() => {
   reviewStore.fetchComments(props.postId);
 });
 
-const likePost = () => {
-  likeCount.value++;
+const incrementLike = async (spotId) => {
+  try {
+    await incrementLikes(spotId);
+    photoSpotStore.fetchPhotoSpots();
+  } catch (error) {
+    console.error("Error incrementing like:", error);
+  }
 };
 </script>
 
 <style scoped>
 .modal {
   background-color: rgba(0, 0, 0, 0.8);
-  /* 배경을 더 어둡게 설정 */
   display: flex;
-  /* 중앙 정렬을 위해 flexbox 사용 */
   align-items: center;
-  /* 수직 중앙 정렬 */
   justify-content: center;
-  /* 수평 중앙 정렬 */
   position: fixed;
-  /* 화면 고정 */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 1050;
-  /* 다른 요소들보다 앞에 오도록 설정 */
 }
 
 .modal-header {
@@ -127,19 +126,18 @@ const likePost = () => {
 
 .modal-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .like-button {
   background: none;
   border: none;
   color: #f00;
-  font-size: 30px;
+  font-size: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-weight: bold;
 }
 
 .heart-icon {
@@ -147,50 +145,56 @@ const likePost = () => {
 }
 
 .like-count {
-  font-size: 26px;
+  font-size: 20px;
   margin-right: 5px;
 }
 
 .modal-body {
+  padding: 1rem;
   display: flex;
-  justify-content: space-between;
-}
-
-.post-image {
-  flex: 2;
-  max-width: 100%;
-  padding-right: 20px;
-  position: relative;
 }
 
 .post-image img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  height: auto;
   object-fit: cover;
   border-radius: 5px;
 }
 
+
+.content-text {
+  font-size: 1.3rem;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
 .comments-section {
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
+  max-height: 500px; /* 댓글 섹션의 최대 높이 설정 */
+  overflow-y: auto; /* 댓글 섹션에 스크롤바 추가 */
   flex: 1;
-  max-width: 40%;
-  padding-left: 10px;
   display: flex;
   flex-direction: column;
 }
 
-.comments-list {
-  overflow-y: auto;
-  max-height: 350px;
-  margin-bottom: 10px;
+.comments-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+  padding-bottom: 10px;
 }
 
-.comments-section ul {
+.comments-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.comments-section li {
+.comments-list li {
   margin-bottom: 10px;
   padding: 8px;
   border-bottom: 1px solid #ccc;
@@ -199,11 +203,15 @@ const likePost = () => {
 }
 
 .comment-form {
-  margin-top: auto;
+  margin-top: 20px;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-top: 10px;
 }
 
 .commentInput {
-  border-bottom: black 1px solid;
+  border-bottom: 1px solid black;
   padding-left: 10px;
   border-radius: 5px;
 }
