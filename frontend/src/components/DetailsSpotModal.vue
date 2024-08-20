@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade show" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
+  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog" @click="closeModal">
     <div class="modal-dialog modal-dialog-centered modal-xl" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
@@ -114,6 +114,18 @@ const incrementLike = async (spotId) => {
   width: 100%;
   height: 100%;
   z-index: 1050;
+}
+
+/* 애니메이션 효과 추가 */
+.modal-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-header {
