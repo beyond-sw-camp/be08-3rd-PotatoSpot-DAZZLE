@@ -1,0 +1,11 @@
+{
+  "name": "be08-3rd-potatospot-dazzle",
+  "version": "1.0.0",
+  "description": "![logo-eng-horiz]()\r > [PLAYDATA] 한화시스템 BEYOND SW캠프 / DAZZLE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

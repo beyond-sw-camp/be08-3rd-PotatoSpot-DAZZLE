@@ -2,7 +2,7 @@
   <div class="gallery-container">
     <h2>Recently added Photos</h2><br>
     <div class="image-gallery">
-      <div v-for="(imageUrl, index) in visibleImages" :key="index" class="image-wrapper">
+      <div v-for="(imageUrl, index) in visibleImages" :key="index" class="image-wrapper"  data-aos="zoom-in">
         <img 
           :src="imageUrl" 
           :alt="`Thumbnail ${index + 1}`" 

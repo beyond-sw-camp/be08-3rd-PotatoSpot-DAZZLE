@@ -42,6 +42,11 @@ onUnmounted(() => {
   body.classList.remove("presentation-page");
   body.classList.remove("bg-gray-200");
 });
+
+//anime
+import TextAnime1 from "../../components/TextAnime1.vue";
+const anime1 = true;
+
 </script>
 
 <template>
@@ -57,9 +62,10 @@ onUnmounted(() => {
       <div class="container">
         <div class="row">
           <div class="col-lg-7 text-center mx-auto position-relative">
-            <h1 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-              DAZZLE
+            <h1 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }" >
+              <TextAnime1 v-if="anime1"/>
             </h1>
+            
             <p class="lead text-white px-5 mt-3" :style="{ fontWeight: '500' }">
               당신의 포토스팟을 공유하세요.
             </p>

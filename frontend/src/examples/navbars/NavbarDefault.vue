@@ -208,7 +208,7 @@ watch(
               <i class="material-icons opacity-6 me-2 text-md" :class="getTextColor()">
                 logout
               </i>
-              로그아웃
+              logout
             </a>
           </li>
         </ul>

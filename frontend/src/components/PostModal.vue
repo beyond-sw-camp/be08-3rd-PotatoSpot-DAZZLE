@@ -32,7 +32,13 @@ const getKoreanFormattedDate = () => {
 };
 
 const closeModal = () => {
-  emit("close");
+  const modalElement = document.querySelector('.modal');
+  
+  modalElement.classList.remove('show');
+  
+  setTimeout(() => {
+    emit("close");
+  }, 300);
 };
 
 const handleImageUpload = (event) => {
@@ -120,7 +126,23 @@ const handleSubmit = async () => {
 
 
 <style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.modal.show {
+  animation-name: fadeIn;
 }
 </style>
+

@@ -22,17 +22,21 @@ onMounted(() => {
             <div class="blur-shadow-avatar">
               <MaterialAvatar size="xxl" class="shadow-xl position-relative z-index-2" :image="profilePic"
                 alt="Avatar" />
+                
             </div>
           </div>
           <div class="row py-5">
+            
             <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto">
+              <h1 class="mb-3">{{ userStore.userName }}</h1>
+              <button class="btn btn-primary">Edit Profile</button>
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-3">{{ userStore.userName }}</h1>
+                
                 <div class="col-auto">
-                  <UserDataCounter title="게시글" color="dark" :count="userStore.postCount" :duration="4000" />
+                  <UserDataCounter title="Posts" color="dark" :count="userStore.postCount" :duration="4000" />
                 </div>
                 <div class="col-auto">
-                  <UserDataCounter title="좋아요" color="dark" :count="userStore.totalLikes" :duration="4000" />
+                  <UserDataCounter title="Like" color="dark" :count="userStore.totalLikes" :duration="4000" />
                 </div>
               </div>
             </div>
