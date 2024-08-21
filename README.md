@@ -105,16 +105,16 @@
 [StroyBoard 바로가기](https://docs.google.com/spreadsheets/d/1erC0ZYgndRczrHjTK33b4S2XjZLPtycP49d3DMc6v0M/edit?gid=127022753#gid=127022753)
 
 - 메인 페이지
-  <br>
-  
+  <img width="1331" alt="메인 페이지" src="https://github.com/user-attachments/assets/f5e7f143-ea93-41e3-8a3c-f8a6c45c41ad">
+  <img width="1336" alt="게시물 리스트" src="https://github.com/user-attachments/assets/783c4d60-3a77-4e43-bfa2-f4f26e3055ab">
+  <img width="1330" alt="랭킹 리스트" src="https://github.com/user-attachments/assets/dba4c092-56d9-4516-9572-3200fbcd1376">
   
 - 지도 페이지
-  <br>
-  
+  <img width="1338" alt="스크린샷 2024-08-21 17 13 54" src="https://github.com/user-attachments/assets/9cda9855-2fb6-4651-88ac-4a26c369a078">
+
   
 - 마이 페이지
-  <br>
-  
+  <img width="1332" alt="스크린샷 2024-08-21 17 14 05" src="https://github.com/user-attachments/assets/1bf2bd20-41cd-4fd4-b726-ed70cc8e5cc8">
 
 <br>
 
