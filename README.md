@@ -102,7 +102,7 @@
 
 ### 3. StoryBoard
 
-[StroyBoard 바로가기]()
+[StroyBoard 바로가기](https://docs.google.com/spreadsheets/d/1erC0ZYgndRczrHjTK33b4S2XjZLPtycP49d3DMc6v0M/edit?gid=127022753#gid=127022753)
 
 - 메인 페이지
   <br>
@@ -125,15 +125,16 @@
 
 ## 💾 Project Implementation
 
-### 1. API Specification
+### 1. Functional Implementation
+
+<details>
+  <summary>Header 테스트</summary>
+  
+</details>
 
 <br>
 
-### 2. Functional Implementation
-
-<br>
-
-### 3. Test Case
+### 2. Test Case
 
 [Test Case 바로가기](https://docs.google.com/spreadsheets/d/1oyT1vbGl-SeE_M7-XgS_0SDHEnpquFyEUZsGSfqJK7A/edit?gid=0#gid=0)
 <p align="center">
