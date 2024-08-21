@@ -4,7 +4,7 @@
 
 > Team - PotatoSpot
 
-> Site - https://dazzle-sigma.vercel.app/
+> Site - https://dazzle-ashen.vercel.app/
 <br>
 
 ## ✨ Medium
@@ -98,11 +98,23 @@
   <br>
   <img width="525" alt="랭킹 컴포넌트" src="https://github.com/user-attachments/assets/368d78ff-c7b3-48b6-9202-5bcb79056f34">
 
-
-
 <br>
 
 ### 3. StoryBoard
+
+[StroyBoard 바로가기]()
+
+- 메인 페이지
+  <br>
+  
+  
+- 지도 페이지
+  <br>
+  
+  
+- 마이 페이지
+  <br>
+  
 
 <br>
 
