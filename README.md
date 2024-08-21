@@ -153,7 +153,7 @@
 
 [김도하](https://github.com/esueng)|[김종원](https://github.com/jongwon-kr)|[이은서](https://github.com/tkckdnjs)|[임지훈](https://github.com/limjihoon99)|[정수진](https://github.com/Sujina2024)|
 ------|------|------|--------------------------------------|------|
-<img alt="김도하" src="" width="400"/> | <img alt="김종원" src="" width="400"/> | <img alt="이은서" src="" width="400"/> | <img alt="임지훈" src="" width="400"/> | <img alt="정수진" src="" width="400"/> | 
+<img alt="김도하" src="https://github.com/user-attachments/assets/3d1f837d-012f-4f3a-ac5b-bbd038b6fc0d" width="400"/> | <img alt="김종원" src="https://github.com/user-attachments/assets/25b20fa4-ec92-4133-b08b-e68b82a98e88" width="400"/> | <img alt="이은서" src="https://github.com/user-attachments/assets/4d974e26-5eb0-479f-9731-172347f2ddda" width="400"/> | <img alt="임지훈" src="https://github.com/user-attachments/assets/16859c17-e7a7-4e23-8cc6-464df8fad7ff" width="400"/> | <img alt="정수진" src="https://github.com/user-attachments/assets/d235e42a-c5d5-4016-a071-914e7edbd1bd" width="400"/> | 
 Developer|Developer|Developers|Leader, Developer|Developer|
 
 <br>
