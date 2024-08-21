@@ -9,6 +9,7 @@ import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
 import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 import Header from "../../examples/Header.vue";
 import FilledInfoCard from "../../examples/cards/infoCards/FilledInfoCard.vue";
+import Anker from "../../examples/Anker.vue";
 
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
@@ -74,17 +75,26 @@ const anime1 = true;
       </div>
     </div>
   </Header>
-
+  <Anker/>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
-    <PresentationCounter />
-    <Thumbnails/>
-    <RankingList/>
-    <PresentationInformation />
+    <div id="presentationCounter">
+      <PresentationCounter />
+    </div>
+
+    <div id="thumbnails">
+      <Thumbnails/>
+    </div>
+
+    <div id="rankingList">
+      <RankingList/>
+    </div>
+    <!-- <PresentationInformation />
     <PresentationExample :data="data" />
     <PresentationPages />
-    <BuiltByDevelopers />
+    <BuiltByDevelopers /> -->
 
-    <div class="container">
+
+    <!-- <div class="container">
       <div class="row">
         <div class="col-lg-4">
           <FilledInfoCard class="p-4" :color="{ text: 'white', background: 'bg-gradient-success' }"
@@ -115,8 +125,8 @@ const anime1 = true;
                 }" />
         </div>
       </div>
-    </div>
-    <PresentationTestimonials />
+    </div> -->
+    <!-- <PresentationTestimonials /> -->
 
     <div class="container-fluid mt-sm-5 border-radius-xl" :style="{
       background: 'linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25))'

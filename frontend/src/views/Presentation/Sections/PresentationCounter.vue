@@ -11,9 +11,8 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
             <div class="col-md-4 position-relative">
               <DefaultCounterCard
                 color="success"
-                title="Coded Elements"
-                description="From buttons, to inputs, navbars, alerts or cards, you are
-                  covered"
+                title="Recent Posts"
+                description="Explore variety posts shared by others."
                 :count="70"
                 suffix="+"
                 :duration="3000"
