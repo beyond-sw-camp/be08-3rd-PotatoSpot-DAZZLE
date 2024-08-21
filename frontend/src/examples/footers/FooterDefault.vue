@@ -50,72 +50,25 @@ defineProps({
     },
     default: () => [
       {
-        name: "company",
+        name: "About Us",
         items: [
           {
-            name: "about us",
-            href: "https://www.creative-tim.com/presentation"
+            name: "GitHub",
+            href: "https://github.com/limjihoon99/be08-3rd-PotatoSpot-DAZZLE.git"
           },
           {
-            name: "freebies",
-            href: "https://www.creative-tim.com/templates/free"
-          },
-          {
-            name: "premium tools",
-            href: "https://www.creative-tim.com/templates/premium"
-          },
-          { name: "blog", href: "https://www.creative-tim.com/blog" }
+            name: "Notion",
+            href: "https://charming-hospital-33d.notion.site/PotatoSpot-25078cd8018e471aa6be255639f2bee0"
+          }
         ]
       },
       {
-        name: "resources",
+        name: "Resources",
         items: [
           { name: "illustrations", href: "https://iradesign.io/" },
           {
-            name: "bits & snippets",
-            href: "https://www.creative-tim.com/bits"
-          },
-          {
-            name: "affiliate program",
-            href: "https://www.creative-tim.com/affiliates/new"
-          }
-        ]
-      },
-      {
-        name: "help & support",
-        items: [
-          {
-            name: "contact us",
-            href: "https://www.creative-tim.com/contact-us"
-          },
-          {
-            name: "knowledge center",
-            href: "https://www.creative-tim.com/knowledge-center"
-          },
-          {
-            name: "custom development",
-            href: "https://services.creative-tim.com/"
-          },
-          {
-            name: "sponsorships",
-            href: "https://www.creative-tim.com/sponsorships"
-          }
-        ]
-      },
-      {
-        name: "legal",
-        items: [
-          {
-            name: "terms & conditions",
-            href: "https://www.creative-tim.com/terms"
-          },
-          {
-            name: "privacy policy",
-            href: "https://www.creative-tim.com/privacy"
-          },
-          {
-            name: "licenses (EULA)",
-            href: "https://www.creative-tim.com/license"
+            name: "icons",
+            href: "https://fonts.google.com/icons"
           }
         ]
       }
@@ -126,19 +79,16 @@ defineProps({
 <template>
   <footer class="footer pt-5 mt-5">
     <div class="container">
-      <div class="row">
-        <div class="col-md-3 mb-4 ms-auto">
+      <div class="row justify-content-center">
+        <div class="col-md-3 mb-4 text-center">
           <div>
             <a :href="brand.route">
               <img :src="brand.logo" class="mb-3 footer-logo" alt="main_logo" />
-
             </a>
-              <!-- <img :src="logoSrc" class="mb-3 footer-logo" alt="main_logo" /> -->
-            
             <h6 class="font-weight-bolder mb-4">DAZZLE</h6>
           </div>
           <div>
-            <ul class="d-flex flex-row ms-n3 nav">
+            <ul class="d-flex justify-content-center flex-row ms-n3 nav">
               <li
                 class="nav-item"
                 v-for="{ icon, link } of socials"
@@ -156,7 +106,7 @@ defineProps({
           </div>
         </div>
         <div
-          class="col-md-2 col-sm-6 col-6 mb-4"
+          class="col-md-2 col-sm-6 col-6 mb-4 text-center"
           v-for="{ name, items } of menus"
           :key="name"
         >
@@ -175,9 +125,9 @@ defineProps({
             <p class="text-dark my-4 text-sm font-weight-normal">
               All rights reserved. Copyright ©
               {{ new Date().getFullYear() }}
-              Material Kit by
-              <a href="https://www.creative-tim.com" target="_blank"
-                >Creative Tim</a
+              DAZZLE by
+              <a href="https://github.com/limjihoon99/be08-3rd-PotatoSpot-DAZZLE.git" target="_blank"
+                >PotatoSpot</a
               >.
             </p>
           </div>
@@ -186,4 +136,5 @@ defineProps({
     </div>
   </footer>
 </template>
+
 
