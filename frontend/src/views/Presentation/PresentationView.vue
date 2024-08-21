@@ -51,25 +51,19 @@ const closeDetailSpotModal = () => {
 
 
 // 스크롤 이벤트 리스너 등록
+const body = document.getElementsByTagName("body")[0];
 onMounted(() => {
-    scrollY.value = window.scrollY; // 초기 스크롤 위치 설정
-    window.addEventListener("scroll", handleScroll);
+  body.classList.add("presentation-page");
+  body.classList.add("bg-gray-200");
 });
-
 onUnmounted(() => {
-    window.removeEventListener("scroll", handleScroll);
+  body.classList.remove("presentation-page");
+  body.classList.remove("bg-gray-200");
 });
 
-function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({
-            top: sectionPosition - offset,
-            behavior: 'smooth'
-        });
-    }
-}
+//anime
+import TextAnime1 from "../../components/TextAnime1.vue";
+const anime1 = true;
 </script>
 
 <template>
