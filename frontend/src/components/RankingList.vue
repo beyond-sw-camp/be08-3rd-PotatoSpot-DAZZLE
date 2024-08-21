@@ -83,7 +83,10 @@ export default {
   padding: 20px; 
   box-sizing: border-box; 
   position: relative; 
-  transform: translateX(-20px); 
+  /*transform: translateX(-20px); */
+  ul {
+    padding-right: 32px;
+  }
 }
 
 .ranking-item {
