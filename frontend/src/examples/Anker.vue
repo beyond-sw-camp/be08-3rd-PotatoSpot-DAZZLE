@@ -71,7 +71,7 @@ function scrollToSection(sectionId) {
         <MaterialButton 
             color="light" 
             class="vertical-button" 
-            @click="scrollToSection('presentationCounter')"
+            @click="scrollToSection('top')"
         >
             Presentation<br />Counter
         </MaterialButton>

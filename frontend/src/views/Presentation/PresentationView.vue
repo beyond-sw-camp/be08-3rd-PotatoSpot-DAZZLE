@@ -1,48 +1,54 @@
 <script setup>
-// Vue Material Kit 2 components
-import MaterialButton from "@/components/MaterialButton.vue";
-import { ref, onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted ,ref} from "vue";
 
-// 스크롤 위치와 가속도 변수
-const scrollY = ref(window.scrollY);
-const translateY = ref(0);
-let scrollTimeout = null;
+import Thumbnails from "@/components/Thumbnails.vue";
+import RankingList from "@/components/RankingList.vue";
 
-// 스크롤 오프셋 (원하는 만큼 조정 가능)
-const offset = 100;
+//example components
+import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
+import DefaultFooter from "../../examples/footers/FooterDefault.vue";
+import Header from "../../examples/Header.vue";
+import FilledInfoCard from "../../examples/cards/infoCards/FilledInfoCard.vue";
 
-// 가속도 계수와 최대 이동 범위 설정
-const accelerationFactor = 0.3; // 가속도 계수 약간 감소
-const maxTranslateY = 1500; // 최대 이동 범위
+//Vue Material Kit 2 components
+import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 
-let targetTranslateY = ref(0);
+// sections
+import PresentationCounter from "./Sections/PresentationCounter.vue";
+import PresentationPages from "./Sections/PresentationPages.vue";
+import PresentationExample from "./Sections/PresentationExample.vue";
+import data from "./Sections/Data/designBlocksData";
+import BuiltByDevelopers from "./Components/BuiltByDevelopers.vue";
+import PresentationTestimonials from "./Sections/PresentationTestimonials.vue";
+import PresentationInformation from "./Sections/PresentationInformation.vue";
 
-const handleScroll = () => {
-    clearTimeout(scrollTimeout);
+//images
+import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
+import wavesWhite from "@/assets/img/waves-white.svg";
+import logoBootstrap from "@/assets/img/logos/bootstrap5.jpg";
+import logoTailwind from "@/assets/img/logos/icon-tailwind.jpg";
+import logoVue from "@/assets/img/logos/vue.jpg";
+import logoAngular from "@/assets/img/logos/angular.jpg";
+import logoReact from "@/assets/img/logos/react.jpg";
+import logoSketch from "@/assets/img/logos/sketch.jpg";
 
-    const newScrollY = window.scrollY;
-    const delta = newScrollY - scrollY.value;
+import DetailsSpotModal from "../../components/DetailsSpotModal.vue";
 
-    targetTranslateY.value += delta * accelerationFactor;
+import Anker from "../../examples/Anker.vue";
 
-    // 이동 범위를 제한
-    if (targetTranslateY.value > maxTranslateY) {
-        targetTranslateY.value = maxTranslateY;
-    } else if (targetTranslateY.value < -maxTranslateY) {
-        targetTranslateY.value = -maxTranslateY;
-    }
+const showDetailSpotModal = ref(false);
+const selectedPostId = ref(null);
 
-    scrollY.value = newScrollY;
-
-    // 부드러운 애니메이션을 위해 requestAnimationFrame 사용
-    window.requestAnimationFrame(() => {
-        translateY.value += (targetTranslateY.value - translateY.value) * 0.05; // 부드러운 이동을 위해 0.05 곱함
-    });
-
-    scrollTimeout = setTimeout(() => {
-        targetTranslateY.value = 0;
-    }, 300);
+const openDetailSpotModal = (postId) => {
+  selectedPostId.value = postId;
+  showDetailSpotModal.value = true;
 };
+
+const closeDetailSpotModal = () => {
+  showDetailSpotModal.value = false;
+  selectedPostId.value = null;
+};
+
 
 // 스크롤 이벤트 리스너 등록
 onMounted(() => {
@@ -79,6 +85,7 @@ function scrollToSection(sectionId) {
       class="page-header min-vh-75"
       :style="`background-image: url(${vueMkHeader})`"
       loading="lazy"
+      id="top"
     >
       <div class="container">
         <div class="row">
