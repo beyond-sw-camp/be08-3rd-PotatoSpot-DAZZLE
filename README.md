@@ -79,7 +79,26 @@
 
 - 메인 페이지
   <br>
-  <img width="367" alt="image" src="https://github.com/user-attachments/assets/418bc4ea-0f3b-4c54-9f11-02dda5dd3255">
+  <img width="367" alt="메인 페이지" src="https://github.com/user-attachments/assets/418bc4ea-0f3b-4c54-9f11-02dda5dd3255">
+
+- 지도 페이지
+  <br>
+  <img width="525" alt="지도 페이지" src="https://github.com/user-attachments/assets/a760b1b8-fe54-4345-974d-90f41e115c3b">
+
+
+- 지도에서 위치 클릭 시
+  <br>
+  <img width="525" alt="지도에서 위치 클릭 시" src="https://github.com/user-attachments/assets/e41dbb0f-01b4-47aa-992f-12db4012dcc8">
+
+- 마이 페이지
+  <br>
+  <img width="525" alt="마이 페이지" src="https://github.com/user-attachments/assets/5a96706c-7167-4470-9dab-3dc346c8241d">
+
+- 랭킹 리스트 컴포넌트
+  <br>
+  <img width="525" alt="랭킹 컴포넌트" src="https://github.com/user-attachments/assets/368d78ff-c7b3-48b6-9202-5bcb79056f34">
+
+
 
 <br>
 
