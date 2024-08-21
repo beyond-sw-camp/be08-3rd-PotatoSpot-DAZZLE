@@ -112,6 +112,7 @@
 
 [WBS 바로가기](https://docs.google.com/spreadsheets/d/1GuCw2WvOrrxhWfypxqb4s6x8dEi3A9ffmgd-4dKuXtw/edit?gid=0#gid=0)
 <p align="center">
+  <img alt="WBS" src="https://github.com/user-attachments/assets/38f03396-7ac4-4be7-80a3-997b2fc3e781">
 </p>
 <br>
 
