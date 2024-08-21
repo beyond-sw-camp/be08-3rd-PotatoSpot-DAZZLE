@@ -76,11 +76,12 @@ defineProps({
   }
 });
 </script>
+
 <template>
   <footer class="footer pt-5 mt-5">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-3 mb-4 text-center">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-3 mb-4">
           <div>
             <a :href="brand.route">
               <img :src="brand.logo" class="mb-3 footer-logo" alt="main_logo" />
@@ -88,7 +89,7 @@ defineProps({
             <h6 class="font-weight-bolder mb-4">DAZZLE</h6>
           </div>
           <div>
-            <ul class="d-flex justify-content-center flex-row ms-n3 nav">
+            <ul class="d-flex justify-content-center flex-row nav">
               <li
                 class="nav-item"
                 v-for="{ icon, link } of socials"
@@ -106,12 +107,12 @@ defineProps({
           </div>
         </div>
         <div
-          class="col-md-2 col-sm-6 col-6 mb-4 text-center"
+          class="col-md-2 col-sm-6 col-6 mb-4"
           v-for="{ name, items } of menus"
           :key="name"
         >
           <h6 class="text-sm">{{ name }}</h6>
-          <ul class="flex-column ms-n3 nav">
+          <ul class="flex-column nav">
             <li class="nav-item" v-for="item of items" :key="item.name">
               <a class="nav-link" :href="item.href" target="_blank">
                 {{ item.name }}
@@ -136,5 +137,3 @@ defineProps({
     </div>
   </footer>
 </template>
-
-
