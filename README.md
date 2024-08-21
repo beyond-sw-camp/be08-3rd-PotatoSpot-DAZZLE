@@ -9,7 +9,7 @@
 
 ## ✨ Medium
 - [🇺🇸 Medium English.ver]() <br>
-- [🇰🇷 Medium Korean.ver]()
+- [🇰🇷 Medium Korean.ver](https://medium.com/@ljh01051826177/dazzle-%ED%8F%AC%ED%86%A0%EC%8A%A4%ED%8C%9F-%EA%B3%B5%EC%9C%A0-%ED%94%8C%EB%9E%AB%ED%8F%BC-cd0c5a1e9d13)
 <br>
 
 ## 📋 Material
