@@ -5,10 +5,21 @@
         <h3 class="mb-3 text-center">내 포토스팟</h3>
       </div>
       <div class="row mt-4">
-        <div class="col-md-4 col-sm-6 mb-4 d-flex justify-content-center" v-for="photospot in filteredPhotoSpots"
-          :key="photospot.id">
-          <PostCard class="photospot-card" :image="photospot.imgUrl" :title="photospot.title" :postId="photospot.id"
-            @card-clicked="handleCardClick(photospot.id)" />
+        <div 
+          class="col-md-4 col-sm-6 mb-4 d-flex justify-content-center" 
+          v-for="photospot in filteredPhotoSpots"
+          :key="photospot.id"
+          data-aos="zoom-in"             
+          data-aos-delay="100"            
+          data-aos-duration="500">        
+          
+          <PostCard 
+            class="photospot-card" 
+            :image="photospot.imgUrl" 
+            :title="photospot.title" 
+            :postId="photospot.id"
+            @card-clicked="handleCardClick(photospot.id)" 
+          />
         </div>
       </div>
     </div>
@@ -20,6 +31,7 @@ import { computed, onMounted } from 'vue';
 import PostCard from '../components/PostCard.vue';
 import { usePhotoSpotStore } from '../../../../stores/photoSpotStore';
 import { useUserStore } from '../../../../stores/userStore';
+import AOS from 'aos';
 
 const photoSpotStore = usePhotoSpotStore();
 const userStore = useUserStore();
@@ -27,7 +39,7 @@ const emit = defineEmits(['open-details-spot-modal']);
 
 onMounted(async () => {
   await photoSpotStore.fetchPhotoSpots(); // 데이터 로드
-  console.log(photoSpotStore.photoSpots); // 콘솔에 출력하여 데이터 확인
+  AOS.refresh(); // 데이터 로드 후 AOS 새로고침
 });
 
 // 포스트 카드 클릭 시 모달 요청
@@ -65,7 +77,6 @@ const filteredPhotoSpots = computed(() => {
 .photospot-card {
   width: 100%;
   max-width: 350px;
-  /* 카드의 최대 너비 설정 */
   border: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

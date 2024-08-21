@@ -1,28 +1,33 @@
 <template>
-    <div class="ranking-list">
-        <h2 class="ranking-header">DAZZLE Ranking</h2>
-        <ul>
-            <li v-for="(item, index) in paginatedRankings" :key="item.id" class="ranking-item">
-                <div class="place-location">
-                    <span class="place">{{ index + 1 }}. {{ item.title }}</span>
-                    <span class="location">{{ item.addr }}</span>
-                </div>
-                <div class="icons">
-                    <div class="icon-with-count">
-                        <span 
-                            @click="toggleLike(item.id)" 
-                            :class="item.isLiked ? 'material-symbols-rounded filled-heart' : 'material-symbols-outlined'">
-                            favorite
-                        </span>
-                        <span class="likes">{{ item.likes }}</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="more" v-if="!isLastPage">
-            <span @click="loadMore">더보기</span>
+  <div class="ranking-list">
+    <h2 class="ranking-header">DAZZLE Ranking</h2>
+    <ul>
+      <li
+        v-for="(item, index) in paginatedRankings"
+        :key="item.id"
+        class="ranking-item"
+      >
+        <div class="place-location">
+          <span class="place">{{ index + 1 }}. {{ item.title }}</span>
+          <span class="location">{{ item.addr }}</span>
         </div>
+        <div class="icons">
+          <div class="icon-with-count">
+            <span
+              @click="handleLikeClick(item.id)"
+              :class="['material-symbols-rounded', 'filled-heart', { 'heart-animation': likedItem === item.id }]"
+            >
+              favorite
+            </span>
+            <span class="likes">{{ item.likes }}</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="more" v-if="!isLastPage">
+      <span @click="loadMore">더보기</span>
     </div>
+  </div>
 </template>
 
 <script>
@@ -30,74 +35,83 @@ import { ref, computed } from 'vue';
 import { usePhotoSpotStore } from '@/stores/photoSpotStore';
 
 export default {
-    name: 'RankingList',
-    data() {
-        return {
-            itemsToShow: 5, 
-        };
+  name: 'RankingList',
+  data() {
+    return {
+      itemsToShow: 5,
+      likedItem: null, // 애니메이션을 적용할 항목 ID
+    };
+  },
+  computed: {
+    photoSpotStore() {
+      return usePhotoSpotStore();
     },
-    computed: {
-        photoSpotStore() {
-            return usePhotoSpotStore();
-        },
-        sortedRankings() {
-            return this.photoSpotStore.photoSpots.slice().sort((a, b) => b.likes - a.likes);
-        },
-        paginatedRankings() {
-            return this.sortedRankings.slice(0, this.itemsToShow);
-        },
-        isLastPage() {
-            return this.itemsToShow >= this.sortedRankings.length;
-        }
+    sortedRankings() {
+      return this.photoSpotStore.photoSpots.slice().sort((a, b) => b.likes - a.likes);
     },
-    async created() {
-        await this.photoSpotStore.fetchPhotoSpots(); 
+    paginatedRankings() {
+      return this.sortedRankings.slice(0, this.itemsToShow);
     },
-    methods: {
-        toggleLike(id) {
-            const item = this.photoSpotStore.photoSpots.find(item => item.id === id);
-            if (item) {
-                item.isLiked = !item.isLiked;
-                item.likes += item.isLiked ? 1 : -1;
-            }
-        },
-        loadMore() {
-            if (!this.isLastPage) {
-                this.itemsToShow += 5; 
-            }
-        }
+    isLastPage() {
+      return this.itemsToShow >= this.sortedRankings.length;
     }
+  },
+  async created() {
+    await this.photoSpotStore.fetchPhotoSpots();
+  },
+  methods: {
+    async handleLikeClick(spotId) {
+      try {
+        this.likedItem = spotId;
+        await this.photoSpotStore.incrementLikes(spotId);
+        await this.photoSpotStore.fetchPhotoSpots();
+        setTimeout(() => {
+          this.likedItem = null;
+        }, 400); // 애니메이션 지속 시간 후에 likedItem 초기화
+      } catch (error) {
+        console.error("Error incrementing like:", error);
+      }
+    },
+    loadMore() {
+      if (!this.isLastPage) {
+        this.itemsToShow += 5;
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
 .ranking-header {
-  text-align: center; 
-  margin-bottom: 20px; 
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .ranking-list {
-  max-width: 1200px; 
+  max-width: 1200px;
   width: 100%;
-  margin: 0 auto; 
-  padding: 20px; 
-  box-sizing: border-box; 
-  position: relative; 
-  transform: translateX(-20px); 
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  ul {
+    padding-right: 32px;
+  }
 }
 
 .ranking-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0; 
-  padding: 15px; 
+  margin: 10px 0;
+  padding: 15px;
   border: 1px solid #ddd;
-  border-radius: 10px; 
+  border-radius: 10px;
   background-color: #f9f9f9;
-  width: 100%; 
-  box-sizing: border-box; 
+  width: 100%;
+  box-sizing: border-box;
 }
+
 .place-location {
   display: flex;
   flex-direction: column;
@@ -116,7 +130,7 @@ export default {
 .icons {
   display: flex;
   align-items: center;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .icon-with-count {
@@ -125,19 +139,18 @@ export default {
   align-items: center;
 }
 
-.material-symbols-outlined {
+.material-symbols-rounded.filled-heart {
   cursor: pointer;
   font-size: 24px;
-  transition: color 0.3s;
-  color: rgb(249, 207, 207); 
+  color: red;
 }
 
-.filled-heart {
-  color: red; 
+.heart-animation {
+  animation: heart-beat 0.4s ease-in-out;
 }
 
 .likes {
-  margin-top: 5px; 
+  margin-top: 5px;
 }
 
 .more {
@@ -146,5 +159,4 @@ export default {
   margin-top: 20px;
   cursor: pointer;
 }
-
 </style>
