@@ -1,23 +1,38 @@
 <script setup>
-import { computed, watch, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useUserStore } from '../../../../stores/userStore';
 import MaterialAvatar from "@/components/MaterialAvatar.vue";
 import UserDataCounter from "../components/UserDataCounter.vue";
 import setMaterialInput from "@/assets/js/material-input";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faUserEdit, faThumbsUp, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { usePhotoSpotStore } from "../../../../stores/photoSpotStore";
 
 const userStore = useUserStore();
+const photoSpotStore = usePhotoSpotStore();
 
 // computed를 사용하여 userStore의 상태를 동적으로 반영
 const profilePic = computed(() => userStore.profilePic);
 const userName = computed(() => userStore.userName);
-const postCount = computed(() => userStore.postCount);
-const totalLikes = computed(() => userStore.totalLikes);
+const postCount = computed(() => {
+  return photoSpotStore.photoSpots.filter(spot => spot.userEmail === userStore.userEmail).length;
+});
+const totalLikes = computed(() => {
+  return photoSpotStore.photoSpots.reduce((acc, spot) => {
+    return spot.userEmail === userStore.userEmail ? acc + spot.likes : acc;
+  }, 0);
+});
 
 onMounted(async () => {
   setMaterialInput();
+  await photoSpotStore.fetchPhotoSpots();
   await userStore.fetchUserData(); // 페이지가 로드될 때 사용자 데이터를 가져옴
+});
+
+// userStore나 photoSpotStore의 데이터가 변경되었을 때 데이터를 새로고침
+watch([() => userStore.profilePic, () => photoSpotStore.photoSpots], async () => {
+  await userStore.fetchUserData();
+  await photoSpotStore.fetchPhotoSpots();
 });
 
 </script>
@@ -60,7 +75,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* 기존 스타일 그대로 유지 */
 .profile-section {
   color: white;
   padding-bottom: 50px;

@@ -38,16 +38,14 @@ const userStore = useUserStore();
 const emit = defineEmits(['open-details-spot-modal']);
 
 onMounted(async () => {
-  await photoSpotStore.fetchPhotoSpots(); // 데이터 로드
-  AOS.refresh(); // 데이터 로드 후 AOS 새로고침
+  await photoSpotStore.fetchPhotoSpots();
+  AOS.refresh();
 });
 
-// 포스트 카드 클릭 시 모달 요청
 const handleCardClick = (postId) => {
   emit('open-details-spot-modal', postId);
 };
 
-// 사용자의 게시물 필터링
 const filteredPhotoSpots = computed(() => {
   return photoSpotStore.photoSpots.filter(
     photospot => photospot.userEmail === userStore.userEmail

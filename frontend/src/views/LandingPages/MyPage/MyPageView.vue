@@ -42,17 +42,17 @@ const openModalEdit = () => showModalEdit.value = true;
 const closeModalEdit = () => showModalEdit.value = false;
 const userStore = useUserStore();
 
-const selectedPostId = ref(null); // 선택된 게시글 ID
-const showModalDetailsSpot = ref(false); // 모달 표시 여부
+const selectedPostId = ref(null);
+const showModalDetailsSpot = ref(false);
 
 const openDetailsSpotModal = (postId) => {
-  selectedPostId.value = postId; // 선택된 포스트 ID 설정
-  showModalDetailsSpot.value = true; // 모달 표시
+  selectedPostId.value = postId;
+  showModalDetailsSpot.value = true;
 };
 
 const closeDetailsSpotModal = async () => {
-  showModalDetailsSpot.value = false; // 모달 닫기
-  selectedPostId.value = null; // 선택된 포스트 ID 초기화
+  showModalDetailsSpot.value = false;
+  selectedPostId.value = null;
   await userStore.fetchUserData(userStore.firebaseUser);
 };
 </script>

@@ -6,7 +6,6 @@ const handleClick = (spotId) => {
   emit('card-clicked', spotId);
 };
 
-// props 설정
 const props = defineProps({
   image: {
     type: String,
@@ -23,7 +22,6 @@ const props = defineProps({
   action: {
     type: Array,
     required: true,
-    // 스펙을 배열로 정의
     default: () => []
   }
 });
