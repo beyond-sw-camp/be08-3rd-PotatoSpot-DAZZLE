@@ -122,8 +122,30 @@
 
 ### 1. Functional Implementation
 
+[시연 영상 바로가기]()
+
 <details>
   <summary>Header 테스트</summary>
+  
+</details>
+<details>
+  <summary>메인 페이지 테스트</summary>
+  
+</details>
+<details>
+  <summary>게시글 리스트 컴포넌트 테스트</summary>
+  
+</details>
+<details>
+  <summary>랭킹 리스트 컴포넌트 테스트</summary>
+  
+</details>
+<details>
+  <summary>지도 페이지 테스트</summary>
+  
+</details>
+<details>
+  <summary>마이 페이지 테스트</summary>
   
 </details>
 
