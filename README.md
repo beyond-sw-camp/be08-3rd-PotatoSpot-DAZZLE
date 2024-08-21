@@ -118,11 +118,6 @@
 
 <br>
 
-<p align="center">
-</p>
-<br>
-
-
 ## 💾 Project Implementation
 
 ### 1. Functional Implementation
