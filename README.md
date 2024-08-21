@@ -102,9 +102,11 @@
 
 ### 3. Test Case
 
+[Test Case 바로가기](https://docs.google.com/spreadsheets/d/1oyT1vbGl-SeE_M7-XgS_0SDHEnpquFyEUZsGSfqJK7A/edit?gid=0#gid=0)
+<p align="center">
+  <img alt="Test Case" src="https://github.com/user-attachments/assets/1c6e56d2-eec5-4f9d-9f54-cdc70253a518" />
+</p>
 <br>
-
-
 
 ## 📆 WBS
 
