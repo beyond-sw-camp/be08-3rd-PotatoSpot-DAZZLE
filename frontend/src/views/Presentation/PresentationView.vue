@@ -27,8 +27,17 @@ const body = document.getElementsByTagName("body")[0];
 onMounted(() => {
   body.classList.add("presentation-page");
   body.classList.add("bg-gray-200");
+  body.classList.add("presentation-page");
+  body.classList.add("bg-gray-200");
 });
 onUnmounted(() => {
+  body.classList.remove("presentation-page");
+  body.classList.remove("bg-gray-200");
+});
+
+//anime
+import TextAnime1 from "../../components/TextAnime1.vue";
+const anime1 = true;
   body.classList.remove("presentation-page");
   body.classList.remove("bg-gray-200");
 });
