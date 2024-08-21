@@ -1,26 +1,30 @@
 <template>
   <div class="gallery-container">
-    <h2>Recently added Photos</h2><br>
+    <h2>Recently added Photos</h2>
+    <br />
     <div class="image-gallery">
-      <div v-for="(spot, index) in visibleSpots" :key="spot.id" class="image-wrapper" data-aos="zoom-in">
-        <img 
-          :src="spot.imgUrl" 
-          :alt="`Thumbnail ${index + 1}`" 
-          class="gallery-image" 
-          @click="openDetailsModal(spot.id)"
-          style="cursor: pointer;"
+      <div
+        v-for="(spot, index) in visibleSpots"
+        :key="spot.id"
+        class="image-wrapper"
+        data-aos="zoom-in"
+      >
+        <img
+          :src="spot.imgUrl"
+          :alt="`Thumbnail ${index + 1}`"
+          class="gallery-image"
+          @click="handlerClicked(spot.id)"
+          style="cursor: pointer"
         />
       </div>
     </div>
 
-    <DetailsSpotModal 
-      v-if="selectedPostId !== null" 
-      :post-id="selectedPostId" 
-      @close="closeDetailsModal"
-    />
-    
     <div class="pagination-container">
-      <span class="material-symbols-outlined pagination-arrow" @click="prev" :class="{ disabled: currentPage === 0 }">
+      <span
+        class="material-symbols-outlined pagination-arrow"
+        @click="prev"
+        :class="{ disabled: currentPage === 0 }"
+      >
         keyboard_double_arrow_left
       </span>
 
@@ -34,105 +38,106 @@
         />
       </MaterialPagination>
 
-      <span class="material-symbols-outlined pagination-arrow" @click="next" :class="{ disabled: isLastPage }">
+      <span
+        class="material-symbols-outlined pagination-arrow"
+        @click="next"
+        :class="{ disabled: isLastPage }"
+      >
         keyboard_double_arrow_right
       </span>
     </div>
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import { usePhotoSpotStore } from '@/stores/photoSpotStore';
-import MaterialPagination from '@/components/MaterialPagination.vue';
-import MaterialPaginationItem from '@/components/MaterialPaginationItem.vue';
-import DetailsSpotModal from "./DetailsSpotModal.vue";
+<script setup>
+import { ref, computed, onMounted, defineEmits } from "vue";
+import { usePhotoSpotStore } from "@/stores/photoSpotStore";
+import MaterialPagination from "@/components/MaterialPagination.vue";
+import MaterialPaginationItem from "@/components/MaterialPaginationItem.vue";
 
-export default {
-  name: 'ImageThumbnails',
-  components: {
-    MaterialPagination,
-    MaterialPaginationItem,
-    DetailsSpotModal
-  },
-  data() {
-    return {
-      imagesPerPage: 9, 
-      currentPage: 0,    
-      selectedPostId: null   
-    };
-  },
-  computed: {
-    photoSpotStore() {
-      return usePhotoSpotStore();
-    },
-    visibleSpots() {
-      const start = this.currentPage * this.imagesPerPage;
-      const end = start + this.imagesPerPage;
-      return this.photoSpotStore.photoSpots.slice(start, end);
-    },
-    totalPages() {
-      return Math.ceil(this.photoSpotStore.photoSpots.length / this.imagesPerPage);
-    },
-    isLastPage() {
-      return this.currentPage + 1 >= this.totalPages;
-    }
-  },
-  async created() {
-    await this.photoSpotStore.fetchPhotoSpots(); // Fetch photo spots from Firestore
-  },
-  methods: {
-    openDetailsModal(postId) {
-      this.selectedPostId = postId;
-    },
-    closeDetailsModal() {
-      this.selectedPostId = null;
-    },
-    next() {
-      if (!this.isLastPage) {
-        this.currentPage++;
-      }
-    },
-    prev() {
-      if (this.currentPage > 0) {
-        this.currentPage--;
-      }
-    },
-    goToPage(page) {
-      this.currentPage = page;
-    }
+const imagesPerPage = ref(9);
+const currentPage = ref(0);
+const emit = defineEmits(["open-details-spot-modal3"]);
+const photoSpotStore = usePhotoSpotStore();
+
+const visibleSpots = computed(() => {
+  const start = currentPage.value * imagesPerPage.value;
+  const end = start + imagesPerPage.value;
+  return photoSpotStore.photoSpots.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(photoSpotStore.photoSpots.length / imagesPerPage.value);
+});
+
+const isLastPage = computed(() => {
+  return currentPage.value + 1 >= totalPages.value;
+});
+
+const handlerClicked = (postId) => {
+  console.log(postId);
+  emit("open-details-spot-modal3", postId);
+};
+
+const next = () => {
+  if (!isLastPage.value) {
+    currentPage.value++;
   }
-}
+};
+
+const prev = () => {
+  if (currentPage.value > 0) {
+    currentPage.value--;
+  }
+};
+
+const goToPage = (page) => {
+  currentPage.value = page;
+};
+
+onMounted(async () => {
+  await photoSpotStore.fetchPhotoSpots();
+  setTimeout(() => {
+    document.querySelectorAll(".image-wrapper").forEach((element) => {
+      element.addEventListener("mouseenter", () => {
+        element.style.transform = "translateY(-8px)";
+        element.style.boxShadow = "0 6px 18px rgba(0, 0, 0, 0.35)";
+      });
+      element.addEventListener("mouseleave", () => {
+        element.style.transform = "translateY(0)";
+        element.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.3)";
+      });
+    });
+  }, 100); // AOS 애니메이션 완료 후 타이밍 조정
+});
 </script>
 
-<style scoped>
+<style>
+/* 여기서 scoped를 제거하고 테스트해 보세요 */
 .gallery-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  position: relative;
   padding: 30px;
 }
 
 .image-gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3x3 grid */
-  gap: 40px; 
+  gap: 40px;
   width: 100%;
   max-width: 1200px;
-  
 }
 
 .image-wrapper {
   width: 100%;
-  height: 200px; 
+  height: 200px;
   overflow: hidden;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Slightly longer transition for better effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .image-wrapper:hover {
@@ -143,10 +148,11 @@ export default {
 .gallery-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
   display: block;
   border-radius: 15px;
 }
+
 .pagination-container {
   display: flex;
   margin-top: 40px;
@@ -154,17 +160,17 @@ export default {
 
 .pagination-arrow {
   cursor: pointer;
-  font-size: 30px; 
-  margin: 0 10px; 
+  font-size: 30px;
+  margin: 0 10px;
 }
 
 .pagination-arrow.disabled {
   cursor: not-allowed;
-  color: #ccc; 
+  color: #ccc;
 }
 
 .modal-overlay {
-  position: absolute; /* Change from fixed to absolute */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -173,18 +179,17 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2; /* Ensure it is above other content */
+  z-index: 2;
 }
 
 .modal-content {
   background: #fff;
   border-radius: 5px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  width: 80%; /* Adjust as needed */
-  max-height: 80vh; /* Ensure it fits within viewport */
+  width: 80%;
+  max-height: 80vh;
   overflow-y: auto;
   padding: 20px;
   position: relative;
 }
 </style>
-

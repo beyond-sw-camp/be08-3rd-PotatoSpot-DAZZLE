@@ -5,8 +5,14 @@
         <h3 class="mb-3 text-center">인기 포토스팟</h3>
       </div>
       <div class="row">
-        <div v-for="(post, index) in bestPosts" :key="post.id"
-          class="col-lg-3 col-sm-6 d-flex justify-content-center mb-6 position-relative">
+        <div 
+          v-for="(post, index) in bestPosts" 
+          :key="post.id"
+          class="col-lg-3 col-sm-6 d-flex justify-content-center mb-6 position-relative"
+          data-aos="fade-up"              
+          :data-aos-delay="index * 200" 
+          data-aos-duration="800"          
+        >
           <div class="card-container">
             <LikeCounter class="like-counter position-absolute" color="danger" :count="post.likes" suffix="♥️"
               :duration="3000" />
@@ -26,7 +32,6 @@
   </section>
 </template>
 
-
 <script setup>
 import { ref, watch, onMounted, computed, defineEmits } from 'vue';
 import RotatingCard from '../components/RotatingCard.vue';
@@ -35,6 +40,7 @@ import RotatingCardBack from '../components/RotatingCardBack.vue';
 import LikeCounter from "../components/LikeCounter.vue";
 import { usePhotoSpotStore } from '../../../../stores/photoSpotStore';
 import { useUserStore } from '../../../../stores/userStore';
+import AOS from 'aos';
 
 const photoSpotStore = usePhotoSpotStore();
 const userStore = useUserStore();
@@ -55,6 +61,7 @@ const fetchPosts = async () => {
 // 컴포넌트가 마운트될 때 처음으로 게시물 데이터 가져오기
 onMounted(async () => {
   await fetchPosts();
+  AOS.refresh(); // AOS 애니메이션 새로고침
 });
 
 // 로그인 상태가 변경될 때 게시물 데이터 다시 가져오기
