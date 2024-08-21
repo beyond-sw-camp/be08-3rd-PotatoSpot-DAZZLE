@@ -50,21 +50,26 @@ const closeDetailSpotModal = () => {
 };
 
 
-//hooks
-const body = document.getElementsByTagName("body")[0];
+// 스크롤 이벤트 리스너 등록
 onMounted(() => {
-  body.classList.add("presentation-page");
-  body.classList.add("bg-gray-200");
+    scrollY.value = window.scrollY; // 초기 스크롤 위치 설정
+    window.addEventListener("scroll", handleScroll);
 });
+
 onUnmounted(() => {
-  body.classList.remove("presentation-page");
-  body.classList.remove("bg-gray-200");
+    window.removeEventListener("scroll", handleScroll);
 });
 
-//anime
-import TextAnime1 from "../../components/TextAnime1.vue";
-const anime1 = true;
-
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+            top: sectionPosition - offset,
+            behavior: 'smooth'
+        });
+    }
+}
 </script>
 
 <template>
@@ -102,18 +107,20 @@ const anime1 = true;
   </Header>
   <Anker/>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+
     <div id="presentationCounter">
       <PresentationCounter />
     </div>
 
     <div id="thumbnails">
-      <Thumbnails @open-details-spot-modal3="openDetailSpotModal" />
+      <Thumbnails @open-details-spot-modal3="openDetailSpotModal"/>
     </div>
 
     <div id="rankingList">
       <RankingList/>
     </div>
     <!-- <PresentationInformation />
+
     <PresentationExample :data="data" />
     <PresentationPages />
     <BuiltByDevelopers /> -->
@@ -338,3 +345,4 @@ const anime1 = true;
     @close="closeDetailSpotModal"
   />
 </template>
+
