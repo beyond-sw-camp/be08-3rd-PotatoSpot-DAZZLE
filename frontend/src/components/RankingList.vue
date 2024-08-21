@@ -15,7 +15,11 @@
           <div class="icon-with-count">
             <span
               @click="handleLikeClick(item.id)"
-              :class="['material-symbols-rounded', 'filled-heart', { 'heart-animation': likedItem === item.id }]"
+              :class="[
+                'material-symbols-rounded',
+                'filled-heart',
+                { 'heart-animation': likedItem === item.id },
+              ]"
             >
               favorite
             </span>
@@ -31,11 +35,11 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import { usePhotoSpotStore } from '@/stores/photoSpotStore';
-
+import { ref, computed } from "vue";
+import { usePhotoSpotStore } from "@/stores/photoSpotStore";
+import { useUserStore } from "../stores/userStore";
 export default {
-  name: 'RankingList',
+  name: "RankingList",
   data() {
     return {
       itemsToShow: 5,
@@ -43,41 +47,47 @@ export default {
     };
   },
   computed: {
+    userstore() {
+      return useUserStore();
+    },
     photoSpotStore() {
       return usePhotoSpotStore();
     },
     sortedRankings() {
-      return this.photoSpotStore.photoSpots.slice().sort((a, b) => b.likes - a.likes);
+      return this.photoSpotStore.photoSpots
+        .slice()
+        .sort((a, b) => b.likes - a.likes);
     },
     paginatedRankings() {
       return this.sortedRankings.slice(0, this.itemsToShow);
     },
     isLastPage() {
       return this.itemsToShow >= this.sortedRankings.length;
-    }
+    },
   },
   async created() {
     await this.photoSpotStore.fetchPhotoSpots();
   },
   methods: {
     async handleLikeClick(spotId) {
-      try {
-        this.likedItem = spotId;
-        await this.photoSpotStore.incrementLikes(spotId);
-        await this.photoSpotStore.fetchPhotoSpots();
-        setTimeout(() => {
-          this.likedItem = null;
-        }, 400); // 애니메이션 지속 시간 후에 likedItem 초기화
-      } catch (error) {
-        console.error("Error incrementing like:", error);
+      if (this.userstore.firebaseUser === null) {
+        alert("로그인 후 이용해주세요!");
+      } else {
+        try {
+          this.likedItem = spotId;
+          await this.photoSpotStore.incrementLikes(spotId);
+          await this.photoSpotStore.fetchPhotoSpots();
+        } catch (error) {
+          console.error("Error incrementing like:", error);
+        }
       }
     },
     loadMore() {
       if (!this.isLastPage) {
         this.itemsToShow += 5;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -93,7 +93,11 @@ const closeModal = () => {
 };
 
 const registerPhotoSpot = () => {
-  emit("postPhotoSpot");
+  if(userStore.firebaseUser === null){
+    alert('로그인 후 이용해주세요!');
+  }else{
+    emit("postPhotoSpot");
+  }
 };
 
 const viewDetail = (spotId) => {
