@@ -145,7 +145,7 @@
   
 </details>
 <details>
-  <summary>게시글 리스트 컴포넌트 테스트</summary>
+  <summary>게시물 리스트 컴포넌트 테스트</summary>
   
 </details>
 <details>
@@ -154,6 +154,10 @@
 </details>
 <details>
   <summary>지도 페이지 테스트</summary>
+  
+</details>
+<details>
+  <summary>게시물 작성 테스트</summary>
   
 </details>
 <details>
