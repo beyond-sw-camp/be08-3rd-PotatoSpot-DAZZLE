@@ -23,23 +23,23 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="profile-section py-4 position-relative" v-if="userStore.firebaseUser">
+  <section class="profile-section py-1 position-relative" v-if="userStore.firebaseUser">
     <div class="container">
       <div class="row">
         <div class="col-12 mx-auto">
-          <div class="avatar-container mt-n8 mt-md-n9 text-center">
+          <div class="avatar-container mt-n8 mt-md-n11 text-center">
             <div class="blur-shadow-avatar">
               <MaterialAvatar size="xxl" class="shadow-xl position-relative z-index-2 border border-light"
                 :image="profilePic" alt="Avatar" />
             </div>
           </div>
-          <div class="row py-5">
-            <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-2 px-sm-5 mx-auto text-center">
-              <h1 class="profile-name mb-3">{{ userName }}</h1>
-              <button class="btn btn-gradient btn-lg mb-4" @click="$emit('open-modal-edit')">
+          <div class="row">
+            <div class="col-lg-7 col-md-7 z-index-2 position-relative px-md-7 px-sm-2 mx-auto text-center">
+              <h1 class="profile-name mb-5">{{ userName }}</h1>
+              <button class="btn btn-gradient btn-lg mb-3" @click="$emit('open-modal-edit')">
                 <FontAwesomeIcon :icon="faUserEdit" /> Edit Profile
               </button>
-              <div class="d-flex justify-content-around align-items-center mb-4">
+              <div class="d-flex justify-content-around align-items-center mb-2">
                 <div class="col-auto text-center">
                   <UserDataCounter title="Posts" color="dark" :count="postCount" :duration="4000">
                     <FontAwesomeIcon :icon="faFileAlt" class="me-2" />
@@ -83,7 +83,8 @@ onMounted(async () => {
 .profile-name {
   font-size: 2.5rem;
   font-weight: 700;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  color: beige;
+  text-shadow: 0px 2px 4px rgba(136, 134, 134, 0.774);
 }
 
 .btn-gradient {
