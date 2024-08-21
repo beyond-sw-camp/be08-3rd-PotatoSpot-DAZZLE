@@ -1,6 +1,12 @@
 <template>
-  <div class="modal fade show modal-fade-in" tabindex="-1" style="display: block" aria-modal="true" role="dialog"
-    @click="closeModal">
+  <div
+    class="modal fade show modal-fade-in"
+    tabindex="-1"
+    style="display: block"
+    aria-modal="true"
+    role="dialog"
+    @click="closeModal"
+  >
     <div class="modal-dialog modal-dialog-centered modal-xl" @click.stop>
       <div class="modal-content">
         <div class="modal-header">
@@ -12,7 +18,10 @@
         </div>
         <div class="modal-body d-flex">
           <!-- 왼쪽: 게시글 이미지 및 내용 -->
-          <div class="post-details d-flex flex-column" style="flex: 2; padding-right: 20px;">
+          <div
+            class="post-details d-flex flex-column"
+            style="flex: 2; padding-right: 20px"
+          >
             <div class="post-image mb-3">
               <img :src="post.imgUrl" alt="Post Image" class="img-fluid" />
             </div>
@@ -21,7 +30,7 @@
             </div>
           </div>
           <!-- 오른쪽: 댓글 섹션 -->
-          <div class="comments-section" style="flex: 1;">
+          <div class="comments-section" style="flex: 1">
             <div class="comments-header">
               <h6>Comments</h6>
             </div>
@@ -30,11 +39,24 @@
                 {{ comment.content }}
               </li>
             </ul>
-            <form @submit.prevent="handleCommentSubmit" class="comment-form mt-3">
-              <MaterialInput v-model="newComment" class="form-control commentInput bg-gray-100" placeholder="댓글을 입력하세요"
-                rows="3">
+            <form
+              @submit.prevent="handleCommentSubmit"
+              class="comment-form mt-3"
+            >
+              <MaterialInput
+                v-model="newComment"
+                class="form-control commentInput bg-gray-100"
+                placeholder="댓글을 입력하세요"
+                rows="3"
+              >
               </MaterialInput>
-              <MaterialButton class="my-3 mb-2" variant="gradient" color="dark" fullWidth type="submit">
+              <MaterialButton
+                class="my-3 mb-2"
+                variant="gradient"
+                color="dark"
+                fullWidth
+                type="submit"
+              >
                 Send comments
               </MaterialButton>
             </form>
@@ -81,12 +103,20 @@ const closeModal = () => {
 };
 
 const handleCommentSubmit = async () => {
-  if (newComment.value.trim()) {
-    await postComment(props.postId, userStore.userEmail, newComment.value.trim());
-    newComment.value = "";
-    reviewStore.fetchComments(props.postId);
+  if (userStore.firebaseUser != null) {
+    if (newComment.value.trim()) {
+      await postComment(
+        props.postId,
+        userStore.userEmail,
+        newComment.value.trim()
+      );
+      newComment.value = "";
+      reviewStore.fetchComments(props.postId);
+    } else {
+      alert("댓글 내용을 입력해주세요!");
+    }
   } else {
-    alert("댓글 내용을 입력해주세요!");
+    alert("로그인 후 이용해주세요!");
   }
 };
 
@@ -95,11 +125,15 @@ onMounted(() => {
 });
 
 const incrementLike = async (spotId) => {
-  try {
-    await incrementLikes(spotId);
-    photoSpotStore.fetchPhotoSpots();
-  } catch (error) {
-    console.error("Error incrementing like:", error);
+  if (userStore.firebaseUser === null) {
+    alert("로그인 후 이용해주세요!");
+  } else {
+    try {
+      await incrementLikes(spotId);
+      photoSpotStore.fetchPhotoSpots();
+    } catch (error) {
+      console.error("Error incrementing like:", error);
+    }
   }
 };
 </script>
@@ -174,7 +208,6 @@ const incrementLike = async (spotId) => {
   object-fit: cover;
   border-radius: 5px;
 }
-
 
 .content-text {
   font-size: 1.3rem;
