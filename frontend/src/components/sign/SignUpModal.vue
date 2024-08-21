@@ -3,9 +3,10 @@ import { ref } from 'vue';
 import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import { registerUser } from '../../utils/utilsAuth';
+import { useRouter } from 'vue-router';
 
 const emit = defineEmits(['close', 'loginModal']);
-
+const router = useRouter();
 const name = ref('');
 const email = ref('');
 const password = ref('');
@@ -52,6 +53,7 @@ const handleSubmit = async () => {
       await registerUser(email.value, password.value, name.value, imageFile.value);
       alert(name.value + '님 환영합니다!');
       closeModal();
+      router.go(0);
     } catch (error) {
       console.error('Error during registration:', error);
       alert('회원가입 중 오류가 발생했습니다.');
