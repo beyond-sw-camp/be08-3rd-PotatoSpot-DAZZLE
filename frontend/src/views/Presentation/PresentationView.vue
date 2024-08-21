@@ -1,3 +1,71 @@
+<script setup>
+// Vue Material Kit 2 components
+import MaterialButton from "@/components/MaterialButton.vue";
+import { ref, onMounted, onUnmounted } from "vue";
+
+// 스크롤 위치와 가속도 변수
+const scrollY = ref(window.scrollY);
+const translateY = ref(0);
+let scrollTimeout = null;
+
+// 스크롤 오프셋 (원하는 만큼 조정 가능)
+const offset = 100;
+
+// 가속도 계수와 최대 이동 범위 설정
+const accelerationFactor = 0.3; // 가속도 계수 약간 감소
+const maxTranslateY = 1500; // 최대 이동 범위
+
+let targetTranslateY = ref(0);
+
+const handleScroll = () => {
+    clearTimeout(scrollTimeout);
+
+    const newScrollY = window.scrollY;
+    const delta = newScrollY - scrollY.value;
+
+    targetTranslateY.value += delta * accelerationFactor;
+
+    // 이동 범위를 제한
+    if (targetTranslateY.value > maxTranslateY) {
+        targetTranslateY.value = maxTranslateY;
+    } else if (targetTranslateY.value < -maxTranslateY) {
+        targetTranslateY.value = -maxTranslateY;
+    }
+
+    scrollY.value = newScrollY;
+
+    // 부드러운 애니메이션을 위해 requestAnimationFrame 사용
+    window.requestAnimationFrame(() => {
+        translateY.value += (targetTranslateY.value - translateY.value) * 0.05; // 부드러운 이동을 위해 0.05 곱함
+    });
+
+    scrollTimeout = setTimeout(() => {
+        targetTranslateY.value = 0;
+    }, 300);
+};
+
+// 스크롤 이벤트 리스너 등록
+onMounted(() => {
+    scrollY.value = window.scrollY; // 초기 스크롤 위치 설정
+    window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", handleScroll);
+});
+
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+            top: sectionPosition - offset,
+            behavior: 'smooth'
+        });
+    }
+}
+</script>
+
 <template>
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
@@ -30,17 +98,28 @@
       </div>
     </div>
   </Header>
-
+  <Anker/>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
-    <PresentationCounter />
-    <Thumbnails @open-details-spot-modal3="openDetailSpotModal" />
-    <RankingList />
-    <PresentationInformation />
+
+    <div id="presentationCounter">
+      <PresentationCounter />
+    </div>
+
+    <div id="thumbnails">
+      <Thumbnails @open-details-spot-modal3="openDetailSpotModal"/>
+    </div>
+
+    <div id="rankingList">
+      <RankingList/>
+    </div>
+    <!-- <PresentationInformation />
+
     <PresentationExample :data="data" />
     <PresentationPages />
-    <BuiltByDevelopers />
+    <BuiltByDevelopers /> -->
 
-    <div class="container">
+
+    <!-- <div class="container">
       <div class="row">
         <div class="col-lg-4">
           <FilledInfoCard
@@ -86,8 +165,8 @@
           />
         </div>
       </div>
-    </div>
-    <PresentationTestimonials />
+    </div> -->
+    <!-- <PresentationTestimonials /> -->
 
     <div
       class="container-fluid mt-sm-5 border-radius-xl"
@@ -260,54 +339,3 @@
   />
 </template>
 
-<script setup>
-import { onMounted, onUnmounted, ref } from "vue";
-import Thumbnails from "@/components/Thumbnails.vue";
-import RankingList from "@/components/RankingList.vue";
-import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
-import DefaultFooter from "../../examples/footers/FooterDefault.vue";
-import Header from "../../examples/Header.vue";
-import FilledInfoCard from "../../examples/cards/infoCards/FilledInfoCard.vue";
-import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
-import PresentationCounter from "./Sections/PresentationCounter.vue";
-import PresentationPages from "./Sections/PresentationPages.vue";
-import PresentationExample from "./Sections/PresentationExample.vue";
-import data from "./Sections/Data/designBlocksData";
-import BuiltByDevelopers from "./Components/BuiltByDevelopers.vue";
-import PresentationTestimonials from "./Sections/PresentationTestimonials.vue";
-import PresentationInformation from "./Sections/PresentationInformation.vue";
-import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
-import wavesWhite from "@/assets/img/waves-white.svg";
-import logoBootstrap from "@/assets/img/logos/bootstrap5.jpg";
-import logoTailwind from "@/assets/img/logos/icon-tailwind.jpg";
-import logoVue from "@/assets/img/logos/vue.jpg";
-import logoAngular from "@/assets/img/logos/angular.jpg";
-import logoReact from "@/assets/img/logos/react.jpg";
-import logoSketch from "@/assets/img/logos/sketch.jpg";
-import DetailsSpotModal from "../../components/DetailsSpotModal.vue";
-
-const showDetailSpotModal = ref(false);
-const selectedPostId = ref(null);
-
-const openDetailSpotModal = (postId) => {
-  selectedPostId.value = postId;
-  showDetailSpotModal.value = true;
-};
-
-const closeDetailSpotModal = () => {
-  showDetailSpotModal.value = false;
-  selectedPostId.value = null;
-};
-
-const body = document.getElementsByTagName("body")[0];
-onMounted(() => {
-  body.classList.add("presentation-page");
-  body.classList.add("bg-gray-200");
-});
-onUnmounted(() => {
-  body.classList.remove("presentation-page");
-  body.classList.remove("bg-gray-200");
-});
-
-const anime1 = true;
-</script>
