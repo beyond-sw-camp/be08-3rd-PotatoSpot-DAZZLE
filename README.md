@@ -113,7 +113,7 @@
 
 ### 3. StoryBoard
 
-[StroyBoard 바로가기](https://docs.google.com/spreadsheets/d/1erC0ZYgndRczrHjTK33b4S2XjZLPtycP49d3DMc6v0M/edit?gid=127022753#gid=127022753)
+[StoryBoard 바로가기](https://docs.google.com/spreadsheets/d/1erC0ZYgndRczrHjTK33b4S2XjZLPtycP49d3DMc6v0M/edit?gid=127022753#gid=127022753)
 
 - 메인 페이지
   <img width="1331" alt="메인 페이지" src="https://github.com/user-attachments/assets/f5e7f143-ea93-41e3-8a3c-f8a6c45c41ad">
