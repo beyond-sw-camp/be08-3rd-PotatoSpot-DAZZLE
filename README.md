@@ -133,7 +133,7 @@
 
 ### 1. Functional Implementation
 
-[시연 영상 바로가기]()
+[시연 영상 바로가기](https://drive.google.com/drive/folders/1y2C4phjR83EDekKrtds40QuZplCXWASf)
 
 <details>
   <summary>Header 테스트</summary>
