@@ -8,7 +8,6 @@ import Header from "../../examples/Header.vue";
 import PresentationCounter from "./Sections/PresentationCounter.vue";
 import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
 import DetailsSpotModal from "../../components/DetailsSpotModal.vue";
-import Anker from "../../examples/Anker.vue";
 
 const showDetailSpotModal = ref(false);
 const selectedPostId = ref(null);
@@ -73,7 +72,6 @@ const anime1 = true;
       </div>
     </div>
   </Header>
-  <Anker/>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
 
     <div id="presentationCounter">
