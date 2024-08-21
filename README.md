@@ -74,6 +74,11 @@
 ### 2. WireFrame
 
 [Figma 바로가기](https://www.figma.com/design/Dg8TDHmr6l4L99yYnUrY5e/beyond_project3?node-id=16-24&m=dev&t=8gc2Na0eUmwNHn6v-1)
+
+- 메인 페이지
+  <br>
+  <img width="367" alt="image" src="https://github.com/user-attachments/assets/418bc4ea-0f3b-4c54-9f11-02dda5dd3255">
+
 <br>
 
 ### 3. StoryBoard
