@@ -137,10 +137,8 @@
 
 <details>
   <summary>Header 테스트</summary>
-  <img src="https://github.com/user-attachments/assets/b1355647-6e6d-49af-8444-9d0578c118ac" width="525px"/>
-</details>
-<details>
-  <summary>메인 페이지 테스트</summary>
+    
+  https://github.com/user-attachments/assets/3692fbfa-f832-4add-832c-90a4f6f5c71d
 
 </details>
 <details>
