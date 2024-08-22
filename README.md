@@ -14,7 +14,7 @@
 
 ## 📋 Material
 - [Notion Link](https://charming-hospital-33d.notion.site/PotatoSpot-25078cd8018e471aa6be255639f2bee0?pvs=74)
-- [Presentation Material]()
+- [Presentation Material](https://github.com/user-attachments/files/16706209/PotatoSpot_DAZZLE.pdf)
 <br>
 
 ## ⚙Tech Stack
