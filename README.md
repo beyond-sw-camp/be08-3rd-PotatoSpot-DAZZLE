@@ -123,7 +123,6 @@
 - 지도 페이지
   <img width="1338" alt="스크린샷 2024-08-21 17 13 54" src="https://github.com/user-attachments/assets/9cda9855-2fb6-4651-88ac-4a26c369a078">
 
-  
 - 마이 페이지
   <img width="1332" alt="스크린샷 2024-08-21 17 14 05" src="https://github.com/user-attachments/assets/1bf2bd20-41cd-4fd4-b726-ed70cc8e5cc8">
 
@@ -144,10 +143,14 @@
 <details>
   <summary>게시물 리스트 컴포넌트 테스트</summary>
   
+  https://github.com/user-attachments/assets/ce41c70e-c1b1-4edd-8d49-f4b55427e325
+
 </details>
 <details>
   <summary>랭킹 리스트 컴포넌트 테스트</summary>
   
+  https://github.com/user-attachments/assets/0358eee9-b2ea-4449-82fc-42c4f0d616c9
+
 </details>
 <details>
   <summary>지도 페이지 테스트</summary>
@@ -158,10 +161,14 @@
 <details>
   <summary>게시물 작성 테스트</summary>
   
+  https://github.com/user-attachments/assets/a33556aa-2a98-4d65-9b0c-97357c581de6
+
 </details>
 <details>
   <summary>마이 페이지 테스트</summary>
   
+  https://github.com/user-attachments/assets/5ec20026-c2c9-404d-a93c-a53d5c353dc7
+
 </details>
 
 <br>
