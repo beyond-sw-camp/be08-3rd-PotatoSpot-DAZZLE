@@ -152,6 +152,8 @@
 <details>
   <summary>지도 페이지 테스트</summary>
   
+  https://github.com/user-attachments/assets/6ec7b31d-abd8-4c40-9a0f-239c25b89dcf
+
 </details>
 <details>
   <summary>게시물 작성 테스트</summary>
